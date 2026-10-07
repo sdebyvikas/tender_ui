@@ -1,227 +1,222 @@
-import React from 'react';
-import { 
-  LayoutGrid, 
-  Folder, 
-  FileText, 
-  ShieldCheck, 
-  CreditCard, 
-  Edit3, 
-  BookOpen, 
-  ChevronDown, 
-  X,
-  Sparkles,
+import React, { useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
+import {
   ArrowUpRight,
-  LucideIcon
-} from 'lucide-react';
-import { Tender, CompanyProfile } from '../types';
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+  Settings2,
+  Sparkles,
+  X,
+} from "lucide-react";
+import { LogoMark, navItems } from "./Common";
+import { useUIStore, useCompanyStore } from "../store";
 
-interface SidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-  tenders?: Tender[];
-  selectedTender?: Tender | null;
-  onSelectTender: (tender: Tender | null) => void;
-  onOpenUpload: () => void;
-  companyProfile?: CompanyProfile | null;
-  mobileOpen: boolean;
-  setMobileOpen: (open: boolean) => void;
-}
+export default function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-interface NavSubItem {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  badge: string | null;
-}
+  const {
+    sidebarOpen,
+    setSidebarOpen,
+    isSidebarCollapsed,
+    setIsSidebarCollapsed,
+    openModal,
+  } = useUIStore();
 
-interface NavGroup {
-  group: string;
-  items: NavSubItem[];
-}
+  const { companyProfile } = useCompanyStore();
 
-export default function Sidebar({ 
-  activeTab, 
-  setActiveTab, 
-  tenders = [], 
-  selectedTender, 
-  onSelectTender, 
-  onOpenUpload, 
-  companyProfile,
-  mobileOpen,
-  setMobileOpen
-}: SidebarProps) {
-  const navItems: NavGroup[] = [
-    {
-      group: 'WORKSPACE',
-      items: [
-        { id: 'dashboard', label: 'Overview', icon: LayoutGrid, badge: null },
-        { id: 'company', label: 'Company Vault', icon: Folder, badge: '96%' },
-      ]
-    },
-    {
-      group: 'BID WORKSPACE',
-      items: [
-        { id: 'intake', label: 'Tender Intake', icon: FileText, badge: tenders.length.toString() },
-        { id: 'eligibility', label: 'Eligibility', icon: ShieldCheck, badge: null },
-        { id: 'payment', label: 'Payment Proof', icon: CreditCard, badge: null },
-        { id: 'proposal', label: 'Proposal Desk', icon: Edit3, badge: null },
-        { id: 'binder', label: 'PDF Binder', icon: BookOpen, badge: 'Draft' },
-      ]
-    }
-  ];
-
-  const handleNavClick = (itemId: string) => {
-    if (itemId === 'intake') {
-      onOpenUpload();
-    } else if (itemId === 'dashboard') {
-      setActiveTab('dashboard');
-      onSelectTender(null);
-    } else if (itemId === 'company') {
-      setActiveTab('company');
-    } else if (itemId === 'analytics') {
-      setActiveTab('analytics');
-    } else if (['eligibility', 'payment', 'proposal', 'binder'].includes(itemId)) {
-      if (!selectedTender && tenders.length > 0) {
-        onSelectTender(tenders[0]);
-      }
-      setActiveTab('details');
-    }
-    setMobileOpen(false);
-  };
+  const groupedNav = useMemo(() => {
+    return ["Workspace", "Bid Operations"].map((section) => ({
+      section,
+      items: navItems.filter((item) => item.section === section),
+    }));
+  }, []);
 
   return (
     <>
-      {/* Mobile Backdrop */}
-      {mobileOpen && (
-        <div 
-          onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-        />
-      )}
-
-      <aside className={`fixed inset-y-0 left-0 z-50 lg:static flex flex-col w-[260px] h-screen bg-[#0B1924] text-slate-300 select-none transition-transform duration-200 shrink-0 ${
-        mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
-        
-        {/* Brand Header */}
-        <div className="flex items-center justify-between px-5 pt-6 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#0D3B36] border border-[#14534B] flex items-center justify-center font-extrabold text-white text-base shadow-sm">
-              T
-            </div>
-            <div>
-              <div className="font-extrabold text-[17px] text-white tracking-tight leading-none">
-                TenderFlow
-              </div>
-              <div className="text-[10px] font-bold tracking-wider text-[#48A9A6] uppercase mt-1">
-                BID OPERATIONS OS
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="lg:hidden text-slate-400 hover:text-white p-1"
+      <aside
+        className={`sidebar ${sidebarOpen ? "sidebar-open" : ""} ${
+          isSidebarCollapsed ? "sidebar-collapsed" : ""
+        }`}
+      >
+        {/* Brand Row */}
+        <div className="brand-row">
+          <div
+            className="brand-lockup cursor-pointer"
+            onClick={() => navigate("/overview")}
           >
-            <X size={18} />
-          </button>
-        </div>
-
-        {/* Workspace Switcher Card */}
-        <div className="px-4 py-2">
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#08121B] border border-white/[0.06] hover:border-white/[0.12] transition-colors cursor-pointer">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#1A3835] text-[#34D399] border border-[#34D399]/30 flex items-center justify-center text-xs font-extrabold shrink-0">
-                TS
+            <LogoMark />
+            {!isSidebarCollapsed && (
+              <div>
+                <strong>
+                  Tender<span>Flow</span>
+                </strong>
+                <small>Bid operations OS</small>
               </div>
-              <div className="min-w-0">
-                <div className="text-xs font-bold text-white truncate">{companyProfile?.name || 'Tech Solutions'}</div>
-                <div className="text-[10.5px] text-slate-400 truncate">Admin workspace</div>
-              </div>
-            </div>
-            <ChevronDown size={14} className="text-slate-400 shrink-0 ml-2" />
+            )}
           </div>
-        </div>
-
-        {/* Nav Sections */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-5 sidebar-scroll">
-          {navItems.map((sec, idx) => (
-            <div key={idx} className="space-y-1">
-              <div className="px-3 text-[10px] font-extrabold tracking-widest text-[#4A6072] uppercase mb-1.5">
-                {sec.group}
-              </div>
-
-              <div className="space-y-0.5">
-                {sec.items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = 
-                    (item.id === 'dashboard' && activeTab === 'dashboard' && !selectedTender) ||
-                    (item.id === 'company' && activeTab === 'company') ||
-                    (item.id === 'analytics' && activeTab === 'analytics') ||
-                    (['eligibility', 'payment', 'proposal', 'binder'].includes(item.id) && activeTab === 'details');
-
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => handleNavClick(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-[#102A33] text-white border border-[#1F464D] shadow-sm'
-                          : 'text-[#8EA2B3] hover:text-white hover:bg-white/[0.04]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon 
-                          size={16} 
-                          className={isActive ? 'text-[#34D399]' : 'text-[#64748B]'} 
-                        />
-                        <span>{item.label}</span>
-                      </div>
-
-                      {item.badge && (
-                        <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-md ${
-                          item.badge === '96%' 
-                            ? 'bg-[#0E3B36] text-[#34D399] border border-[#34D399]/30 font-mono'
-                            : item.badge === 'Draft'
-                            ? 'bg-slate-800 text-slate-300 border border-slate-700 text-[9.5px]'
-                            : 'bg-white/[0.08] text-slate-300 font-mono text-[10.5px]'
-                        }`}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom "30 min to bid-ready" Card */}
-        <div className="p-3.5 border-t border-white/[0.06] bg-[#08121B]">
-          <div className="p-3 rounded-2xl bg-[#10252C] border border-[#1C424C] space-y-2">
-            <div className="w-6 h-6 rounded-lg bg-[#144743] text-[#34D399] flex items-center justify-center">
-              <Sparkles size={13} />
-            </div>
-            
-            <div className="space-y-0.5">
-              <div className="text-xs font-bold text-white leading-tight">30 min to bid-ready</div>
-              <p className="text-[10.5px] text-slate-400 leading-snug">
-                Your workflow is 41% faster than the team average.
-              </p>
-            </div>
-
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <button
-              onClick={() => setActiveTab('analytics')}
-              className="text-[11px] font-bold text-[#34D399] hover:underline flex items-center gap-1 pt-0.5 cursor-pointer"
+              type="button"
+              className="sidebar-collapse-toggle cursor-pointer"
+              onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+              title={
+                isSidebarCollapsed ? "Expand Sidebar" : "Collapse to Icons"
+              }
             >
-              <span>See insights</span>
-              <ArrowUpRight size={12} />
+              {isSidebarCollapsed ? (
+                <ChevronRight size={14} />
+              ) : (
+                <ChevronLeft size={14} />
+              )}
+            </button>
+            <button
+              className="sidebar-close cursor-pointer"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X size={18} />
             </button>
           </div>
         </div>
 
+        {/* Workspace Switcher */}
+        <div
+          className="workspace-switcher cursor-pointer"
+          onClick={() => openModal("profile")}
+          title={isSidebarCollapsed ? "Tech Solutions (Admin)" : undefined}
+        >
+          <div className="workspace-avatar">TS</div>
+          {!isSidebarCollapsed && (
+            <>
+              <div>
+                <strong>{companyProfile?.name || "Tech Solutions"}</strong>
+                <small>Admin workspace</small>
+              </div>
+              <ChevronDown
+                size={14}
+                style={{ color: "#7890a4", flexShrink: 0, marginLeft: "auto" }}
+              />
+            </>
+          )}
+        </div>
+
+        {/* Navigation Items */}
+        <nav className="side-nav">
+          {groupedNav.map((group) => (
+            <div className="nav-section" key={group.section}>
+              {!isSidebarCollapsed && (
+                <span className="nav-section-label">{group.section}</span>
+              )}
+              {group.items.map((item) => {
+                const ItemIcon = item.icon;
+                const isSelected =
+                  location.pathname === item.path ||
+                  (item.path === "/overview" &&
+                    (location.pathname === "/" ||
+                      location.pathname === "/overview")) ||
+                  (item.path === "/vault" &&
+                    (location.pathname === "/vault" ||
+                      location.pathname === "/company-vault")) ||
+                  (item.path === "/tenders-v2" &&
+                    location.pathname.startsWith("/tenders-v2")) ||
+                  (item.path === "/intake" &&
+                    (location.pathname === "/intake" ||
+                      location.pathname === "/tender-intake" ||
+                      location.pathname.startsWith("/intake/") ||
+                      location.pathname.startsWith("/tender-intake/") ||
+                      location.pathname.startsWith("/tenders/")));
+
+                return (
+                  <button
+                    key={item.label}
+                    className={`nav-item cursor-pointer ${
+                      isSelected ? "active" : ""
+                    }`}
+                    title={isSidebarCollapsed ? item.label : undefined}
+                    onClick={() => {
+                      navigate(item.path);
+                      setSidebarOpen(false);
+                    }}
+                  >
+                    <ItemIcon size={17} />
+                    {!isSidebarCollapsed && <span>{item.label}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+
+        <div className="sidebar-spacer" />
+
+        {/* Automation Insights Tip */}
+        {!isSidebarCollapsed && (
+          <div className="sidebar-tip">
+            <div className="tip-spark">
+              <Sparkles size={15} />
+            </div>
+            <strong>30 min to bid-ready</strong>
+            <p>Your workflow is 41% faster than the team average.</p>
+            <button
+              className="cursor-pointer"
+              onClick={() =>
+                toast("Automation insights", {
+                  description:
+                    "Time saved is calculated from your workspace activity.",
+                })
+              }
+            >
+              See insights <ArrowUpRight size={14} />
+            </button>
+          </div>
+        )}
+
+        {/* Sidebar Footer */}
+        <div className="sidebar-footer">
+          <button
+            className="nav-item cursor-pointer"
+            title={isSidebarCollapsed ? "Settings" : undefined}
+            onClick={() =>
+              toast("Settings", {
+                description: "Workspace configuration opened.",
+              })
+            }
+          >
+            <Settings2 size={17} />
+            {!isSidebarCollapsed && <span>Settings</span>}
+          </button>
+          <div
+            className="profile-row cursor-pointer"
+            onClick={() => openModal("profile")}
+            title={
+              isSidebarCollapsed ? "Arjun Mehta (Administrator)" : undefined
+            }
+          >
+            <div className="profile-avatar">AM</div>
+            {!isSidebarCollapsed && (
+              <>
+                <div>
+                  <strong>Arjun Mehta</strong>
+                  <small>Administrator</small>
+                </div>
+                <MoreHorizontal size={16} />
+              </>
+            )}
+          </div>
+        </div>
       </aside>
+
+      {/* Sidebar Mobile Overlay Backdrop */}
+      {sidebarOpen && (
+        <button
+          className="sidebar-overlay"
+          aria-label="Close menu"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
     </>
   );
 }
