@@ -12,4 +12,7 @@ export * from "./components/tabs/PaymentProofTabV2";
 export * from "./components/tabs/ProposalDeskTabV2";
 export * from "./components/tabs/PdfBinderTabV2";
 export * from "./components/ProposalPdfPreviewModal";
+export * from "./components/MasterDossierPdfModal";
+export * from "./components/PaymentProofModal";
+export * from "./components/DscPoaManagementModal";
 export { default as TendersRepositoryV2Page } from "./TendersRepositoryV2Page";
