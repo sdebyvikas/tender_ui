@@ -11,4 +11,5 @@ export * from "./components/tabs/EligibilityGatesTabV2";
 export * from "./components/tabs/PaymentProofTabV2";
 export * from "./components/tabs/ProposalDeskTabV2";
 export * from "./components/tabs/PdfBinderTabV2";
+export * from "./components/ProposalPdfPreviewModal";
 export { default as TendersRepositoryV2Page } from "./TendersRepositoryV2Page";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   CreditCard,
   Receipt,
@@ -7,28 +7,27 @@ import {
   UploadCloud,
   ArrowRight,
   ShieldCheck,
-  FileText,
-  Building2,
   Download,
   Eye,
   RefreshCw,
   Copy,
   Landmark,
-  Sparkles,
   Check,
-  CheckCheck,
-  BadgePercent,
-  Hash,
-  AlertCircle,
   FileCheck2,
-  Send,
   Calendar,
-  Layers,
+  Building,
+  Hash,
+  Sparkles,
+  Paperclip,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { TabPlaceholderCard } from "./TabPlaceholderCard";
 import { TenderV2 } from "../../types";
-import { PaymentProofModal, PaymentModalType } from "../PaymentProofModal";
+import {
+  PaymentProofModal,
+  PaymentModalType,
+  CustomDocPreviewData,
+} from "../PaymentProofModal";
 
 interface PaymentProofTabV2Props {
   tender: TenderV2;
@@ -43,21 +42,17 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: PaymentModalType;
+    customData?: CustomDocPreviewData;
   }>({
     isOpen: false,
-    type: "EXEMPTION_LETTER",
+    type: "FEE_RECEIPT",
   });
 
-  // Active EMD Mode Tab: MSME Exemption (Default) vs Bank Guarantee vs RTGS
-  const [activeEmdMode, setActiveEmdMode] = useState<
-    "MSME_EXEMPTION" | "BANK_GUARANTEE" | "RTGS_NEFT"
-  >(tender.emdComplianceDetails?.activeMode || "MSME_EXEMPTION");
+  // Hidden file input refs
+  const feeFileInputRef = useRef<HTMLInputElement>(null);
+  const emdFileInputRef = useRef<HTMLInputElement>(null);
 
-  // State for interactive actions
-  const [isRegenerating, setIsRegenerating] = useState(false);
-  const [copiedUtr, setCopiedUtr] = useState(false);
-
-  // Fallback / Normalized Data
+  // Normalized Signatory
   const signatory = tender.signatoryDetails || {
     companyName: "Tech Solutions Pvt Ltd",
     hqLocation: "Tech Park, GS Road, Guwahati & Andheri East, Mumbai",
@@ -78,216 +73,382 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
     financialReviewer: "Priya Sharma (Finance Controller)",
   };
 
-  const tenderFee = tender.tenderFeeDetails || {
-    amountDisplay: tender.tenderFeeDisplay || "₹5,000 + 18% GST (₹5,900)",
-    status: "Paid & Verified" as const,
-    paymentMode: "Internet Banking (SBI Corporate e-Pay Gateway)",
-    transactionRef: "SBIN20260310928371",
-    paymentDate: "10 Mar 2026, 02:45 PM IST",
-    receiptDocName: "SBI_Payment_Challan_SAJHA69.pdf",
-  };
+  // ================= 1. TENDER FEE FORM STATE =================
+  const [feeMode, setFeeMode] = useState<"DD" | "ONLINE">("ONLINE");
+  const [feeData, setFeeData] = useState({
+    // DD fields
+    ddNumber: "591028",
+    ddBankName: "State Bank of India",
+    ddBranch: "Main Branch, Ranchi",
+    ddIssueDate: "2026-03-10",
+    ddDrawnInFavor: `Executive Engineer, ${tender.organization}`,
+    ddPayableAt: "Ranchi",
+    ddAmount: "₹5,900.00",
+    ddFileName: "DD_Tender_Fee_Scan_SAJHA.pdf",
+    ddFileSize: "245 KB",
 
-  const emdDetails = tender.emdComplianceDetails || {
-    amountDisplay: tender.emdDisplay || "₹5,00,000",
-    requiredPercentage: "3.33% of Contract Value",
-    activeMode: "MSME_EXEMPTION" as const,
-    msmeEligible: true,
-    msmeUdyamNumber: signatory.udyamRegistration || "UDYAM-MH-19-0048291",
-    exemptionDocName: "MSME_Rule_170_Self_Declaration_SAJHA69.pdf",
-    bgBankName: "State Bank of India (Commercial Branch)",
+    // Online UTR fields
+    utrNumber: "SBIN20260310928371",
+    gatewayMode: "SBI Corporate e-Pay Gateway",
+    paymentDate: "10 Mar 2026, 02:45 PM IST",
+    onlineFileName: "SBI_Payment_Challan_SAJHA69.pdf",
+    onlineFileSize: "184 KB",
+
+    isAttached: true,
+  });
+
+  // ================= 2. EMD / BID SECURITY FORM STATE =================
+  const [emdMode, setEmdMode] = useState<
+    "MSME_EXEMPTION" | "DD" | "BANK_GUARANTEE" | "RTGS_NEFT"
+  >("MSME_EXEMPTION");
+
+  const [emdData, setEmdData] = useState({
+    // MSME fields
+    udyamNumber: signatory.udyamRegistration || "UDYAM-MH-19-0048291",
+    exemptionFileName: "MSME_Rule_170_Self_Declaration_SAJHA69.pdf",
+    exemptionFileSize: "312 KB",
+
+    // DD / FDR fields
+    ddNumber: "918273",
+    ddBankName: "Punjab National Bank",
+    ddBranch: "Commercial Branch, Mumbai",
+    ddIssueDate: "2026-03-10",
+    ddDrawnInFavor: `Executive Engineer, ${tender.organization}`,
+    ddPayableAt: "Ranchi",
+    ddAmount: tender.emdDisplay || "₹5,00,000",
+    ddFileName: "EMD_Demand_Draft_5Lakh_SAJHA.pdf",
+    ddFileSize: "340 KB",
+
+    // BG fields
     bgNumber: "BG-9920-2026-MUM",
-    bgValidUntil: "07 Sep 2026",
-    bgDocName: "SBI_Bank_Guarantee_Scanned_SAJHA69.pdf",
+    bgBankName: "State Bank of India",
+    bgValidUntil: "2026-09-07",
+    bgClaimPeriod: "60 Days Beyond Validity",
+    bgAmount: tender.emdDisplay || "₹5,00,000",
+    bgFileName: "SBI_Bank_Guarantee_Scanned_SAJHA69.pdf",
+    bgFileSize: "410 KB",
+
+    // RTGS fields
     rtgsUtr: "HDFC20260310009281",
     rtgsDate: "10 Mar 2026",
-    rtgsDocName: "RTGS_Remittance_Slip_SAJHA69.pdf",
-  };
+    rtgsBank: "HDFC Bank Corporate Banking",
+    rtgsFileName: "RTGS_Remittance_Slip_SAJHA69.pdf",
+    rtgsFileSize: "198 KB",
+
+    isAttached: true,
+  });
+
+  // UI helpers
+  const [copiedUtr, setCopiedUtr] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   const handleCopyUtr = (utr: string) => {
     navigator.clipboard.writeText(utr);
     setCopiedUtr(true);
-    toast.success("Transaction UTR copied to clipboard", {
-      description: utr,
-    });
+    toast.success("UTR copied to clipboard", { description: utr });
     setTimeout(() => setCopiedUtr(false), 2000);
+  };
+
+  const handleFeeFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const sizeStr = `${(file.size / 1024).toFixed(0)} KB`;
+      if (feeMode === "DD") {
+        setFeeData((prev) => ({
+          ...prev,
+          ddFileName: file.name,
+          ddFileSize: sizeStr,
+          isAttached: true,
+        }));
+      } else {
+        setFeeData((prev) => ({
+          ...prev,
+          onlineFileName: file.name,
+          onlineFileSize: sizeStr,
+          isAttached: true,
+        }));
+      }
+      toast.success(`Attached Tender Fee slip: ${file.name}`);
+    }
+  };
+
+  const handleEmdFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const sizeStr = `${(file.size / 1024).toFixed(0)} KB`;
+      if (emdMode === "DD") {
+        setEmdData((prev) => ({
+          ...prev,
+          ddFileName: file.name,
+          ddFileSize: sizeStr,
+          isAttached: true,
+        }));
+      } else if (emdMode === "BANK_GUARANTEE") {
+        setEmdData((prev) => ({
+          ...prev,
+          bgFileName: file.name,
+          bgFileSize: sizeStr,
+          isAttached: true,
+        }));
+      } else if (emdMode === "RTGS_NEFT") {
+        setEmdData((prev) => ({
+          ...prev,
+          rtgsFileName: file.name,
+          rtgsFileSize: sizeStr,
+          isAttached: true,
+        }));
+      }
+      toast.success(`Attached EMD document: ${file.name}`);
+    }
   };
 
   const handleRegenerateDeclaration = () => {
     setIsRegenerating(true);
-    toast.loading("Generating updated Rule 170 Exemption Declaration...", {
-      id: "regen-decl",
-    });
+    toast.loading(
+      "Generating Rule 170 Exemption Declaration with Digital Stamp...",
+      {
+        id: "regen-decl",
+      },
+    );
     setTimeout(() => {
       setIsRegenerating(false);
-      toast.success("Rule 170 Declaration Re-Generated & Digitally Signed", {
+      toast.success("Declaration Generated & Digitally Signed", {
         id: "regen-decl",
-        description: `Verified with ${signatory.signatoryName}'s Class-3 DSC Token.`,
+        description: `Linked with ${signatory.signatoryName}'s Class-3 DSC.`,
       });
-    }, 1200);
+    }, 1000);
   };
 
-  const handleDownloadDoc = (docName: string) => {
-    toast.success("Document downloaded successfully", {
-      description: `${docName} saved to your local downloads.`,
-    });
+  const openFeePreview = () => {
+    if (feeMode === "DD") {
+      setModalState({
+        isOpen: true,
+        type: "DD_PREVIEW",
+        customData: {
+          title: "Tender Processing Fee Demand Draft (DD)",
+          instrumentNumber: feeData.ddNumber,
+          bankName: feeData.ddBankName,
+          branchName: feeData.ddBranch,
+          issueDate: feeData.ddIssueDate,
+          amountDisplay: "₹ 5,900.00",
+          amountInWords: "Five Thousand Nine Hundred Rupees Only",
+          drawnInFavor: feeData.ddDrawnInFavor,
+          payableAt: feeData.ddPayableAt,
+          fileName: feeData.ddFileName,
+        },
+      });
+    } else {
+      setModalState({
+        isOpen: true,
+        type: "FEE_RECEIPT",
+      });
+    }
   };
 
-  const handleUploadNewSlip = () => {
-    toast.info("Upload Payment Slip / Challan", {
-      description: "Select PDF/JPG payment receipt up to 10MB to attach.",
-    });
+  const openEmdPreview = () => {
+    if (emdMode === "MSME_EXEMPTION") {
+      setModalState({
+        isOpen: true,
+        type: "EXEMPTION_LETTER",
+      });
+    } else if (emdMode === "DD") {
+      setModalState({
+        isOpen: true,
+        type: "DD_PREVIEW",
+        customData: {
+          title: "Earnest Money Deposit (EMD) Demand Draft (DD)",
+          instrumentNumber: emdData.ddNumber,
+          bankName: emdData.ddBankName,
+          branchName: emdData.ddBranch,
+          issueDate: emdData.ddIssueDate,
+          amountDisplay: tender.emdDisplay || "₹ 5,00,000.00",
+          amountInWords: "Five Lakh Rupees Only",
+          drawnInFavor: emdData.ddDrawnInFavor,
+          payableAt: emdData.ddPayableAt,
+          fileName: emdData.ddFileName,
+        },
+      });
+    } else if (emdMode === "BANK_GUARANTEE") {
+      setModalState({
+        isOpen: true,
+        type: "BG_PREVIEW",
+        customData: {
+          instrumentNumber: emdData.bgNumber,
+          bankName: emdData.bgBankName,
+          validUntil: emdData.bgValidUntil,
+          amountDisplay: tender.emdDisplay || "₹ 5,00,000/-",
+          fileName: emdData.bgFileName,
+        },
+      });
+    } else {
+      toast.info("Opening RTGS Transfer Advice Slip", {
+        description: `Ref UTR: ${emdData.rtgsUtr}`,
+      });
+    }
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Top Header Card */}
-      <TabPlaceholderCard
-        stepNumber={3}
-        title="Financial Security & Payment Proof Desk"
-        subtitle="EMD & Cover-1 Financial Slip Desk"
-        description="Statutory compliance desk for Earnest Money Deposit (EMD), Tender Document Processing Fee, MSME / Udyam exemptions under Rule 170 of GFR 2017, and Bank Guarantee attachments."
-        icon={CreditCard}
-        badgeText="Cover-1 Financial Pack"
-      >
-        {/* 1. FINANCIAL METRICS 4-COLUMN SUMMARY CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {/* 1. Tender Fee Card */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] uppercase font-bold text-slate-400">
-                Tender Document Fee
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1">
-                <CheckCircle2 size={11} /> Paid
-              </span>
-            </div>
-            <strong className="text-base font-bold text-slate-900 block font-mono">
-              ₹5,900.00
-            </strong>
-            <span className="text-[11px] text-slate-500 block mt-0.5">
-              ₹5,000 + 18% GST (Non-Refundable)
-            </span>
-          </div>
+    <div className="space-y-5 animate-in fade-in duration-200">
+      {/* Hidden file inputs for real upload simulation */}
+      <input
+        type="file"
+        ref={feeFileInputRef}
+        onChange={handleFeeFileUpload}
+        className="hidden"
+        accept=".pdf,.png,.jpg,.jpeg"
+      />
+      <input
+        type="file"
+        ref={emdFileInputRef}
+        onChange={handleEmdFileUpload}
+        className="hidden"
+        accept=".pdf,.png,.jpg,.jpeg"
+      />
 
-          {/* 2. EMD Required */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] uppercase font-bold text-slate-400">
-                EMD / Bid Security
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800">
-                3.33% of Value
+      {/* 1. TOP SUMMARY PILLS */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* Stat 1: Tender Fee */}
+        <div className="bg-white px-4 py-3 rounded-xl border border-slate-200/90 shadow-2xs flex items-center justify-between">
+          <div>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+              Tender Document Fee
+            </span>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <strong className="text-base font-bold text-slate-900 font-mono">
+                ₹5,900.00
+              </strong>
+              <span className="text-[10.5px] text-slate-500">
+                (incl. 18% GST)
               </span>
             </div>
-            <strong className="text-base font-bold text-slate-900 block font-mono">
-              {tender.emdDisplay || "₹5,00,000"}
-            </strong>
-            <span className="text-[11px] text-emerald-700 block mt-0.5 font-semibold">
-              Exemption Claimed (₹0 Payable)
-            </span>
           </div>
-
-          {/* 3. MSME Exemption Benefit */}
-          <div className="bg-emerald-50/40 p-4 rounded-xl border border-emerald-300/80 shadow-2xs hover:border-emerald-400 transition-all">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] uppercase font-bold text-emerald-700">
-                Statutory Benefit
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-700 text-white flex items-center gap-1">
-                <ShieldCheck size={11} /> Rule 170
-              </span>
-            </div>
-            <strong className="text-sm font-bold text-emerald-900 block flex items-center gap-1.5">
-              100% EMD Waiver Eligible
-            </strong>
-            <span className="text-[11px] text-emerald-700 font-mono block mt-0.5">
-              Udyam: {signatory.udyamRegistration || "UDYAM-MH-19-0048291"}
-            </span>
-          </div>
-
-          {/* 4. PBG Post-Award Terms */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] uppercase font-bold text-slate-400">
-                Performance PBG
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">
-                Post-Award
-              </span>
-            </div>
-            <strong className="text-base font-bold text-slate-900 block font-mono">
-              5% of Value (₹7.50L)
-            </strong>
-            <span className="text-[11px] text-slate-500 block mt-0.5">
-              Within 15 days of LoA issuance
-            </span>
-          </div>
+          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <CheckCircle2 size={13} className="text-emerald-700" /> Attached
+          </span>
         </div>
 
-        {/* 2. SECTION: TENDER PROCESSING FEE DESK */}
-        <div className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200/90 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold">
-                <Receipt size={16} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider bg-emerald-950 text-emerald-100 px-2.5 py-0.5 rounded-md">
-                    Cover-1 Mandatory
-                  </span>
-                  <h3 className="text-sm md:text-base font-bold text-slate-900">
-                    Tender Processing Fee Remittance Desk
-                  </h3>
+        {/* Stat 2: EMD Security */}
+        <div className="bg-white px-4 py-3 rounded-xl border border-slate-200/90 shadow-2xs flex items-center justify-between">
+          <div>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+              EMD / Bid Security
+            </span>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <strong className="text-base font-bold text-slate-900 font-mono">
+                {tender.emdDisplay || "₹5,00,000"}
+              </strong>
+              <span className="text-[10.5px] text-emerald-700 font-medium">
+                (
+                {emdMode === "MSME_EXEMPTION"
+                  ? "₹0 Payable"
+                  : "Instrument Linked"}
+                )
+              </span>
+            </div>
+          </div>
+          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <ShieldCheck size={13} className="text-emerald-700" />
+            {emdMode === "MSME_EXEMPTION" ? "100% Exempt" : "Covered"}
+          </span>
+        </div>
+
+        {/* Stat 3: PBG Post-Award */}
+        <div className="bg-white px-4 py-3 rounded-xl border border-slate-200/90 shadow-2xs flex items-center justify-between">
+          <div>
+            <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+              Performance Security (PBG)
+            </span>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <strong className="text-base font-bold text-slate-900 font-mono">
+                5% (₹7.50 Lakhs)
+              </strong>
+            </div>
+          </div>
+          <span className="text-[10.5px] font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded-lg">
+            Post-Award (15 Days)
+          </span>
+        </div>
+      </div>
+
+      {/* 2. TWO INTERACTIVE ENTRY & UPLOAD CARDS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* ================= LEFT CARD: TENDER FEE ENTRY DESK ================= */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 flex flex-col justify-between space-y-4">
+          {/* Header & Mode Switcher */}
+          <div className="space-y-2.5 border-b border-slate-100 pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold">
+                  <Receipt size={16} />
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Statutory proof of online payment required for technical bid admission
-                </p>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">
+                    Tender Processing Fee (₹5,900)
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Enter payment / DD details and attach proof slip
+                  </p>
+                </div>
               </div>
+
+              <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <CheckCircle2 size={12} /> Ready in Cover-1
+              </span>
             </div>
 
-            <div className="flex items-center gap-2 self-start sm:self-auto">
+            {/* Mode Switch: Online vs DD */}
+            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80">
               <button
                 type="button"
-                onClick={handleUploadNewSlip}
-                className="text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg border border-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                onClick={() => setFeeMode("ONLINE")}
+                className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  feeMode === "ONLINE"
+                    ? "bg-white text-emerald-800 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
               >
-                <UploadCloud size={13} />
-                <span>Replace / Upload Receipt</span>
+                <Receipt size={13} className="text-emerald-700" />
+                <span>Online / Internet Banking / UTR</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFeeMode("DD")}
+                className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  feeMode === "DD"
+                    ? "bg-white text-amber-800 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Landmark size={13} className="text-amber-700" />
+                <span>Demand Draft (DD)</span>
               </button>
             </div>
           </div>
 
-          {/* Payment Details Container */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Left Col: Transaction Breakdown (2 Columns) */}
-            <div className="lg:col-span-2 bg-slate-50/80 rounded-xl p-4 border border-slate-200/70 space-y-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+          {/* ONLINE FORM FIELDS */}
+          {feeMode === "ONLINE" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-[10.5px] uppercase font-bold text-slate-400 block">
-                    Payment Gateway Mode
-                  </span>
-                  <strong className="text-slate-900 font-semibold block mt-0.5">
-                    {tenderFee.paymentMode}
-                  </strong>
-                  <span className="text-[11px] text-slate-500">
-                    Merchant: State Procurement Portal / e-Nivida
-                  </span>
-                </div>
-
-                <div>
-                  <span className="text-[10.5px] uppercase font-bold text-slate-400 block">
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
                     Transaction UTR / Ref No.
-                  </span>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <strong className="text-emerald-900 font-mono font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-xs">
-                      {tenderFee.transactionRef}
-                    </strong>
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      value={feeData.utrNumber}
+                      onChange={(e) =>
+                        setFeeData({ ...feeData, utrNumber: e.target.value })
+                      }
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
+                      placeholder="e.g. SBIN20260310..."
+                    />
                     <button
                       type="button"
-                      onClick={() => handleCopyUtr(tenderFee.transactionRef)}
+                      onClick={() => handleCopyUtr(feeData.utrNumber)}
                       title="Copy UTR"
-                      className="p-1 rounded bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 cursor-pointer transition-colors"
+                      className="p-1.5 rounded bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 cursor-pointer"
                     >
                       {copiedUtr ? (
                         <Check size={13} className="text-emerald-600" />
@@ -299,535 +460,734 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
                 </div>
 
                 <div>
-                  <span className="text-[10.5px] uppercase font-bold text-slate-400 block">
-                    Payment Date &amp; Timestamp
-                  </span>
-                  <strong className="text-slate-800 font-medium block mt-0.5">
-                    {tenderFee.paymentDate}
-                  </strong>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Payment Gateway / Mode
+                  </label>
+                  <input
+                    type="text"
+                    value={feeData.gatewayMode}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, gatewayMode: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
                 </div>
 
                 <div>
-                  <span className="text-[10.5px] uppercase font-bold text-slate-400 block">
-                    Remitting Entity &amp; PAN
-                  </span>
-                  <strong className="text-slate-800 font-medium block mt-0.5">
-                    {signatory.companyName} (PAN: {signatory.pan})
-                  </strong>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Payment Date &amp; Time
+                  </label>
+                  <input
+                    type="text"
+                    value={feeData.paymentDate}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, paymentDate: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
                 </div>
-              </div>
-            </div>
 
-            {/* Right Col: Attached Receipt Card */}
-            <div className="bg-emerald-50/30 rounded-xl p-4 border border-emerald-200/90 flex flex-col justify-between space-y-3">
-              <div className="flex items-start gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-                  <FileCheck2 size={16} />
-                </div>
-                <div className="min-w-0">
-                  <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">
-                    Attached Document
-                  </span>
-                  <strong className="text-xs font-bold text-slate-900 block truncate" title={tenderFee.receiptDocName}>
-                    {tenderFee.receiptDocName}
-                  </strong>
-                  <span className="text-[10.5px] text-slate-500 block">
-                    PDF · 184 KB · Digitally Signed
-                  </span>
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Remitting Entity
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={`${signatory.companyName} (PAN: ${signatory.pan})`}
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 cursor-not-allowed"
+                  />
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-2 border-t border-emerald-100">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setModalState({ isOpen: true, type: "FEE_RECEIPT" })
-                  }
-                  className="flex-1 py-1.5 px-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
-                >
-                  <Eye size={13} />
-                  <span>View Challan</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDownloadDoc(tenderFee.receiptDocName)}
-                  className="py-1.5 px-2.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
-                  title="Download Receipt"
-                >
-                  <Download size={13} />
-                </button>
+              {/* Uploaded Slip Attachment Card */}
+              <div className="p-3 bg-emerald-50/40 rounded-xl border border-emerald-200/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                    <FileCheck2 size={15} />
+                  </div>
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={feeData.onlineFileName}
+                    >
+                      {feeData.onlineFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      PDF &bull; {feeData.onlineFileSize} &bull; Attached
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openFeePreview}
+                    className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View Slip</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => feeFileInputRef.current?.click()}
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title="Upload / Replace Receipt File"
+                  >
+                    <UploadCloud size={12} />
+                    <span>Upload</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* DEMAND DRAFT (DD) FORM FIELDS */}
+          {feeMode === "DD" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Demand Draft (DD) No.
+                  </label>
+                  <input
+                    type="text"
+                    value={feeData.ddNumber}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, ddNumber: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
+                    placeholder="e.g. 591028"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Issuing Bank &amp; Branch
+                  </label>
+                  <input
+                    type="text"
+                    value={feeData.ddBankName}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, ddBankName: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                    placeholder="e.g. State Bank of India"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    DD Issue Date
+                  </label>
+                  <input
+                    type="date"
+                    value={feeData.ddIssueDate}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, ddIssueDate: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Drawn in Favor of
+                  </label>
+                  <input
+                    type="text"
+                    value={feeData.ddDrawnInFavor}
+                    onChange={(e) =>
+                      setFeeData({ ...feeData, ddDrawnInFavor: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+              </div>
+
+              {/* Uploaded DD File Card */}
+              <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-300/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                    <Landmark size={15} />
+                  </div>
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={feeData.ddFileName}
+                    >
+                      {feeData.ddFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      PDF &bull; {feeData.ddFileSize} &bull; DD Scan Attached
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openFeePreview}
+                    className="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View DD</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => feeFileInputRef.current?.click()}
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title="Upload / Replace DD Scan"
+                  >
+                    <UploadCloud size={12} />
+                    <span>Upload DD</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* 3. SECTION: EMD / BID SECURITY COMPLIANCE DESK */}
-        <div className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200/90 shadow-2xs space-y-5">
-          {/* Header & Interactive Mode Selector */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center font-bold">
-                <FileBadge2 size={16} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider bg-purple-950 text-purple-100 px-2.5 py-0.5 rounded-md">
-                    Bid Security (EMD)
-                  </span>
-                  <h3 className="text-sm md:text-base font-bold text-slate-900">
-                    EMD Compliance &amp; Exemption Configuration Desk
-                  </h3>
+        {/* ================= RIGHT CARD: EMD / BID SECURITY DESK ================= */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 flex flex-col justify-between space-y-4">
+          {/* Header & Tabs */}
+          <div className="space-y-2.5 border-b border-slate-100 pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center font-bold">
+                  <FileBadge2 size={16} />
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Select bid security compliance mode: GFR Rule 170 Exemption, Bank Guarantee (BG), or Direct RTGS Remittance
-                </p>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">
+                    EMD / Bid Security ({tender.emdDisplay || "₹5,00,000"})
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Choose exemption or enter DD / BG / RTGS details
+                  </p>
+                </div>
               </div>
+
+              <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <ShieldCheck size={12} />
+                {emdMode === "MSME_EXEMPTION"
+                  ? "Rule 170 Exemption"
+                  : emdMode === "DD"
+                    ? "DD Linked"
+                    : emdMode === "BANK_GUARANTEE"
+                      ? "BG Linked"
+                      : "RTGS Linked"}
+              </span>
             </div>
 
-            {/* Mode Switcher Tabs */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
+            {/* 4 Mode Tabs */}
+            <div className="grid grid-cols-4 gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80 text-[11px]">
               <button
                 type="button"
-                onClick={() => setActiveEmdMode("MSME_EXEMPTION")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeEmdMode === "MSME_EXEMPTION"
-                    ? "bg-white text-emerald-800 shadow-xs"
+                onClick={() => setEmdMode("MSME_EXEMPTION")}
+                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                  emdMode === "MSME_EXEMPTION"
+                    ? "bg-white text-emerald-800 shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <ShieldCheck size={13} className="text-emerald-700" />
-                <span>MSME Exemption</span>
-                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-mono">
-                  GFR 170
-                </span>
+                <ShieldCheck size={11} className="text-emerald-700" />
+                <span className="truncate">MSME Exempt</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setActiveEmdMode("BANK_GUARANTEE")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeEmdMode === "BANK_GUARANTEE"
-                    ? "bg-white text-purple-800 shadow-xs"
+                onClick={() => setEmdMode("DD")}
+                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                  emdMode === "DD"
+                    ? "bg-white text-amber-800 shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Landmark size={13} className="text-purple-700" />
-                <span>Bank Guarantee (BG)</span>
+                <Landmark size={11} className="text-amber-700" />
+                <span className="truncate">Demand Draft</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setActiveEmdMode("RTGS_NEFT")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeEmdMode === "RTGS_NEFT"
-                    ? "bg-white text-blue-800 shadow-xs"
+                onClick={() => setEmdMode("BANK_GUARANTEE")}
+                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                  emdMode === "BANK_GUARANTEE"
+                    ? "bg-white text-purple-800 shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Receipt size={13} className="text-blue-700" />
-                <span>Direct RTGS / NEFT</span>
+                <FileBadge2 size={11} className="text-purple-700" />
+                <span className="truncate">Bank Guarantee</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setEmdMode("RTGS_NEFT")}
+                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                  emdMode === "RTGS_NEFT"
+                    ? "bg-white text-blue-800 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Receipt size={11} className="text-blue-700" />
+                <span className="truncate">RTGS / NEFT</span>
               </button>
             </div>
           </div>
 
-          {/* MODE CONTENT 1: MSME / UDYAM RULE 170 EXEMPTION */}
-          {activeEmdMode === "MSME_EXEMPTION" && (
-            <div className="space-y-4 animate-in fade-in duration-200">
-              {/* Exemption Authority Banner */}
-              <div className="bg-emerald-50/50 border border-emerald-200/90 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <ShieldCheck size={18} />
+          {/* MODE 1: MSME EXEMPTION FORM */}
+          {emdMode === "MSME_EXEMPTION" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Exemption Authority Rule
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="Rule 170 of GFR, 2017 (MSE Waiver)"
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-semibold cursor-not-allowed"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Udyam Certificate No.
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.udyamNumber}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, udyamNumber: e.target.value })
+                    }
+                    className="w-full bg-emerald-50/60 border border-emerald-300 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-emerald-950 focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Signatory &amp; DSC Seal Token
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={`${signatory.signatoryName} (${signatory.signatoryTitle}) &bull; DSC: ${signatory.dscSerial}`}
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              {/* Generated Declaration Box */}
+              <div className="p-3 bg-emerald-50/40 rounded-xl border border-emerald-200/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                    <FileBadge2 size={15} />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <strong className="text-xs md:text-sm font-bold text-emerald-950">
-                        Exemption Claimed Under Rule 170 of General Financial Rules (GFR), 2017
-                      </strong>
-                      <span className="text-[10.5px] font-bold bg-emerald-200/80 text-emerald-900 px-2 py-0.5 rounded-md">
-                        100% Fee Waived
-                      </span>
-                    </div>
-                    <p className="text-xs text-emerald-800/90 mt-0.5 leading-relaxed">
-                      As a registered Micro &amp; Small Enterprise (MSE) under Ministry of MSME, the bidder is entitled to 100% EMD waiver for software services. Self-declaration with Class-3 DSC token generated.
-                    </p>
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={emdData.exemptionFileName}
+                    >
+                      {emdData.exemptionFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      Auto-generated &bull; {emdData.exemptionFileSize} &bull;
+                      Digitally Signed
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openEmdPreview}
+                    className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View Letter</span>
+                  </button>
                   <button
                     type="button"
                     onClick={handleRegenerateDeclaration}
                     disabled={isRegenerating}
-                    className="px-3 py-1.5 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                    className="p-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                    title="Re-Generate Declaration"
                   >
                     <RefreshCw
-                      size={12}
-                      className={isRegenerating ? "animate-spin text-emerald-700" : "text-emerald-700"}
+                      size={13}
+                      className={
+                        isRegenerating ? "animate-spin text-emerald-700" : ""
+                      }
                     />
-                    <span>{isRegenerating ? "Generating..." : "Re-Generate"}</span>
                   </button>
                 </div>
               </div>
+            </div>
+          )}
 
-              {/* Exemption Document & Details Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                {/* 1. Udyam Registration Verification */}
-                <div className="bg-slate-50/80 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    1. Udyam Enterprise Verification
-                  </span>
-                  <div>
-                    <strong className="text-slate-900 block font-bold text-xs">
-                      {signatory.companyName}
-                    </strong>
-                    <span className="text-emerald-800 font-mono font-bold block mt-0.5">
-                      {signatory.udyamRegistration || "UDYAM-MH-19-0048291"}
-                    </span>
-                    <span className="text-slate-500 text-[11px] block mt-0.5">
-                      Category: Small Enterprise · NIC 62011 &amp; 62020
-                    </span>
+          {/* MODE 2: EMD DEMAND DRAFT (DD) FORM */}
+          {emdMode === "DD" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    EMD DD Number
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.ddNumber}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, ddNumber: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
+                    placeholder="e.g. 918273"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Issuing Bank
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.ddBankName}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, ddBankName: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                    placeholder="e.g. Punjab National Bank"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    DD Issue Date
+                  </label>
+                  <input
+                    type="date"
+                    value={emdData.ddIssueDate}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, ddIssueDate: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    DD Amount
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.ddAmount}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, ddAmount: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-bold font-mono text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+              </div>
+
+              {/* Uploaded EMD DD Card */}
+              <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-300/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                    <Landmark size={15} />
                   </div>
-                  <div className="pt-2 border-t border-slate-200 flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
-                    <CheckCircle2 size={13} /> Active &amp; Verified in Company Vault
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={emdData.ddFileName}
+                    >
+                      {emdData.ddFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      PDF &bull; {emdData.ddFileSize} &bull; Attached to Cover-1
+                    </span>
                   </div>
                 </div>
 
-                {/* 2. Signatory & Digital Stamp */}
-                <div className="bg-slate-50/80 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    2. Signing Authority
-                  </span>
-                  <div>
-                    <strong className="text-slate-900 block font-bold text-xs">
-                      {signatory.signatoryName}
-                    </strong>
-                    <span className="text-slate-600 text-[11px] block">
-                      {signatory.signatoryTitle}
-                    </span>
-                    <span className="text-slate-500 font-mono text-[10.5px] block mt-0.5">
-                      DSC: {signatory.dscSerial}
-                    </span>
-                  </div>
-                  <div className="pt-2 border-t border-slate-200 flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
-                    <CheckCircle2 size={13} /> Class-3 PKI Signature Attached
-                  </div>
-                </div>
-
-                {/* 3. Generated Exemption Letter Document Card */}
-                <div className="bg-emerald-50/30 p-4 rounded-xl border border-emerald-300/80 flex flex-col justify-between space-y-3">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
-                        Generated Letter
-                      </span>
-                      <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-mono">
-                        Ready
-                      </span>
-                    </div>
-                    <strong className="text-xs font-bold text-slate-900 block truncate" title={emdDetails.exemptionDocName}>
-                      {emdDetails.exemptionDocName}
-                    </strong>
-                    <p className="text-[10.5px] text-slate-500">
-                      Standard GFR-170 undertaking citing tender ref {tender.tenderNumber}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-2 border-t border-emerald-100">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setModalState({ isOpen: true, type: "EXEMPTION_LETTER" })
-                      }
-                      className="flex-1 py-1.5 px-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
-                    >
-                      <Eye size={13} />
-                      <span>View Letter</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDownloadDoc(emdDetails.exemptionDocName)}
-                      className="py-1.5 px-2.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
-                      title="Download PDF"
-                    >
-                      <Download size={13} />
-                    </button>
-                  </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openEmdPreview}
+                    className="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View DD</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => emdFileInputRef.current?.click()}
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title="Upload EMD DD Scan"
+                  >
+                    <UploadCloud size={12} />
+                    <span>Upload DD</span>
+                  </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* MODE CONTENT 2: BANK GUARANTEE (BG) */}
-          {activeEmdMode === "BANK_GUARANTEE" && (
-            <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="bg-purple-50/50 border border-purple-200/90 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-purple-700 text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <Landmark size={18} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <strong className="text-xs md:text-sm font-bold text-purple-950">
-                        Bank Guarantee (BG) / e-BG Security
-                      </strong>
-                      <span className="text-[10.5px] font-bold bg-purple-200/80 text-purple-900 px-2 py-0.5 rounded-md">
-                        SFMS Verified
-                      </span>
-                    </div>
-                    <p className="text-xs text-purple-800/90 mt-0.5 leading-relaxed">
-                      Submit an unconditional and irrevocable Bank Guarantee from any Scheduled Commercial Bank in India, valid for 180 days with SFMS confirmation.
-                    </p>
-                  </div>
+          {/* MODE 3: BANK GUARANTEE (BG) FORM */}
+          {emdMode === "BANK_GUARANTEE" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    BG Instrument Number
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.bgNumber}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, bgNumber: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-purple-950 focus:outline-hidden"
+                    placeholder="e.g. BG-9920-2026-MUM"
+                  />
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleUploadNewSlip}
-                  className="px-3.5 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs shrink-0 self-start md:self-auto"
-                >
-                  <UploadCloud size={13} />
-                  <span>Upload Scanned BG</span>
-                </button>
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Issuing Bank
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.bgBankName}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, bgBankName: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Valid Until (180 Days)
+                  </label>
+                  <input
+                    type="date"
+                    value={emdData.bgValidUntil}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, bgValidUntil: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Claim Period
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.bgClaimPeriod}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, bgClaimPeriod: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
               </div>
 
-              {/* BG Fields Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-slate-50/80 p-4 rounded-xl border border-slate-200/80">
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    Issuing Bank &amp; Branch
-                  </span>
-                  <strong className="text-slate-900 block font-bold mt-0.5">
-                    {emdDetails.bgBankName || "State Bank of India (Commercial Branch, Nariman Point)"}
-                  </strong>
-                  <span className="text-slate-500 text-[11px]">IFSC: SBIN0000300</span>
+              {/* Uploaded BG File Card */}
+              <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-300/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0">
+                    <FileBadge2 size={15} />
+                  </div>
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={emdData.bgFileName}
+                    >
+                      {emdData.bgFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      PDF &bull; {emdData.bgFileSize} &bull; SFMS Stamped
+                    </span>
+                  </div>
                 </div>
 
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    BG Instrument Number &amp; Value
-                  </span>
-                  <strong className="text-purple-900 font-mono font-bold block mt-0.5">
-                    {emdDetails.bgNumber || "BG-9920-2026-MUM"}
-                  </strong>
-                  <span className="text-slate-600 text-[11px]">
-                    Value: ₹5,00,000 (Five Lakhs Only)
-                  </span>
-                </div>
-
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    Validity &amp; Claim Period
-                  </span>
-                  <strong className="text-slate-900 block font-semibold mt-0.5">
-                    Valid Till: {emdDetails.bgValidUntil || "07 Sep 2026"} (180 Days)
-                  </strong>
-                  <span className="text-emerald-700 text-[11px] font-medium">
-                    + 60 Days Claim Period Included
-                  </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openEmdPreview}
+                    className="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View BG</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => emdFileInputRef.current?.click()}
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title="Upload Scanned BG"
+                  >
+                    <UploadCloud size={12} />
+                    <span>Upload BG</span>
+                  </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* MODE CONTENT 3: DIRECT RTGS / NEFT REMITTANCE */}
-          {activeEmdMode === "RTGS_NEFT" && (
-            <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="bg-blue-50/50 border border-blue-200/90 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-blue-700 text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <Receipt size={18} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <strong className="text-xs md:text-sm font-bold text-blue-950">
-                        Direct RTGS / NEFT EMD Remittance
-                      </strong>
-                      <span className="text-[10.5px] font-bold bg-blue-200/80 text-blue-900 px-2 py-0.5 rounded-md">
-                        Direct Bank Transfer
-                      </span>
-                    </div>
-                    <p className="text-xs text-blue-800/90 mt-0.5 leading-relaxed">
-                      Remit the exact EMD amount directly to the Tendering Authority’s designated escrow bank account and record the bank UTR confirmation.
-                    </p>
-                  </div>
+          {/* MODE 4: DIRECT RTGS / NEFT FORM */}
+          {emdMode === "RTGS_NEFT" && (
+            <div className="space-y-3 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Authority Escrow Account
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value="A/C: 38291048291 · IFSC: SBIN0001234"
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-mono cursor-not-allowed"
+                  />
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleUploadNewSlip}
-                  className="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs shrink-0 self-start md:self-auto"
-                >
-                  <UploadCloud size={13} />
-                  <span>Upload RTGS Advice</span>
-                </button>
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Transfer UTR No.
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.rtgsUtr}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, rtgsUtr: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-blue-950 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Remitter Bank
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.rtgsBank}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, rtgsBank: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                    Transfer Date
+                  </label>
+                  <input
+                    type="text"
+                    value={emdData.rtgsDate}
+                    onChange={(e) =>
+                      setEmdData({ ...emdData, rtgsDate: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
+                  />
+                </div>
               </div>
 
-              {/* Beneficiary & Remittance Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-slate-50/80 p-4 rounded-xl border border-slate-200/80">
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    Authority Beneficiary Account
-                  </span>
-                  <strong className="text-slate-900 block font-bold mt-0.5">
-                    Executive Engineer, {tender.organization}
-                  </strong>
-                  <span className="text-slate-600 font-mono text-[11px]">
-                    A/C: 38291048291 · IFSC: SBIN0001234
-                  </span>
+              {/* Uploaded RTGS Advice Card */}
+              <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-300/90 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0">
+                    <Receipt size={15} />
+                  </div>
+                  <div className="min-w-0">
+                    <strong
+                      className="text-xs font-bold text-slate-900 block truncate"
+                      title={emdData.rtgsFileName}
+                    >
+                      {emdData.rtgsFileName}
+                    </strong>
+                    <span className="text-[10.5px] text-slate-500 block">
+                      PDF &bull; {emdData.rtgsFileSize} &bull; Attached to
+                      Cover-1
+                    </span>
+                  </div>
                 </div>
 
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    Remittance UTR Reference
-                  </span>
-                  <strong className="text-blue-900 font-mono font-bold block mt-0.5">
-                    {emdDetails.rtgsUtr || "HDFC20260310009281"}
-                  </strong>
-                  <span className="text-slate-500 text-[11px]">
-                    Paid on {emdDetails.rtgsDate || "10 Mar 2026"}
-                  </span>
-                </div>
-
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    Attached Transfer Challan
-                  </span>
-                  <strong className="text-slate-900 block font-semibold mt-0.5 truncate">
-                    {emdDetails.rtgsDocName || "RTGS_Remittance_Slip_SAJHA69.pdf"}
-                  </strong>
-                  <span className="text-emerald-700 text-[11px] font-medium">
-                    Verified with Bank Statement
-                  </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={openEmdPreview}
+                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                  >
+                    <Eye size={12} />
+                    <span>View Slip</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => emdFileInputRef.current?.click()}
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title="Upload RTGS Transfer Slip"
+                  >
+                    <UploadCloud size={12} />
+                    <span>Upload</span>
+                  </button>
                 </div>
               </div>
             </div>
           )}
         </div>
+      </div>
 
-        {/* 4. SECTION: COVER-1 STATUTORY AUDIT & READINESS CHECKLIST */}
-        <div className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200/90 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 border border-slate-300 flex items-center justify-center font-bold">
-                <Layers size={16} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider bg-slate-900 text-white px-2.5 py-0.5 rounded-md">
-                    Cover-1 Master Audit
-                  </span>
-                  <h3 className="text-sm md:text-base font-bold text-slate-900">
-                    Statutory Fee &amp; Financial Envelope Readiness
-                  </h3>
-                </div>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Pre-submission verification for Packet 1 (Fee &amp; Technical Eligibility Envelope)
-                </p>
-              </div>
-            </div>
-
+      {/* 3. CLEAN BOTTOM BAR: AUDIT STATUS & STEP 4 BRIDGE */}
+      <div className="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 font-bold">
+            <Check size={16} />
+          </div>
+          <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-lg flex items-center gap-1.5">
-                <CheckCheck size={14} className="text-emerald-700" />
-                <span>100% Ready for Submission</span>
+              <strong className="text-xs md:text-sm font-bold text-slate-900">
+                Cover-1 Payment &amp; Statutory Envelope Verified
+              </strong>
+              <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                Ready for Submission
               </span>
             </div>
-          </div>
-
-          {/* 4 Checklist Items */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-                <Check size={13} />
-              </div>
-              <div>
-                <strong className="text-slate-900 block font-semibold">
-                  Tender Document Fee Paid &amp; Attached
-                </strong>
-                <p className="text-slate-500 text-[11px] mt-0.5">
-                  ₹5,900 paid via SBI e-Pay. Challan UTR <span className="font-mono text-slate-700">SBIN20260310928371</span> linked to Cover-1 pack.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-                <Check size={13} />
-              </div>
-              <div>
-                <strong className="text-slate-900 block font-semibold">
-                  EMD Compliance Satisfied (Rule 170)
-                </strong>
-                <p className="text-slate-500 text-[11px] mt-0.5">
-                  Exemption claimed on registered MSME Small Enterprise status with valid Udyam certificate.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-                <Check size={13} />
-              </div>
-              <div>
-                <strong className="text-slate-900 block font-semibold">
-                  Corporate Identity &amp; Tax Documents Verified
-                </strong>
-                <p className="text-slate-500 text-[11px] mt-0.5">
-                  PAN <span className="font-mono text-slate-700">{signatory.pan}</span>, GSTIN <span className="font-mono text-slate-700">{signatory.gstin}</span>, and MCA CIN verified from Vault.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-                <Check size={13} />
-              </div>
-              <div>
-                <strong className="text-slate-900 block font-semibold">
-                  Authorized Signatory Class-3 DSC Bound
-                </strong>
-                <p className="text-slate-500 text-[11px] mt-0.5">
-                  {signatory.signatoryName} ({signatory.signatoryTitle}) with active token expiring {signatory.dscExpiry || "12 Oct 2027"}.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 5. BRIDGE TO STEP 4: PROPOSAL DESK */}
-        <div className="bg-gradient-to-r from-emerald-900 via-[#173C40] to-slate-900 text-white p-5 md:p-6 rounded-2xl shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded">
-                Step 3 Completed
-              </span>
-              <h4 className="text-sm md:text-base font-bold text-white">
-                Cover-1 Financial &amp; Statutory Pack Locked
-              </h4>
-            </div>
-            <p className="text-xs text-emerald-100/80 max-w-xl">
-              All payment receipts, Udyam certificates, and Rule 170 declarations are verified. Proceed to <strong>Step 4 (Proposal Desk)</strong> to generate AI Technical Drafts, Work Plan &amp; Compliance Matrix.
+            <p className="text-[11px] text-slate-500">
+              {feeMode === "DD"
+                ? `Fee DD #${feeData.ddNumber}`
+                : `Fee UTR ${feeData.utrNumber}`}{" "}
+              &bull;{" "}
+              {emdMode === "MSME_EXEMPTION"
+                ? "Rule 170 MSME Exemption"
+                : emdMode === "DD"
+                  ? `EMD DD #${emdData.ddNumber}`
+                  : emdMode === "BANK_GUARANTEE"
+                    ? `BG #${emdData.bgNumber}`
+                    : `RTGS UTR ${emdData.rtgsUtr}`}{" "}
+              &bull; Attached &amp; Linked to Cover-1
             </p>
           </div>
-
-          {onNextTab && (
-            <button
-              type="button"
-              onClick={onNextTab}
-              className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer shrink-0 self-start md:self-auto hover:translate-x-0.5"
-            >
-              <span>Proceed to Step 4: Proposal Desk</span>
-              <ArrowRight size={14} />
-            </button>
-          )}
         </div>
-      </TabPlaceholderCard>
 
-      {/* Payment Proof Modal for Live Inspection */}
+        {onNextTab && (
+          <button
+            type="button"
+            onClick={onNextTab}
+            className="px-5 py-2.5 bg-[#173C40] hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer shrink-0 w-full sm:w-auto"
+          >
+            <span>Proceed to Step 4: Proposal Desk</span>
+            <ArrowRight size={14} />
+          </button>
+        )}
+      </div>
+
+      {/* Dynamic Payment Proof Modal */}
       <PaymentProofModal
         isOpen={modalState.isOpen}
         type={modalState.type}
+        customData={modalState.customData}
         onClose={() => setModalState({ ...modalState, isOpen: false })}
         tender={tender}
       />
