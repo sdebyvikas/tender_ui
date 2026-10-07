@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+
+# Production build outputs
+dist/
+*/dist/
+build/
+*/build/
+out/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!*.env.example
+
+# Runtime uploads & user-uploaded documents
+server/uploads/*
+!server/uploads/.gitkeep
+uploads/
+*/uploads/
+
+# Logs & debugging
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor caches
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+.antigravity/
+
+# Temporary & cache files
+.cache/
+.eslintcache
+*.tsbuildinfo
+.temp/
+.tmp/

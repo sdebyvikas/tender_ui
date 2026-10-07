@@ -1,0 +1,13 @@
+export * from "./types";
+export * from "./mockData";
+export * from "./components/TenderTabsV2";
+export * from "./components/TenderVerdictHeroV2";
+export * from "./components/TenderListV2";
+export * from "./components/TenderDetailsV2";
+export * from "./components/tabs/TabPlaceholderCard";
+export * from "./components/tabs/OverviewScopeTabV2";
+export * from "./components/tabs/EligibilityGatesTabV2";
+export * from "./components/tabs/PaymentProofTabV2";
+export * from "./components/tabs/ProposalDeskTabV2";
+export * from "./components/tabs/PdfBinderTabV2";
+export { default as TendersRepositoryV2Page } from "./TendersRepositoryV2Page";
