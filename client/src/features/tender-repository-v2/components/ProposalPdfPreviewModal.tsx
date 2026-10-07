@@ -18,6 +18,7 @@ import {
   Award,
   Cpu,
   UserCheck,
+  ScrollText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { TenderV2 } from "../types";
@@ -35,7 +36,7 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
-  const totalPages = 5;
+  const totalPages = 6;
 
   if (!isOpen) return null;
 
@@ -312,13 +313,13 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
 
                   <div className="space-y-2.5 text-xs text-slate-800">
                     {[
-                      { num: "Ch 1", title: "Letter of Transmittal & Compliance Declarations", page: "03" },
-                      { num: "Ch 2", title: "Executive Understanding of Scope & Objectives", page: "05" },
-                      { num: "Ch 3", title: "System Architecture, Cloud Hosting & Tech Stack", page: "11" },
-                      { num: "Ch 4", title: "Implementation Methodology, Agile Sprint Plan & Gantt", page: "19" },
-                      { num: "Ch 5", title: "Clause-by-Clause Technical Compliance Matrix (28 Clauses)", page: "25" },
-                      { num: "Ch 6", title: "Key Personnel, Resource Allocation & Signed CVs", page: "31" },
-                      { num: "Ch 7", title: "Information Security, SLA Governance & 24x7 O&M", page: "36" },
+                      { num: "Ch 1", title: "Letter of Transmittal & Executive Summary (Annexure 1)", page: "03" },
+                      { num: "Ch 2", title: "Understanding of Scope & 19 Core Modules", page: "06" },
+                      { num: "Ch 3", title: "System Architecture, Cloud Hosting & Tech Stack", page: "12" },
+                      { num: "Ch 4", title: "Implementation Methodology & 150-Day Delivery Roadmap", page: "20" },
+                      { num: "Ch 5", title: "Clause-by-Clause Compliance Matrix (28 Clauses)", page: "26" },
+                      { num: "Ch 6", title: "Key Personnel, Resource Allocation & Signed CVs", page: "32" },
+                      { num: "Ch 7", title: "Statutory Annexures (Annexure 1, 2, 3, 4)", page: "36" },
                     ].map((item, idx) => (
                       <div
                         key={idx}
@@ -366,7 +367,7 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
                     <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
                       Chapter 3 · System Architecture
                     </span>
-                    <span className="text-xs font-mono text-slate-400">Page 11 / 38</span>
+                    <span className="text-xs font-mono text-slate-400">Page 12 / 38</span>
                   </div>
 
                   <h3 className="text-lg font-black text-slate-900 mb-2">
@@ -449,7 +450,7 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
                     <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
                       Chapter 5 · Compliance Matrix
                     </span>
-                    <span className="text-xs font-mono text-slate-400">Page 25 / 38</span>
+                    <span className="text-xs font-mono text-slate-400">Page 26 / 38</span>
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
@@ -481,7 +482,7 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
                         <td className="p-2 font-mono font-bold text-slate-900">TC-02</td>
                         <td className="p-2 font-medium">Live Tournament Scoring &amp; Leaderboards</td>
                         <td className="p-2 text-emerald-700 font-bold">COMPLIED</td>
-                        <td className="p-2">WebSockets sub-second score dissemination with offline umpire sync.</td>
+                        <td className="p-2">WebSockets sub-second score dissemination with offline sync.</td>
                       </tr>
                       <tr>
                         <td className="p-2 font-mono font-bold text-slate-900">TC-03</td>
@@ -510,36 +511,89 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
               </div>
             )}
 
-            {/* PAGE 5: TEAM & DSC SIGNATURE SEAL */}
+            {/* PAGE 5: TEAM & KEY PERSONNEL CVs */}
             {currentPage === 5 && (
               <div className="space-y-6 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-6">
                     <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
-                      Chapter 6 · Resource Team &amp; Authorization
+                      Chapter 6 · Resource Team (RFP Page 20 Marking)
                     </span>
-                    <span className="text-xs font-mono text-slate-400">Page 38 / 38</span>
+                    <span className="text-xs font-mono text-slate-400">Page 32 / 38</span>
                   </div>
 
                   <h3 className="text-lg font-black text-slate-900 mb-3">
-                    Project Key Personnel &amp; Statutory Authorization
+                    Project Key Personnel &amp; Qualification Scoring (20 / 20 Marks)
                   </h3>
 
                   <div className="grid grid-cols-2 gap-3 mb-6 text-xs">
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
                       <strong className="block text-slate-900 font-bold">Vikas Kumar</strong>
-                      <span className="text-emerald-800 font-semibold block text-[11px]">Project Director &amp; Lead</span>
-                      <span className="text-slate-500 block text-[10.5px]">14+ Years Exp · B.Tech, PMP Certified</span>
+                      <span className="text-emerald-800 font-semibold block text-[11px]">Project Head (10 Marks)</span>
+                      <span className="text-slate-500 block text-[10.5px]">15+ Years Exp · B.Tech, PMP Certified</span>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
                       <strong className="block text-slate-900 font-bold">Arindam Roy</strong>
-                      <span className="text-emerald-800 font-semibold block text-[11px]">Chief Cloud Architect</span>
-                      <span className="text-slate-500 block text-[10.5px]">12+ Years Exp · AWS Solutions Architect Pro</span>
+                      <span className="text-emerald-800 font-semibold block text-[11px]">Chief Technology Officer (5 Marks)</span>
+                      <span className="text-slate-500 block text-[10.5px]">16+ Years Exp · AWS Solutions Architect Pro</span>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                      <strong className="block text-slate-900 font-bold">Siddharth Verma</strong>
+                      <span className="text-emerald-800 font-semibold block text-[11px]">Sports Digitization SME (5 Marks)</span>
+                      <span className="text-slate-500 block text-[10.5px]">12+ Years Exp · Certified Scrum Product Owner</span>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                      <strong className="block text-slate-900 font-bold">Neha Kapoor</strong>
+                      <span className="text-emerald-800 font-semibold block text-[11px]">Principal Cybersecurity Lead</span>
+                      <span className="text-slate-500 block text-[10.5px]">11+ Years Exp · CISSP, CISA Certified</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-[10px] text-slate-400 border-t border-slate-200 pt-3 flex justify-between">
+                  <span>{signatory.companyName} · Technical Resources</span>
+                  <span>Confidential · SAJHA RFP Response</span>
+                </div>
+              </div>
+            )}
+
+            {/* PAGE 6: STATUTORY ANNEXURES & DSC SIGNATURE SEAL */}
+            {currentPage === 6 && (
+              <div className="space-y-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
+                      Chapter 7 · Statutory Annexures (Pages 27-44)
+                    </span>
+                    <span className="text-xs font-mono text-slate-400">Page 38 / 38</span>
+                  </div>
+
+                  <h3 className="text-lg font-black text-slate-900 mb-3 flex items-center gap-2">
+                    <ScrollText size={18} className="text-emerald-700" />
+                    Mandatory Legal Declarations &amp; Digital Seal
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-2.5 mb-4 text-xs">
+                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                      <span className="font-bold text-slate-900 block text-[11px]">Annexure - 1</span>
+                      <span className="text-slate-600 block text-[10.5px]">Technical Bid Covering Letter (Attached)</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                      <span className="font-bold text-slate-900 block text-[11px]">Annexure - 2</span>
+                      <span className="text-slate-600 block text-[10.5px]">Non-Blacklisting Declaration (Notarized)</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                      <span className="font-bold text-slate-900 block text-[11px]">Annexure - 3</span>
+                      <span className="text-slate-600 block text-[10.5px]">Power of Attorney (₹100 Stamp Paper)</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                      <span className="font-bold text-slate-900 block text-[11px]">Annexure - 4</span>
+                      <span className="text-slate-600 block text-[10.5px]">MSE &amp; Startup Exemption Certificate</span>
                     </div>
                   </div>
 
                   {/* Digital Signature Official Box */}
-                  <div className="p-5 bg-emerald-50/50 rounded-2xl border-2 border-dashed border-emerald-300 space-y-3">
+                  <div className="p-4 bg-emerald-50/50 rounded-2xl border-2 border-dashed border-emerald-300 space-y-2.5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">
@@ -549,17 +603,17 @@ export const ProposalPdfPreviewModal: React.FC<ProposalPdfPreviewModalProps> = (
                           <strong className="text-xs font-bold text-slate-900 block">
                             Digitally Signed with Class-3 DSC Token
                           </strong>
-                          <span className="text-[11px] text-emerald-800">
+                          <span className="text-[10.5px] text-emerald-800">
                             CCA India Certified · e-Mudhra Cryptographic Token
                           </span>
                         </div>
                       </div>
-                      <span className="text-[11px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded">
+                      <span className="text-[10.5px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded">
                         VALID SEAL
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-700 bg-white p-3 rounded-xl border border-emerald-100">
+                    <div className="grid grid-cols-2 gap-2 text-[10.5px] text-slate-700 bg-white p-2.5 rounded-xl border border-emerald-100">
                       <div>
                         <span className="text-slate-400 block text-[10px]">Signatory:</span>
                         <strong>{signatory.signatoryName}</strong>

@@ -34,6 +34,8 @@ import {
   Database,
   Cloud,
   FileText,
+  Printer,
+  ScrollText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { TenderV2 } from "../../types";
@@ -44,7 +46,7 @@ interface ProposalDeskTabV2Props {
   onNextTab?: () => void;
 }
 
-type SubTabKey = "chapters" | "compliance" | "team" | "milestones";
+type SubTabKey = "chapters" | "compliance" | "team" | "annexures" | "milestones";
 
 interface ProposalChapter {
   id: string;
@@ -84,6 +86,16 @@ interface KeyPersonnel {
   signedConsent: boolean;
 }
 
+interface StatutoryAnnexure {
+  id: string;
+  annexureNumber: string;
+  title: string;
+  formatType: "Letterhead" | "₹100 Stamp Paper" | "Notarized Affidavit" | "Govt Certificate";
+  status: "Digitally Sealed (DSC)" | "Verified & Ready" | "Auto-Drafted";
+  pageInRfp: string;
+  summary: string;
+}
+
 export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
   tender,
   onNextTab,
@@ -119,9 +131,9 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
     {
       id: "ch-1",
       chapterNumber: "Chapter 1",
-      title: "Letter of Transmittal & Compliance Declaration",
-      subtitle: "Formal transmittal letter signed by authorized director",
-      wordCount: 780,
+      title: "Letter of Transmittal & Executive Summary",
+      subtitle: "Formal transmittal letter signed by authorized director (RFP Annexure 1)",
+      wordCount: 850,
       estimatedPages: 2,
       status: "Reviewed",
       qualityScore: 99,
@@ -135,49 +147,49 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
     {
       id: "ch-2",
       chapterNumber: "Chapter 2",
-      title: "Executive Understanding of Scope & Objectives",
-      subtitle: "Analysis of SAJHA sports ecosystem, athlete registration & tournament workflows",
-      wordCount: 1450,
-      estimatedPages: 4,
+      title: "Understanding of Scope & 19 Functional Modules",
+      subtitle: "Detailed breakdown of Athlete Lifecycle Management, Tournaments & Venue workflows",
+      wordCount: 1650,
+      estimatedPages: 5,
       status: "Reviewed",
       qualityScore: 98,
       content: `${tender.organization} requires an integrated, high-concurrency web portal and native iOS & Android mobile applications. The platform serves as the single digital window for athlete enrollment, Aadhaar-based KYC verification, tournament schedule publication, live scoring dissemination, and direct benefit transfer (DBT) incentive disbursements. Our solution architecture is specifically engineered to handle peak tournament traffic of 100,000+ simultaneous users without performance degradation.`,
       highlights: [
         "Integrated Athlete Lifecycle Management (ALM)",
-        "Real-time Tournament & Leaderboard Engine",
+        "Real-time Tournament & Leaderboard Engine with sub-second sync",
         "Aadhaar & DigiLocker direct sandbox integration",
-        "Direct Benefit Transfer (DBT) disbursement framework",
+        "Bilingual Hindi & English Interface with WCAG 2.1 AA accessibility",
       ],
     },
     {
       id: "ch-3",
       chapterNumber: "Chapter 3",
       title: "System Architecture, Cloud Hosting & Tech Stack",
-      subtitle: "Microservices-based cloud architecture on MeitY empaneled cloud",
-      wordCount: 2840,
+      subtitle: "Microservices-based cloud architecture on MeitY / State Data Centre (SDC) cloud",
+      wordCount: 2950,
       estimatedPages: 8,
       status: "Reviewed",
-      qualityScore: 96,
+      qualityScore: 97,
       content: `Our proposed technical stack leverages a decoupled microservices architecture with Next.js 15 frontend, Node.js / NestJS API services, Flutter cross-platform mobile apps, and PostgreSQL managed cluster with Redis caching. The entire application is hosted inside MeitY-empaneled Tier-3 datacenter with 99.9% uptime SLA, multi-zone automated failover, and Cloudflare Enterprise WAF DDoS protection.`,
       highlights: [
         "Decoupled Microservices with Docker & Kubernetes (K8s)",
-        "MeitY Empaneled Tier-3 Cloud Infrastructure",
-        "Native Flutter Mobile App (iOS & Android) with offline sync",
+        "MeitY Empaneled Tier-3 Cloud / SDC Infrastructure",
+        "Native Flutter Mobile App (iOS & Android) with offline match sync",
         "PostgreSQL 16 High-Availability Replica Cluster",
       ],
     },
     {
       id: "ch-4",
       chapterNumber: "Chapter 4",
-      title: "Implementation Methodology, Agile Delivery & Workplan",
-      subtitle: "12-month phased rollout plan followed by 36-month O&M SLA",
-      wordCount: 2200,
+      title: "Implementation Methodology, 150-Day Delivery & Milestones",
+      subtitle: "Phased Agile execution roadmap ensuring timely Go-Live as per RFP Page 6",
+      wordCount: 2350,
       estimatedPages: 6,
-      status: "AI Generated",
-      qualityScore: 95,
-      content: `We follow an Agile Scrum methodology divided into 4 core phases: Phase 1 (SRS & UI/UX wireframes), Phase 2 (Core platform build & API integrations), Phase 3 (UAT, CERT-In audit & staging dry run), and Phase 4 (Production rollout & sports academy onboarding). Bi-weekly sprint reviews will be conducted with SAJHA project monitoring unit.`,
+      status: "Reviewed",
+      qualityScore: 96,
+      content: `We follow an Agile Scrum methodology divided into 4 core phases: Phase 1 (SRS & UI/UX wireframes), Phase 2 (Core platform build & API integrations), Phase 3 (UAT, CERT-In audit & staging dry run), and Phase 4 (Production rollout & sports academy onboarding within 150 days). Bi-weekly sprint reviews will be conducted with SAJHA project monitoring unit.`,
       highlights: [
-        "4-Phase Structured Agile Roadmap",
+        "Strict 150-Day Delivery Roadmap for Phase-1",
         "Bi-weekly sprint demos with stakeholder feedback",
         "Automated CI/CD pipeline with GitHub Actions",
         "Comprehensive User Manuals & Admin Training",
@@ -186,18 +198,18 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
     {
       id: "ch-5",
       chapterNumber: "Chapter 5",
-      title: "Information Security, CERT-In Compliance & 24x7 SLA",
-      subtitle: "ISO 27001 certified security practices and 99.9% uptime guarantee",
-      wordCount: 1950,
+      title: "Information Security, CERT-In Safe-to-Host & 3-Year SLA",
+      subtitle: "ISO 27001 certified security practices, VAPT clearance, and 24x7 helpdesk",
+      wordCount: 2100,
       estimatedPages: 5,
       status: "Reviewed",
-      qualityScore: 97,
-      content: `In accordance with Government of India cybersecurity guidelines, the system will undergo rigorous vulnerability assessment and penetration testing (VAPT) by a CERT-In empaneled security agency prior to go-live. We offer a dedicated 24x7 L1/L2/L3 support helpdesk with a maximum 15-minute response time for Critical Priority incidents.`,
+      qualityScore: 98,
+      content: `In accordance with Government of India cybersecurity guidelines, the system will undergo rigorous vulnerability assessment and penetration testing (VAPT) by a CERT-In empaneled security agency prior to go-live. We offer a dedicated 24x7 L1/L2/L3 support helpdesk with a maximum 15-minute response time for Critical Priority incidents across the 3-year contract period.`,
       highlights: [
         "CERT-In empaneled Safe-to-Host audit before launch",
         "AES-256 encryption at rest and TLS 1.3 in transit",
         "15-Minute Response Time for Severity-1 Incidents",
-        "Quarterly automated vulnerability scanning & patches",
+        "36 Months comprehensive O&M and warranty support",
       ],
     },
   ]);
@@ -210,7 +222,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
   const [complianceCategory, setComplianceCategory] = useState<string>("ALL");
   const [complianceSearch, setComplianceSearch] = useState<string>("");
 
-  const [complianceClauses, setComplianceClauses] = useState<ComplianceClause[]>([
+  const [complianceClauses] = useState<ComplianceClause[]>([
     {
       id: "cl-1",
       clauseNumber: "TC-01",
@@ -285,53 +297,53 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
     },
   ]);
 
-  // ================= 3. KEY PERSONNEL STATE =================
+  // ================= 3. KEY PERSONNEL STATE (RFP Page 20 Marking) =================
   const [teamMembers] = useState<KeyPersonnel[]>([
     {
       id: "tm-1",
       name: signatory.signatoryName || "Vikas Kumar",
-      designation: "Project Director & Lead Bid Strategist",
+      designation: "Project Head & Delivery Lead (10 Marks in QCBS)",
       proposedRole: "Overall Project Governance & Delivery Lead",
-      experienceYears: 14,
+      experienceYears: 15,
       qualification: "B.Tech (Computer Science), MBA",
       certifications: ["PMP Certified (PMI)", "ITIL v4 Expert", "Scrum Master (CSM)"],
       rfpMatchScore: 100,
-      cvFileName: "CV_Vikas_Kumar_Project_Director_Signed.pdf",
+      cvFileName: "CV_Vikas_Kumar_Project_Head_Signed.pdf",
       cvFileSize: "340 KB",
       signedConsent: true,
     },
     {
       id: "tm-2",
       name: "Arindam Roy",
-      designation: "Chief Enterprise Solution Architect",
+      designation: "Chief Technology Officer (CTO) (5 Marks in QCBS)",
       proposedRole: "Cloud Architecture, Microservices & DB Design",
-      experienceYears: 12,
+      experienceYears: 16,
       qualification: "M.Tech (Software Engineering, IIT Roorkee)",
       certifications: ["AWS Certified Solutions Architect Pro", "Cisco CCNA", "TOGAF 9.2"],
       rfpMatchScore: 100,
-      cvFileName: "CV_Arindam_Roy_Chief_Architect_Signed.pdf",
+      cvFileName: "CV_Arindam_Roy_CTO_Signed.pdf",
       cvFileSize: "410 KB",
       signedConsent: true,
     },
     {
       id: "tm-3",
       name: "Siddharth Verma",
-      designation: "Lead Mobile & Web Engineering Specialist",
-      proposedRole: "Frontend, Flutter Mobile Apps & UI/UX Oversight",
-      experienceYears: 9,
-      qualification: "B.E. (Information Technology)",
-      certifications: ["Google Associate Android Developer", "Flutter Certified Professional"],
-      rfpMatchScore: 98,
-      cvFileName: "CV_Siddharth_Verma_Mobile_Lead_Signed.pdf",
+      designation: "Sports Automation & Digitization SME (5 Marks in QCBS)",
+      proposedRole: "Sports Tech, Tournament Workflows & Live Scoring",
+      experienceYears: 12,
+      qualification: "B.E. (Information Technology), PGD Sports Analytics",
+      certifications: ["Certified Scrum Product Owner (CSPO)", "Flutter Certified"],
+      rfpMatchScore: 100,
+      cvFileName: "CV_Siddharth_Verma_Sports_SME_Signed.pdf",
       cvFileSize: "290 KB",
       signedConsent: true,
     },
     {
       id: "tm-4",
       name: "Neha Kapoor",
-      designation: "Principal Cybersecurity & Compliance Auditor",
-      proposedRole: "CERT-In Audit, VAPT, OWASP Top 10 & Data Privacy",
-      experienceYears: 10,
+      designation: "Principal Cybersecurity & CERT-In Auditor",
+      proposedRole: "VAPT, OWASP Top 10, Data Privacy & ISO 27001",
+      experienceYears: 11,
       qualification: "M.S. in Information Security",
       certifications: ["CISSP (Certified Info Systems Security)", "CISA", "CEH v12"],
       rfpMatchScore: 100,
@@ -341,54 +353,76 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
     },
   ]);
 
-  // ================= 4. AI ACTIONS =================
+  // ================= 4. STATUTORY ANNEXURES STATE =================
+  const [annexures] = useState<StatutoryAnnexure[]>([
+    {
+      id: "ann-1",
+      annexureNumber: "Annexure - 1",
+      title: "Technical Bid Covering Letter for Agency",
+      formatType: "Letterhead",
+      status: "Digitally Sealed (DSC)",
+      pageInRfp: "RFP Page 27-28",
+      summary: "Official submission letter expressing unconditional acceptance of all RFP terms, scope, and validity for 180 days.",
+    },
+    {
+      id: "ann-2",
+      annexureNumber: "Annexure - 2",
+      title: "Self-Declaration of Non-Blacklisting & Integrity",
+      formatType: "Notarized Affidavit",
+      status: "Verified & Ready",
+      pageInRfp: "RFP Page 29",
+      summary: "Solemn affirmation confirming bidder has not been debarred/blacklisted by Central or State Govt / PSUs in the last 3 years.",
+    },
+    {
+      id: "ann-3",
+      annexureNumber: "Annexure - 3",
+      title: "Power of Attorney (PoA) for Signing of Proposal",
+      formatType: "₹100 Stamp Paper",
+      status: "Verified & Ready",
+      pageInRfp: "RFP Page 30-31",
+      summary: "Legal authority granted to Vikas Kumar (Director) on non-judicial stamp paper with notarization.",
+    },
+    {
+      id: "ann-4",
+      annexureNumber: "Annexure - 4",
+      title: "Provisions & Declaration for MSEs / Startup Companies",
+      formatType: "Govt Certificate",
+      status: "Digitally Sealed (DSC)",
+      pageInRfp: "RFP Page 44",
+      summary: "Udyam registration declaration claiming 100% EMD exemption under Rule 170 of GFR 2017.",
+    },
+  ]);
+
+  // ================= 5. AI ACTIONS =================
   const handleAiPolishChapter = (actionType: string) => {
     toast.loading(`AI Copilot: ${actionType}...`, { id: "ai-polish" });
     setTimeout(() => {
-      if (actionType === "Enhancing Executive Tone") {
-        setChapters((prev) =>
-          prev.map((ch) =>
-            ch.id === selectedChapterId
-              ? {
-                  ...ch,
-                  content:
-                    ch.content +
-                    "\n\nFurthermore, our battle-tested solution framework guarantees zero-latency synchronization, stringent data privacy under the Digital Personal Data Protection (DPDP) Act 2023, and seamless interoperability with national sports federations.",
-                  qualityScore: 99,
-                  status: "Reviewed",
-                  wordCount: ch.wordCount + 42,
-                }
-              : ch
-          )
-        );
-      } else if (actionType === "Inserting CERT-In Security Clause") {
-        setChapters((prev) =>
-          prev.map((ch) =>
-            ch.id === selectedChapterId
-              ? {
-                  ...ch,
-                  content:
-                    ch.content +
-                    "\n\n[MANDATORY SECURITY CLAUSE]: The solution complies with CERT-In Cybersecurity Guidelines 2022, OWASP ASVS Level 2 security verification, and automated SAST/DAST scanning pipelines before deployment.",
-                  qualityScore: 99,
-                  status: "Reviewed",
-                  wordCount: ch.wordCount + 35,
-                }
-              : ch
-          )
-        );
-      }
+      setChapters((prev) =>
+        prev.map((ch) =>
+          ch.id === selectedChapterId
+            ? {
+                ...ch,
+                content:
+                  ch.content +
+                  "\n\n[AI ENHANCED]: Our battle-tested solution framework guarantees zero-latency synchronization, stringent data privacy under DPDP Act 2023, and full conformity with NIC / MeitY Tier-3 cloud standards.",
+                qualityScore: 99,
+                status: "Reviewed",
+                wordCount: ch.wordCount + 38,
+              }
+            : ch
+        )
+      );
       setLastSavedTime("Just now");
-      toast.success(`Chapter updated & refined by AI Copilot!`, {
+      toast.success(`Chapter refined by AI Copilot!`, {
         id: "ai-polish",
         description: `Quality Score raised to 99% · Auto-saved to Technical Master Draft.`,
       });
-    }, 1100);
+    }, 1000);
   };
 
   const handleAiAutoFillAll = () => {
     setIsAiPolishingAll(true);
-    toast.loading("AI Copilot: Optimizing all 5 Technical Chapters & Compliance Matrix...", {
+    toast.loading("AI Copilot: Optimizing all Technical Chapters & Compliance Statements...", {
       id: "ai-fill-all",
     });
     setTimeout(() => {
@@ -397,7 +431,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
         prev.map((ch) => ({
           ...ch,
           status: "Reviewed",
-          qualityScore: 98,
+          qualityScore: 99,
         }))
       );
       setLastSavedTime("Just now");
@@ -405,7 +439,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
         id: "ai-fill-all",
         description: "Technical Score estimated at 78.5 / 80 Marks. Ready for Master Cover-2 compilation.",
       });
-    }, 1400);
+    }, 1200);
   };
 
   const handleDownloadDraft = () => {
@@ -440,7 +474,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
                   Step 4 of 5
                 </span>
                 <span className="text-xs font-bold text-slate-500">
-                  Cover-2: Technical Volume Studio
+                  Cover-2: Technical Proposal Studio
                 </span>
                 <span className="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-mono">
                   RFP: {tender.tenderNumber}
@@ -450,7 +484,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
                 Technical Proposal &amp; Compliance Authoring Desk
               </h2>
               <p className="text-xs text-slate-600 mt-0.5">
-                AI-powered technical drafting, clause-by-clause compliance matrix, team CV verification, and final Cover-2 document layout.
+                AI-powered technical drafting, clause compliance matrix, team CV verification, and statutory annexures compiler.
               </p>
             </div>
           </div>
@@ -536,7 +570,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
           <div className="bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80">
             <div className="flex items-center justify-between text-slate-500 mb-1">
               <span className="text-[10px] font-bold uppercase tracking-wider">
-                QCBS Marks Projected
+                QCBS Technical Marks
               </span>
               <Award size={14} className="text-amber-700" />
             </div>
@@ -571,7 +605,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
         </div>
       </div>
 
-      {/* 2. SUB-NAVIGATION TABS (4 Main Interactive Sections) */}
+      {/* 2. SUB-NAVIGATION TABS (4 Universal Modules) */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
         <div className="flex items-center border-b border-slate-200 overflow-x-auto bg-slate-50/60 p-1.5 gap-1.5">
           <button
@@ -584,7 +618,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
             }`}
           >
             <BookOpen size={15} className={activeSubTab === "chapters" ? "text-emerald-700" : ""} />
-            <span>1. Proposal Chapters &amp; AI Editor</span>
+            <span>1. Solution Chapters &amp; AI Editor</span>
             <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-900 font-mono text-[10px]">
               5 Ch
             </span>
@@ -600,7 +634,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
             }`}
           >
             <FileSpreadsheet size={15} className={activeSubTab === "compliance" ? "text-emerald-700" : ""} />
-            <span>2. Clause-by-Clause Compliance Matrix</span>
+            <span>2. Clause Compliance Matrix</span>
             <span className="px-1.5 py-0.2 rounded bg-slate-200 text-slate-800 font-mono text-[10px]">
               28 / 28
             </span>
@@ -616,9 +650,25 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
             }`}
           >
             <Users2 size={15} className={activeSubTab === "team" ? "text-emerald-700" : ""} />
-            <span>3. Key Personnel &amp; CV Matrix</span>
+            <span>3. Key Personnel (CTO, Head, SME)</span>
             <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-900 font-mono text-[10px]">
               4 CVs
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab("annexures")}
+            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
+              activeSubTab === "annexures"
+                ? "bg-white text-[#173C40] shadow-2xs border border-slate-200"
+                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+            }`}
+          >
+            <ScrollText size={15} className={activeSubTab === "annexures" ? "text-emerald-700" : ""} />
+            <span>4. Statutory Annexures &amp; Forms</span>
+            <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-900 font-mono text-[10px]">
+              4 Forms
             </span>
           </button>
 
@@ -632,7 +682,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
             }`}
           >
             <CalendarDays size={15} className={activeSubTab === "milestones" ? "text-emerald-700" : ""} />
-            <span>4. Workplan &amp; Milestones</span>
+            <span>5. 150-Day Delivery Roadmap</span>
             <span className="px-1.5 py-0.2 rounded bg-slate-200 text-slate-800 font-mono text-[10px]">
               4 Phases
             </span>
@@ -703,7 +753,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
                   <span>AI Copilot Active</span>
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Chapters are auto-drafted from RFP requirements, your company credentials, and previous winning sports bid templates.
+                  Chapters are auto-drafted from RFP requirements, your company credentials, and winning state government templates.
                 </p>
               </div>
             </div>
@@ -798,7 +848,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
               {/* Chapter Key Highlights Cards */}
               <div className="p-4 bg-slate-50/90 rounded-xl border border-slate-200 space-y-2">
                 <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-500 block">
-                  Key Value Propositions &amp; Scope Mappings in this Chapter:
+                  Key Scope Mappings &amp; Deliverables in this Chapter:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {currentChapter.highlights.map((h, i) => (
@@ -933,20 +983,20 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
           </div>
         )}
 
-        {/* ================= VIEW 3: KEY PERSONNEL & CV MATRIX ================= */}
+        {/* ================= VIEW 3: KEY PERSONNEL & CV MATRIX (RFP Page 20 Marking) ================= */}
         {activeSubTab === "team" && (
           <div className="p-4 sm:p-6 space-y-4 animate-in fade-in duration-150">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
               <div>
                 <h3 className="text-sm font-bold text-slate-900">
-                  Proposed Project Team &amp; Technical Personnel
+                  Project Key Personnel &amp; Manpower Deployment (RFP Page 20 Criteria)
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Mapped directly to RFP evaluation criteria for Technical Evaluation scoring (Max 20 Marks).
+                  Pre-mapped to RFP Technical Scoring (CTO: 5 Marks, Project Head: 10 Marks, Sports SME: 5 Marks).
                 </p>
               </div>
               <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full flex items-center gap-1 self-start sm:self-auto">
-                <Award size={13} /> 100% Qualification Match
+                <Award size={13} /> 20 / 20 Manpower Score (100% Match)
               </span>
             </div>
 
@@ -966,7 +1016,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
                           {member.name}
                         </strong>
                         <span className="text-xs text-emerald-800 font-semibold block">
-                          {member.proposedRole}
+                          {member.designation}
                         </span>
                       </div>
                     </div>
@@ -989,7 +1039,7 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
                   <div className="flex items-center justify-between pt-1 text-xs">
                     <div className="flex items-center gap-1.5 text-emerald-800 font-medium">
                       <FileCheck2 size={14} className="text-emerald-600" />
-                      <span>Signed CV &amp; Consent Attached</span>
+                      <span>Signed CV Attached (Cover-2)</span>
                     </div>
                     <button
                       type="button"
@@ -1008,16 +1058,81 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
           </div>
         )}
 
-        {/* ================= VIEW 4: WORKPLAN & MILESTONES ================= */}
+        {/* ================= VIEW 4: STATUTORY ANNEXURES & FORMS (RFP Pages 27-44) ================= */}
+        {activeSubTab === "annexures" && (
+          <div className="p-4 sm:p-6 space-y-4 animate-in fade-in duration-150">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">
+                  Mandatory Statutory Annexures &amp; Legal Declarations
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Auto-populated with company credentials and cryptographically sealed with Class-3 DSC token.
+                </p>
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full flex items-center gap-1 self-start sm:self-auto">
+                <ShieldCheck size={13} /> 4 of 4 Annexures Attached
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {annexures.map((ann) => (
+                <div
+                  key={ann.id}
+                  className="bg-white p-4 rounded-xl border border-slate-200/90 shadow-2xs space-y-3 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
+                        {ann.annexureNumber}
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">
+                        {ann.formatType}
+                      </span>
+                    </div>
+
+                    <strong className="text-sm font-bold text-slate-900 block">
+                      {ann.title}
+                    </strong>
+
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {ann.summary}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-[11px] font-mono text-slate-400">
+                      Ref: {ann.pageInRfp}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        toast.success(`Opening Form: ${ann.title}`, {
+                          description: `Sealed with ${signatory.signatoryName}'s Class-3 DSC.`,
+                        });
+                      }}
+                      className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                    >
+                      <Eye size={12} />
+                      <span>View Form</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ================= VIEW 5: WORKPLAN & 150-DAY MILESTONES ================= */}
         {activeSubTab === "milestones" && (
           <div className="p-4 sm:p-6 space-y-4 animate-in fade-in duration-150">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <h3 className="text-sm font-bold text-slate-900">
-                  Phased Project Roadmap &amp; Deliverables Schedule
+                  Phased Project Roadmap &amp; Deliverables (RFP Page 6 &amp; 23)
                 </h3>
                 <p className="text-xs text-slate-500">
-                  12-month development cycle followed by 36-month warranty &amp; operations support.
+                  150-day strict development timeline for Phase-1 followed by 36-month warranty and maintenance.
                 </p>
               </div>
             </div>
@@ -1025,32 +1140,32 @@ export const ProposalDeskTabV2: React.FC<ProposalDeskTabV2Props> = ({
             <div className="space-y-3">
               {[
                 {
-                  phase: "Phase 1 (Month 1-2)",
-                  percentage: "20% Payment",
-                  title: "Inception, SRS, UI/UX Prototypes & Cloud Setup",
-                  deliverables: "System Requirement Specification (SRS), Figma Wireframes, NIC Cloud Instance Config.",
+                  phase: "Stage 1 (Month 1-2)",
+                  percentage: "30% Payment",
+                  title: "Website Platform & Centralized Sports Repositories",
+                  deliverables: "Centralized Athlete Repository, Venue & Academy Management, Attendance & Scholarships.",
                   status: "Ready for Kickoff",
                 },
                 {
-                  phase: "Phase 2 (Month 3-5)",
-                  percentage: "30% Payment",
-                  title: "Core Platform Development, Mobile Apps & API Gateways",
-                  deliverables: "Web Portal, Flutter iOS/Android Apps, Aadhaar DigiLocker integration, Staging Build.",
+                  phase: "Stage 2 (Month 3)",
+                  percentage: "20% Payment",
+                  title: "Android Mobile Application (Google Play Store Live)",
+                  deliverables: "Native Android App build, offline match scoring sync, push notifications & web API integration.",
                   status: "Planned",
                 },
                 {
-                  phase: "Phase 3 (Month 6)",
-                  percentage: "30% Payment",
-                  title: "UAT Signoff, CERT-In Security Audit & Production Launch",
-                  deliverables: "CERT-In Safe-to-Host Certificate, User Acceptance Signoff, Google Play & App Store Live.",
+                  phase: "Stage 3 (Month 4)",
+                  percentage: "20% Payment",
+                  title: "iOS Mobile Application (Apple App Store Live)",
+                  deliverables: "Native iOS App build, Apple App Store review clearance, bilingual UI sync.",
                   status: "Planned",
                 },
                 {
-                  phase: "Phase 4 (Month 7-42)",
-                  percentage: "20% (Quarterly)",
-                  title: "36 Months Post-Launch O&M & 24x7 SLA Helpdesk Support",
-                  deliverables: "Quarterly SLA uptime reports, security patching, regular database backups & athlete helpdesk.",
-                  status: "SLA Governed",
+                  phase: "Stage 4 (Month 5 / Day 150)",
+                  percentage: "30% Payment",
+                  title: "Beta Testing, CERT-In Security Audit & Final Go-Live",
+                  deliverables: "CERT-In Safe-to-Host Audit, Committee Beta Signoff, Production Handover on SDC/NIC Cloud.",
+                  status: "Final Milestone",
                 },
               ].map((item, idx) => (
                 <div
