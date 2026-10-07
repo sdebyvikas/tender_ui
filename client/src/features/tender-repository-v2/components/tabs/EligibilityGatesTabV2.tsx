@@ -291,7 +291,7 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
                     >
                       {isPass ? (
                         <>
-                          <Check size={12} strokeWidth={3} /> Pass
+                          <Check size={12} strokeWidth={3} /> Eligible.
                         </>
                       ) : isAction ? (
                         <>
