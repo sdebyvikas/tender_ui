@@ -115,6 +115,31 @@ export interface SignatoryDetails {
   financialReviewer: string;
 }
 
+export interface TenderFeeDetails {
+  amountDisplay: string;
+  status: "Paid & Verified" | "Exempt" | "Pending";
+  paymentMode: string;
+  transactionRef: string;
+  paymentDate: string;
+  receiptDocName: string;
+}
+
+export interface EMDComplianceDetails {
+  amountDisplay: string;
+  requiredPercentage: string;
+  activeMode: "MSME_EXEMPTION" | "BANK_GUARANTEE" | "RTGS_NEFT";
+  msmeEligible: boolean;
+  msmeUdyamNumber: string;
+  exemptionDocName: string;
+  bgBankName?: string;
+  bgNumber?: string;
+  bgValidUntil?: string;
+  bgDocName?: string;
+  rtgsUtr?: string;
+  rtgsDate?: string;
+  rtgsDocName?: string;
+}
+
 export interface TenderV2 {
   id: string;
   tenderNumber: string;
@@ -148,6 +173,8 @@ export interface TenderV2 {
   qcbsScores?: QCBSScoreItem[];
   riskRadarItems?: RiskRadarItem[];
   signatoryDetails?: SignatoryDetails;
+  tenderFeeDetails?: TenderFeeDetails;
+  emdComplianceDetails?: EMDComplianceDetails;
 }
 
 export type TabKeyV2 = "overview" | "eligibility" | "payment" | "proposal" | "binder";
