@@ -53,7 +53,9 @@ export const TenderListV2: React.FC<TenderListV2Props> = ({
           <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-1 font-medium">
             <span>Bid workspace</span>
             <span>&rsaquo;</span>
-            <span className="text-[#173C40] font-semibold">Tenders Repository v2</span>
+            <span className="text-[#173C40] font-semibold">
+              Tenders Repository v2
+            </span>
           </div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -164,20 +166,27 @@ export const TenderListV2: React.FC<TenderListV2Props> = ({
         </div>
 
         {/* Table View */}
-        <div className="table-wrap overflow-x-auto">
-          <table>
+        <div className="overflow-x-auto rounded-xl border border-slate-200/90 bg-white shadow-2xs">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr>
-                <th>Tender Ref &amp; Title</th>
-                <th>Authority</th>
-                <th>Bid Deadline</th>
-                <th>Estimated Value &amp; EMD</th>
-                <th>Readiness Score</th>
-                <th>Decision Status</th>
-                <th className="text-right">Actions</th>
+              <tr className="border-b border-slate-200 bg-slate-50/90 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <th className="py-2.5 px-3.5">Tender Ref &amp; Title</th>
+                <th className="py-2.5 px-3.5">Authority</th>
+                <th className="py-2.5 px-3.5 whitespace-nowrap">
+                  Bid Deadline
+                </th>
+                <th className="py-2.5 px-3.5 whitespace-nowrap">
+                  Estimated Value &amp; EMD
+                </th>
+                <th className="py-2.5 px-3.5 text-center whitespace-nowrap">
+                  Decision
+                </th>
+                <th className="py-2.5 px-3.5 text-right whitespace-nowrap">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-100 text-xs">
               {filteredTenders.length > 0 ? (
                 filteredTenders.map((row) => {
                   const isCurrent = selectedTender?.id === row.id;
@@ -185,78 +194,96 @@ export const TenderListV2: React.FC<TenderListV2Props> = ({
                   return (
                     <tr
                       key={row.id}
-                      className={
+                      onClick={() => onOpenTender(row)}
+                      className={`group transition-colors cursor-pointer ${
                         isCurrent
-                          ? "bg-emerald-50/60 font-medium"
+                          ? "bg-emerald-50/70 hover:bg-emerald-50/90"
                           : "hover:bg-slate-50/80"
-                      }
+                      }`}
                     >
-                      <td>
-                        <div className="tender-name">
-                          <span
-                            className={`tender-file ${
-                              isCurrent ? "bg-[#173C40] text-white" : ""
+                      {/* 1. Tender Ref & Title (Single Line with Full Hover Tooltip) */}
+                      <td className="py-2.5 px-3.5 max-w-[280px] lg:max-w-[340px]">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isCurrent
+                                ? "bg-[#173C40] text-white"
+                                : "bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800"
                             }`}
                           >
-                            <FileText size={15} />
-                          </span>
-                          <div>
-                            <strong className="flex items-center gap-1.5 text-slate-800">
-                              {row.title}
+                            <FileText size={14} />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <strong
+                                title={row.title}
+                                className="text-slate-900 font-bold block truncate group-hover:text-emerald-950 transition-colors"
+                              >
+                                {row.title}
+                              </strong>
                               {isCurrent && (
-                                <span className="text-[9px] bg-[#18794e] text-white px-1.5 py-0.2 rounded-full uppercase font-bold tracking-wider">
-                                  Active Focus
+                                <span className="text-[9px] bg-emerald-700 text-white px-1.5 py-0.2 rounded font-bold uppercase tracking-wider shrink-0">
+                                  Active
                                 </span>
                               )}
-                            </strong>
-                            <small className="text-slate-500 font-mono">
+                            </div>
+                            <span className="text-[10.5px] font-mono text-slate-500 block truncate">
                               {row.tenderNumber}
-                            </small>
+                            </span>
                           </div>
                         </div>
                       </td>
 
-                      <td>
-                        <span className="text-xs text-slate-700 font-medium">
+                      {/* 2. Authority (Strict 1 Line with Full Hover Tooltip) */}
+                      <td className="py-2.5 px-3.5 max-w-[180px] lg:max-w-[220px]">
+                        <span
+                          title={row.organization}
+                          className="text-xs font-semibold text-slate-800 block truncate whitespace-nowrap"
+                        >
                           {row.organization}
                         </span>
+                        {row.location && (
+                          <span
+                            title={row.location}
+                            className="text-[10px] text-slate-400 block truncate whitespace-nowrap"
+                          >
+                            {row.location}
+                          </span>
+                        )}
                       </td>
 
-                      <td>
-                        <span className="date-cell text-xs text-slate-600 flex items-center gap-1">
-                          <CalendarDays size={13} className="text-slate-400" />
-                          {row.submissionDeadline.split(",")[0]}
+                      {/* 3. Bid Deadline */}
+                      <td className="py-2.5 px-3.5 whitespace-nowrap">
+                        <div className="flex items-center gap-1.5 text-slate-700 font-medium">
+                          <CalendarDays
+                            size={13}
+                            className="text-slate-400 shrink-0"
+                          />
+                          <span>{row.submissionDeadline.split(",")[0]}</span>
+                        </div>
+                      </td>
+
+                      {/* 4. Estimated Value & EMD */}
+                      <td className="py-2.5 px-3.5 whitespace-nowrap">
+                        <strong className="text-slate-900 font-mono font-bold block text-xs">
+                          {row.estimatedValueDisplay.split("(")[0].trim()}
+                        </strong>
+                        <span className="text-[10px] text-slate-500 block">
+                          EMD: {row.emdDisplay}
                         </span>
                       </td>
 
-                      <td>
-                        <div className="text-xs">
-                          <strong className="text-slate-800 block">
-                            {row.estimatedValueDisplay}
-                          </strong>
-                          <small className="text-slate-500 block">
-                            EMD: {row.emdDisplay}
-                          </small>
-                        </div>
-                      </td>
-
-                      <td>
-                        <div className="readiness">
-                          <span className="readiness-bar">
-                            <i style={{ width: `${row.readinessScore}%` }} />
-                          </span>
-                          <strong className="text-xs">
-                            {row.readinessScore}%
-                          </strong>
-                        </div>
-                      </td>
-
-                      <td>
+                      {/* 5. Decision Status */}
+                      <td className="py-2.5 px-3.5 text-center whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                          className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                             row.decision === "GO"
-                              ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                              : "bg-amber-100 text-amber-800 border border-amber-200"
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                              : row.decision === "CONDITIONAL GO"
+                                ? "bg-amber-50 text-amber-800 border-amber-200"
+                                : row.decision === "NO-GO"
+                                  ? "bg-rose-50 text-rose-800 border-rose-200"
+                                  : "bg-sky-50 text-sky-800 border-sky-200"
                           }`}
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-current" />
@@ -264,24 +291,26 @@ export const TenderListV2: React.FC<TenderListV2Props> = ({
                         </span>
                       </td>
 
-                      <td>
-                        <div className="flex items-center justify-end">
-                          <button
-                            type="button"
-                            className="px-3 py-1 text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-[#173C40] rounded-lg border border-emerald-200 transition-colors flex items-center gap-1 cursor-pointer"
-                            onClick={() => onOpenTender(row)}
-                            title="Open Tender Details & Operations"
-                          >
-                            Open
-                          </button>
-                        </div>
+                      {/* 6. Actions */}
+                      <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onOpenTender(row);
+                          }}
+                          className="px-2.5 py-1 text-xs font-bold bg-white hover:bg-[#173C40] text-slate-700 hover:text-white rounded-lg border border-slate-300 hover:border-[#173C40] transition-all inline-flex items-center gap-1 shadow-2xs cursor-pointer"
+                        >
+                          <span>Open</span>
+                          <ChevronRight size={13} />
+                        </button>
                       </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="text-center py-10 text-slate-500">
+                  <td colSpan={6} className="text-center py-8 text-slate-500">
                     <p className="text-xs font-semibold text-slate-700">
                       No tenders match your search criteria
                     </p>

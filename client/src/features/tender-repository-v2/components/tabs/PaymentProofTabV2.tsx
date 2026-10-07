@@ -75,6 +75,7 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
 
   // ================= 1. TENDER FEE FORM STATE =================
   const [feeMode, setFeeMode] = useState<"DD" | "ONLINE">("ONLINE");
+
   const [feeData, setFeeData] = useState({
     // DD fields
     ddNumber: "591028",
@@ -290,6 +291,7 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
   return (
     <div className="space-y-5 animate-in fade-in duration-200">
       {/* Hidden file inputs for real upload simulation */}
+
       <input
         type="file"
         ref={feeFileInputRef}
@@ -297,6 +299,7 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
         className="hidden"
         accept=".pdf,.png,.jpg,.jpeg"
       />
+
       <input
         type="file"
         ref={emdFileInputRef}
@@ -372,21 +375,22 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
 
       {/* 2. TWO INTERACTIVE ENTRY & UPLOAD CARDS */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* ================= LEFT CARD: TENDER FEE ENTRY DESK ================= */}
+        {/* ================= LEFT CARD: TENDER PROCESSING FEE DESK ================= */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 flex flex-col justify-between space-y-4">
-          {/* Header & Mode Switcher */}
-          <div className="space-y-2.5 border-b border-slate-100 pb-3">
-            <div className="flex items-center justify-between">
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold">
                   <Receipt size={16} />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900">
-                    Tender Processing Fee (₹5,900)
+                    Tender Processing Fee ({tender.tenderFeeDisplay || "₹5,900"}
+                    )
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    Enter payment / DD details and attach proof slip
+                    Select payment method and upload proof slip / screenshot
                   </p>
                 </div>
               </div>
@@ -396,263 +400,130 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
               </span>
             </div>
 
-            {/* Mode Switch: Online vs DD */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80">
-              <button
-                type="button"
-                onClick={() => setFeeMode("ONLINE")}
-                className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                  feeMode === "ONLINE"
-                    ? "bg-white text-emerald-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Receipt size={13} className="text-emerald-700" />
-                <span>Online / Internet Banking / UTR</span>
-              </button>
+            {/* Clean 2-Column Controls (Dropdown + UTR/Ref) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                  Payment Method
+                </label>
+                <select
+                  value={feeMode === "DD" ? "DD" : "ONLINE"}
+                  onChange={(e) =>
+                    setFeeMode(e.target.value === "DD" ? "DD" : "ONLINE")
+                  }
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-semibold focus:outline-hidden cursor-pointer"
+                >
+                  <option value="ONLINE">
+                    ⚡ Online (NetBanking / UPI / QR)
+                  </option>
+                  <option value="GATEWAY">
+                    💳 Payment Gateway (SBI e-Pay / Razorpay)
+                  </option>
+                  <option value="NEFT">🌐 NEFT / RTGS Transfer</option>
+                  <option value="DD">🏛️ Demand Draft (DD)</option>
+                  <option value="CHALLAN">
+                    📄 Bank Challan / Cash Deposit
+                  </option>
+                  <option value="EXEMPT">🛡️ Exempt (Zero Tender Fee)</option>
+                </select>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setFeeMode("DD")}
-                className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                  feeMode === "DD"
-                    ? "bg-white text-amber-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Landmark size={13} className="text-amber-700" />
-                <span>Demand Draft (DD)</span>
-              </button>
+              <div>
+                <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                  {feeMode === "DD"
+                    ? "Demand Draft (DD) No."
+                    : "Transaction UTR / Ref No."}
+                </label>
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={
+                      feeMode === "DD" ? feeData.ddNumber : feeData.utrNumber
+                    }
+                    onChange={(e) =>
+                      feeMode === "DD"
+                        ? setFeeData({ ...feeData, ddNumber: e.target.value })
+                        : setFeeData({ ...feeData, utrNumber: e.target.value })
+                    }
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-2 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
+                    placeholder="e.g. SBIN20260310928371"
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleCopyUtr(
+                        feeMode === "DD" ? feeData.ddNumber : feeData.utrNumber,
+                      )
+                    }
+                    title="Copy UTR"
+                    className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 cursor-pointer"
+                  >
+                    {copiedUtr ? (
+                      <Check size={13} className="text-emerald-600" />
+                    ) : (
+                      <Copy size={13} />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Uploaded Payment Proof Screenshot / Slip Box */}
+            <div className="p-3 bg-emerald-50/40 rounded-xl border border-emerald-200/90 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                  <FileCheck2 size={16} />
+                </div>
+                <div className="min-w-0">
+                  <strong
+                    className="text-xs font-bold text-slate-900 block truncate"
+                    title={
+                      feeMode === "DD"
+                        ? feeData.ddFileName
+                        : feeData.onlineFileName
+                    }
+                  >
+                    {feeMode === "DD"
+                      ? feeData.ddFileName
+                      : feeData.onlineFileName}
+                  </strong>
+                  <span className="text-[10.5px] text-slate-500 block">
+                    {feeMode === "DD"
+                      ? feeData.ddFileSize
+                      : feeData.onlineFileSize}{" "}
+                    &bull; Screenshot / Slip Attached
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={openFeePreview}
+                  className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                >
+                  <Eye size={12} />
+                  <span>View Proof</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => feeFileInputRef.current?.click()}
+                  className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                  title="Upload / Replace Screenshot"
+                >
+                  <UploadCloud size={12} />
+                  <span>Upload</span>
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* ONLINE FORM FIELDS */}
-          {feeMode === "ONLINE" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Transaction UTR / Ref No.
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      value={feeData.utrNumber}
-                      onChange={(e) =>
-                        setFeeData({ ...feeData, utrNumber: e.target.value })
-                      }
-                      className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
-                      placeholder="e.g. SBIN20260310..."
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleCopyUtr(feeData.utrNumber)}
-                      title="Copy UTR"
-                      className="p-1.5 rounded bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 cursor-pointer"
-                    >
-                      {copiedUtr ? (
-                        <Check size={13} className="text-emerald-600" />
-                      ) : (
-                        <Copy size={13} />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Payment Gateway / Mode
-                  </label>
-                  <input
-                    type="text"
-                    value={feeData.gatewayMode}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, gatewayMode: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Payment Date &amp; Time
-                  </label>
-                  <input
-                    type="text"
-                    value={feeData.paymentDate}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, paymentDate: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Remitting Entity
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={`${signatory.companyName} (PAN: ${signatory.pan})`}
-                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 cursor-not-allowed"
-                  />
-                </div>
-              </div>
-
-              {/* Uploaded Slip Attachment Card */}
-              <div className="p-3 bg-emerald-50/40 rounded-xl border border-emerald-200/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-                    <FileCheck2 size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={feeData.onlineFileName}
-                    >
-                      {feeData.onlineFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      PDF &bull; {feeData.onlineFileSize} &bull; Attached
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openFeePreview}
-                    className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View Slip</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => feeFileInputRef.current?.click()}
-                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                    title="Upload / Replace Receipt File"
-                  >
-                    <UploadCloud size={12} />
-                    <span>Upload</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* DEMAND DRAFT (DD) FORM FIELDS */}
-          {feeMode === "DD" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Demand Draft (DD) No.
-                  </label>
-                  <input
-                    type="text"
-                    value={feeData.ddNumber}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, ddNumber: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
-                    placeholder="e.g. 591028"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Issuing Bank &amp; Branch
-                  </label>
-                  <input
-                    type="text"
-                    value={feeData.ddBankName}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, ddBankName: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                    placeholder="e.g. State Bank of India"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    DD Issue Date
-                  </label>
-                  <input
-                    type="date"
-                    value={feeData.ddIssueDate}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, ddIssueDate: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Drawn in Favor of
-                  </label>
-                  <input
-                    type="text"
-                    value={feeData.ddDrawnInFavor}
-                    onChange={(e) =>
-                      setFeeData({ ...feeData, ddDrawnInFavor: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Uploaded DD File Card */}
-              <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-300/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
-                    <Landmark size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={feeData.ddFileName}
-                    >
-                      {feeData.ddFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      PDF &bull; {feeData.ddFileSize} &bull; DD Scan Attached
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openFeePreview}
-                    className="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View DD</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => feeFileInputRef.current?.click()}
-                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                    title="Upload / Replace DD Scan"
-                  >
-                    <UploadCloud size={12} />
-                    <span>Upload DD</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* ================= RIGHT CARD: EMD / BID SECURITY DESK ================= */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 flex flex-col justify-between space-y-4">
-          {/* Header & Tabs */}
-          <div className="space-y-2.5 border-b border-slate-100 pb-3">
-            <div className="flex items-center justify-between">
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center font-bold">
                   <FileBadge2 size={16} />
@@ -662,7 +533,7 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
                     EMD / Bid Security ({tender.emdDisplay || "₹5,00,000"})
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    Choose exemption or enter DD / BG / RTGS details
+                    Select exemption or instrument &amp; upload proof
                   </p>
                 </div>
               </div>
@@ -670,7 +541,7 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
               <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                 <ShieldCheck size={12} />
                 {emdMode === "MSME_EXEMPTION"
-                  ? "Rule 170 Exemption"
+                  ? "100% Exempt"
                   : emdMode === "DD"
                     ? "DD Linked"
                     : emdMode === "BANK_GUARANTEE"
@@ -679,463 +550,146 @@ export const PaymentProofTabV2: React.FC<PaymentProofTabV2Props> = ({
               </span>
             </div>
 
-            {/* 4 Mode Tabs */}
-            <div className="grid grid-cols-4 gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80 text-[11px]">
-              <button
-                type="button"
-                onClick={() => setEmdMode("MSME_EXEMPTION")}
-                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                  emdMode === "MSME_EXEMPTION"
-                    ? "bg-white text-emerald-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <ShieldCheck size={11} className="text-emerald-700" />
-                <span className="truncate">MSME Exempt</span>
-              </button>
+            {/* Clean 2-Column Controls (Dropdown + UTR/Ref) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                  EMD Security Mode
+                </label>
+                <select
+                  value={emdMode}
+                  onChange={(e) =>
+                    setEmdMode(
+                      e.target.value as
+                        | "MSME_EXEMPTION"
+                        | "DD"
+                        | "BANK_GUARANTEE"
+                        | "RTGS_NEFT",
+                    )
+                  }
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-2 text-xs text-slate-900 font-semibold focus:outline-hidden cursor-pointer"
+                >
+                  <option value="MSME_EXEMPTION">
+                    🛡️ MSME / Startup Exemption (Rule 170)
+                  </option>
+                  <option value="RTGS_NEFT">
+                    🌐 Online RTGS / NEFT Transfer
+                  </option>
+                  <option value="DD">🏛️ Demand Draft (DD)</option>
+                  <option value="BANK_GUARANTEE">📜 Bank Guarantee (BG)</option>
+                  <option value="FDR">🏦 Fixed Deposit Receipt (FDR)</option>
+                </select>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setEmdMode("DD")}
-                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                  emdMode === "DD"
-                    ? "bg-white text-amber-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Landmark size={11} className="text-amber-700" />
-                <span className="truncate">Demand Draft</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setEmdMode("BANK_GUARANTEE")}
-                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                  emdMode === "BANK_GUARANTEE"
-                    ? "bg-white text-purple-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <FileBadge2 size={11} className="text-purple-700" />
-                <span className="truncate">Bank Guarantee</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setEmdMode("RTGS_NEFT")}
-                className={`py-1 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
-                  emdMode === "RTGS_NEFT"
-                    ? "bg-white text-blue-800 shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Receipt size={11} className="text-blue-700" />
-                <span className="truncate">RTGS / NEFT</span>
-              </button>
+              <div>
+                <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
+                  {emdMode === "MSME_EXEMPTION"
+                    ? "Udyam Registration No."
+                    : emdMode === "DD"
+                      ? "Demand Draft (DD) No."
+                      : emdMode === "BANK_GUARANTEE"
+                        ? "BG Instrument No."
+                        : "Transfer UTR Number"}
+                </label>
+                <input
+                  type="text"
+                  value={
+                    emdMode === "MSME_EXEMPTION"
+                      ? emdData.udyamNumber
+                      : emdMode === "DD"
+                        ? emdData.ddNumber
+                        : emdMode === "BANK_GUARANTEE"
+                          ? emdData.bgNumber
+                          : emdData.rtgsUtr
+                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (emdMode === "MSME_EXEMPTION")
+                      setEmdData({ ...emdData, udyamNumber: val });
+                    else if (emdMode === "DD")
+                      setEmdData({ ...emdData, ddNumber: val });
+                    else if (emdMode === "BANK_GUARANTEE")
+                      setEmdData({ ...emdData, bgNumber: val });
+                    else setEmdData({ ...emdData, rtgsUtr: val });
+                  }}
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-2 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* MODE 1: MSME EXEMPTION FORM */}
-          {emdMode === "MSME_EXEMPTION" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Exemption Authority Rule
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="Rule 170 of GFR, 2017 (MSE Waiver)"
-                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-semibold cursor-not-allowed"
-                  />
+            {/* Uploaded EMD Proof / Letter Card */}
+            <div className="p-3 bg-purple-50/40 rounded-xl border border-purple-200/90 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0">
+                  <FileBadge2 size={16} />
                 </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Udyam Certificate No.
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.udyamNumber}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, udyamNumber: e.target.value })
+                <div className="min-w-0">
+                  <strong
+                    className="text-xs font-bold text-slate-900 block truncate"
+                    title={
+                      emdMode === "MSME_EXEMPTION"
+                        ? emdData.exemptionFileName
+                        : emdMode === "DD"
+                          ? emdData.ddFileName
+                          : emdMode === "BANK_GUARANTEE"
+                            ? emdData.bgFileName
+                            : emdData.rtgsFileName
                     }
-                    className="w-full bg-emerald-50/60 border border-emerald-300 focus:border-emerald-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-emerald-950 focus:outline-hidden"
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Signatory &amp; DSC Seal Token
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={`${signatory.signatoryName} (${signatory.signatoryTitle}) &bull; DSC: ${signatory.dscSerial}`}
-                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 cursor-not-allowed"
-                  />
+                  >
+                    {emdMode === "MSME_EXEMPTION"
+                      ? emdData.exemptionFileName
+                      : emdMode === "DD"
+                        ? emdData.ddFileName
+                        : emdMode === "BANK_GUARANTEE"
+                          ? emdData.bgFileName
+                          : emdData.rtgsFileName}
+                  </strong>
+                  <span className="text-[10.5px] text-slate-500 block">
+                    {emdMode === "MSME_EXEMPTION"
+                      ? `${emdData.exemptionFileSize} · Digitally Signed Declaration`
+                      : "Screenshot / Proof Attached to Cover-1"}
+                  </span>
                 </div>
               </div>
 
-              {/* Generated Declaration Box */}
-              <div className="p-3 bg-emerald-50/40 rounded-xl border border-emerald-200/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-                    <FileBadge2 size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={emdData.exemptionFileName}
-                    >
-                      {emdData.exemptionFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      Auto-generated &bull; {emdData.exemptionFileSize} &bull;
-                      Digitally Signed
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openEmdPreview}
-                    className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View Letter</span>
-                  </button>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={openEmdPreview}
+                  className="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                >
+                  <Eye size={12} />
+                  <span>View Proof</span>
+                </button>
+                {emdMode === "MSME_EXEMPTION" ? (
                   <button
                     type="button"
                     onClick={handleRegenerateDeclaration}
                     disabled={isRegenerating}
                     className="p-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                    title="Re-Generate Declaration"
+                    title="Re-Generate Signed Declaration"
                   >
                     <RefreshCw
                       size={13}
                       className={
-                        isRegenerating ? "animate-spin text-emerald-700" : ""
+                        isRegenerating ? "animate-spin text-purple-700" : ""
                       }
                     />
                   </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 2: EMD DEMAND DRAFT (DD) FORM */}
-          {emdMode === "DD" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    EMD DD Number
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.ddNumber}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, ddNumber: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-slate-900 focus:outline-hidden"
-                    placeholder="e.g. 918273"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Issuing Bank
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.ddBankName}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, ddBankName: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                    placeholder="e.g. Punjab National Bank"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    DD Issue Date
-                  </label>
-                  <input
-                    type="date"
-                    value={emdData.ddIssueDate}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, ddIssueDate: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    DD Amount
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.ddAmount}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, ddAmount: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-lg px-2.5 py-1.5 font-bold font-mono text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Uploaded EMD DD Card */}
-              <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-300/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
-                    <Landmark size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={emdData.ddFileName}
-                    >
-                      {emdData.ddFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      PDF &bull; {emdData.ddFileSize} &bull; Attached to Cover-1
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openEmdPreview}
-                    className="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View DD</span>
-                  </button>
+                ) : (
                   <button
                     type="button"
                     onClick={() => emdFileInputRef.current?.click()}
                     className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                    title="Upload EMD DD Scan"
-                  >
-                    <UploadCloud size={12} />
-                    <span>Upload DD</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 3: BANK GUARANTEE (BG) FORM */}
-          {emdMode === "BANK_GUARANTEE" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    BG Instrument Number
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.bgNumber}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, bgNumber: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-purple-950 focus:outline-hidden"
-                    placeholder="e.g. BG-9920-2026-MUM"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Issuing Bank
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.bgBankName}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, bgBankName: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Valid Until (180 Days)
-                  </label>
-                  <input
-                    type="date"
-                    value={emdData.bgValidUntil}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, bgValidUntil: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Claim Period
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.bgClaimPeriod}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, bgClaimPeriod: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Uploaded BG File Card */}
-              <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-300/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0">
-                    <FileBadge2 size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={emdData.bgFileName}
-                    >
-                      {emdData.bgFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      PDF &bull; {emdData.bgFileSize} &bull; SFMS Stamped
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openEmdPreview}
-                    className="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View BG</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => emdFileInputRef.current?.click()}
-                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                    title="Upload Scanned BG"
-                  >
-                    <UploadCloud size={12} />
-                    <span>Upload BG</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 4: DIRECT RTGS / NEFT FORM */}
-          {emdMode === "RTGS_NEFT" && (
-            <div className="space-y-3 animate-in fade-in duration-150">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Authority Escrow Account
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value="A/C: 38291048291 · IFSC: SBIN0001234"
-                    className="w-full bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-mono cursor-not-allowed"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Transfer UTR No.
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.rtgsUtr}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, rtgsUtr: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 font-mono font-bold text-xs text-blue-950 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Remitter Bank
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.rtgsBank}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, rtgsBank: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10.5px] font-bold uppercase text-slate-500 block mb-1">
-                    Transfer Date
-                  </label>
-                  <input
-                    type="text"
-                    value={emdData.rtgsDate}
-                    onChange={(e) =>
-                      setEmdData({ ...emdData, rtgsDate: e.target.value })
-                    }
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Uploaded RTGS Advice Card */}
-              <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-300/90 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0">
-                    <Receipt size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <strong
-                      className="text-xs font-bold text-slate-900 block truncate"
-                      title={emdData.rtgsFileName}
-                    >
-                      {emdData.rtgsFileName}
-                    </strong>
-                    <span className="text-[10.5px] text-slate-500 block">
-                      PDF &bull; {emdData.rtgsFileSize} &bull; Attached to
-                      Cover-1
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <button
-                    type="button"
-                    onClick={openEmdPreview}
-                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                  >
-                    <Eye size={12} />
-                    <span>View Slip</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => emdFileInputRef.current?.click()}
-                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                    title="Upload RTGS Transfer Slip"
+                    title="Upload / Replace Proof Screenshot"
                   >
                     <UploadCloud size={12} />
                     <span>Upload</span>
                   </button>
-                </div>
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
