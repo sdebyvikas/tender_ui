@@ -15,12 +15,14 @@ interface TenderListV2Props {
   tenders: TenderV2[];
   selectedTender: TenderV2 | null;
   onOpenTender: (tender: TenderV2) => void;
+  onOpenUploadModal?: () => void;
 }
 
 export const TenderListV2: React.FC<TenderListV2Props> = ({
   tenders,
   selectedTender,
   onOpenTender,
+  onOpenUploadModal,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState<string>("All");
@@ -77,9 +79,7 @@ export const TenderListV2: React.FC<TenderListV2Props> = ({
 
           <button
             type="button"
-            onClick={() =>
-              toast.info("Upload modal will connect in future steps.")
-            }
+            onClick={onOpenUploadModal}
             className="px-4 py-2 bg-[#173C40] hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
           >
             <Plus size={15} />

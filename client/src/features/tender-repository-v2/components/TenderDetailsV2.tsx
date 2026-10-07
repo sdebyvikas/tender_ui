@@ -21,12 +21,14 @@ interface TenderDetailsV2Props {
   tender: TenderV2;
   allTendersCount: number;
   onBackToRepository: () => void;
+  onOpenUploadModal?: () => void;
 }
 
 export const TenderDetailsV2: React.FC<TenderDetailsV2Props> = ({
   tender,
   allTendersCount,
   onBackToRepository,
+  onOpenUploadModal,
 }) => {
   const [activeTab, setActiveTab] = useState<TabKeyV2>("overview");
 
@@ -99,6 +101,16 @@ export const TenderDetailsV2: React.FC<TenderDetailsV2Props> = ({
             <ArrowLeft size={14} />
             <span>All Tenders ({allTendersCount})</span>
           </button>
+
+          {onOpenUploadModal && (
+            <button
+              type="button"
+              onClick={onOpenUploadModal}
+              className="px-3.5 py-2 bg-[#173C40] hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+            >
+              <span>+ Upload New RFP</span>
+            </button>
+          )}
         </div>
       </div>
 

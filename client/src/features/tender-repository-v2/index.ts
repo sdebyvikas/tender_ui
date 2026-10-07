@@ -4,6 +4,7 @@ export * from "./components/TenderTabsV2";
 export * from "./components/TenderVerdictHeroV2";
 export * from "./components/TenderListV2";
 export * from "./components/TenderDetailsV2";
+export * from "./components/TenderUploadModalV2";
 export * from "./components/tabs/TabPlaceholderCard";
 export * from "./components/tabs/OverviewScopeTabV2";
 export * from "./components/tabs/EligibilityGatesTabV2";

@@ -4,19 +4,22 @@ import { STATIC_TENDERS_V2 } from "./mockData";
 import { TenderV2 } from "./types";
 import { TenderListV2 } from "./components/TenderListV2";
 import { TenderDetailsV2 } from "./components/TenderDetailsV2";
+import { TenderUploadModalV2 } from "./components/TenderUploadModalV2";
 
 export default function TendersRepositoryV2Page() {
   const { tenderId } = useParams<{ tenderId?: string }>();
   const navigate = useNavigate();
 
+  const [tenders, setTenders] = useState<TenderV2[]>(STATIC_TENDERS_V2);
   const [selectedTender, setSelectedTender] = useState<TenderV2>(
     STATIC_TENDERS_V2[0],
   );
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
 
   // If a tenderId is in the URL, match it
   useEffect(() => {
     if (tenderId) {
-      const match = STATIC_TENDERS_V2.find(
+      const match = tenders.find(
         (t) =>
           t.id === tenderId ||
           t.tenderNumber.toLowerCase() === tenderId.toLowerCase(),
@@ -25,7 +28,7 @@ export default function TendersRepositoryV2Page() {
         setSelectedTender(match);
       }
     }
-  }, [tenderId]);
+  }, [tenderId, tenders]);
 
   const isDetailsView = Boolean(tenderId);
 
@@ -40,21 +43,37 @@ export default function TendersRepositoryV2Page() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleTenderCreated = (newTender: TenderV2) => {
+    setTenders((prev) => [newTender, ...prev]);
+    setSelectedTender(newTender);
+    navigate(`/tenders-v2/${newTender.id}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto py-2">
       {isDetailsView ? (
         <TenderDetailsV2
           tender={selectedTender}
-          allTendersCount={STATIC_TENDERS_V2.length}
+          allTendersCount={tenders.length}
           onBackToRepository={handleBackToRepository}
+          onOpenUploadModal={() => setIsUploadModalOpen(true)}
         />
       ) : (
         <TenderListV2
-          tenders={STATIC_TENDERS_V2}
+          tenders={tenders}
           selectedTender={selectedTender}
           onOpenTender={handleOpenTender}
+          onOpenUploadModal={() => setIsUploadModalOpen(true)}
         />
       )}
+
+      {/* Upload & Ingest RFP Modal */}
+      <TenderUploadModalV2
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onTenderCreated={handleTenderCreated}
+      />
     </div>
   );
 }
