@@ -52,7 +52,7 @@ export const STATIC_TENDERS_V2: TenderV2[] = [
     estimatedValueDisplay: "₹1,50,00,000 (₹1.50 Cr)",
     tenderFeeDisplay: "₹5,900 (₹5,000 + 18% GST)",
     emdDisplay: "₹5,00,000",
-    emdStatus: "Verified",
+    emdStatus: "Exempt (MSME)",
     readinessScore: 76,
     winProbability: 72,
     decision: "GO",

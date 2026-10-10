@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   FileText,
   Calendar,
@@ -28,9 +28,15 @@ import {
   Timer,
   AlertOctagon,
   Users2,
+  UploadCloud,
 } from "lucide-react";
 import { toast } from "sonner";
-import { TenderV2, TenderRequirement, RequirementCategory } from "../../types";
+import {
+  TenderV2,
+  TenderRequirement,
+  RequirementCategory,
+  SourceDocumentItem,
+} from "../../types";
 
 const REQ_ICON_MAP: Record<string, LucideIcon> = {
   TrendingUp,
@@ -88,11 +94,55 @@ export const OverviewScopeTabV2: React.FC<OverviewScopeTabV2Props> = ({
   onNextTab,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [sourceDocs, setSourceDocs] = useState<SourceDocumentItem[]>(
+    tender.sourceDocuments || [],
+  );
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+
+    const sizeInMB = file.size / (1024 * 1024);
+    const sizeDisplay =
+      sizeInMB >= 1
+        ? `${sizeInMB.toFixed(1)} MB`
+        : `${Math.max(1, Math.round(file.size / 1024))} KB`;
+
+    setTimeout(() => {
+      const newDoc: SourceDocumentItem = {
+        id: `doc-${Date.now()}`,
+        name: file.name,
+        size: sizeDisplay,
+        pages: Math.max(1, Math.floor(Math.random() * 5) + 1),
+        type: "Corrigendum",
+        date: new Date().toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+      };
+
+      setSourceDocs((prev) => [newDoc, ...prev]);
+      setIsUploading(false);
+
+      toast.success(`Corrigendum "${file.name}" uploaded successfully!`, {
+        description:
+          "Official document attached to tender pack. AI indexed parameters.",
+      });
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }, 600);
+  };
 
   const requirements = tender.requirements || [];
   const commercial = tender.commercialTerms;
   const milestones = tender.paymentMilestones || [];
-  const sourceDocs = tender.sourceDocuments || [];
 
   const filteredRequirements =
     selectedCategory === "All"
@@ -539,17 +589,23 @@ export const OverviewScopeTabV2: React.FC<OverviewScopeTabV2Props> = ({
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-auto">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                accept=".pdf,.doc,.docx,.xls,.xlsx"
+                className="hidden"
+              />
               <button
                 type="button"
-                onClick={() =>
-                  toast.info("Upload Corrigendum / Amendment", {
-                    description:
-                      "Upload official corrigendum PDF to auto-update dates & revised rules.",
-                  })
-                }
-                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#173C40] rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300 transition-colors cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                className="px-3 py-1.5 bg-[#173C40] hover:bg-slate-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs disabled:opacity-50"
               >
-                <span>+ Upload Corrigendum</span>
+                <UploadCloud size={13} />
+                <span>
+                  {isUploading ? "Uploading..." : "+ Upload Corrigendum"}
+                </span>
               </button>
             </div>
           </div>

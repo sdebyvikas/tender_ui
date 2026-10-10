@@ -19,13 +19,10 @@ import {
   Check,
   XCircle,
   UserCheck,
-  KeyRound,
-  Stamp,
   Mail,
   Phone,
   Shield,
   RefreshCw,
-  BadgeCheck,
   LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -37,7 +34,6 @@ import {
   RiskRadarItem,
   SignatoryDetails,
 } from "../../types";
-import { DscPoaManagementModal } from "../DscPoaManagementModal";
 
 const GATE_ICONS: Record<string, LucideIcon> = {
   TrendingUp,
@@ -116,8 +112,6 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
   const [currentSignatory, setCurrentSignatory] =
     useState<SignatoryDetails>(defaultSignatory);
   const [isSignatoryMenuOpen, setIsSignatoryMenuOpen] = useState(false);
-  const [isDscPoaModalOpen, setIsDscPoaModalOpen] = useState(false);
-  const [modalInitialTab, setModalInitialTab] = useState<"dsc" | "poa">("dsc");
 
   const gates: DisqualificationGate[] = tender.disqualificationGates || [];
   const qcbsScores: QCBSScoreItem[] = tender.qcbsScores || [];
@@ -177,23 +171,8 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
     }));
     setIsSignatoryMenuOpen(false);
     toast.success(`Authorized Signatory updated to ${sig.name}`, {
-      description: `DSC & PoA credentials mapped to Cover-1 pack.`,
+      description: `Signatory details mapped to RFP submission pack.`,
     });
-  };
-
-  const handleVerifyDscToken = () => {
-    toast.success("Class-3 DSC Token Verified & Connected!", {
-      description: `Signer: ${currentSignatory.signatoryName} · Token Serial: ${currentSignatory.dscSerial} · Valid until ${currentSignatory.dscExpiry}`,
-    });
-  };
-
-  const handleOpenDscModal = (tab: "dsc" | "poa") => {
-    setModalInitialTab(tab);
-    setIsDscPoaModalOpen(true);
-  };
-
-  const handleUpdateSignatory = (updated: Partial<SignatoryDetails>) => {
-    setCurrentSignatory((prev) => ({ ...prev, ...updated }));
   };
 
   return (
@@ -658,7 +637,7 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
         </div>
       )}
 
-      {/* 5. SECTION: AUTHORIZED BID SIGNATORY (SIMPLIFIED & CLEAN) */}
+      {/* 5. SECTION: AUTHORIZED BID SIGNATORY */}
       <div className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200/90 shadow-2xs space-y-4">
         {/* Top Header with Change Signatory Dropdown */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
@@ -682,155 +661,90 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
             <button
               type="button"
               onClick={() => setIsSignatoryMenuOpen(!isSignatoryMenuOpen)}
-              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <RefreshCw size={12} />
               <span>Change Signatory ▾</span>
             </button>
 
             {isSignatoryMenuOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 space-y-1">
-                <span className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1 block">
-                  Select Signatory from Vault
-                </span>
-                {AVAILABLE_SIGNATORIES.map((sig) => (
-                  <button
-                    key={sig.name}
-                    type="button"
-                    onClick={() => handleSelectSignatory(sig)}
-                    className={`w-full text-left p-2.5 rounded-lg text-xs transition-colors cursor-pointer flex flex-col ${
-                      currentSignatory.signatoryName === sig.name
-                        ? "bg-emerald-50 text-emerald-950 font-bold border border-emerald-200"
-                        : "hover:bg-slate-50 text-slate-700"
-                    }`}
-                  >
-                    <span className="flex items-center justify-between">
-                      <span className="font-bold">{sig.name}</span>
-                      {currentSignatory.signatoryName === sig.name && (
-                        <Check
-                          size={13}
-                          className="text-emerald-700 font-bold"
-                        />
-                      )}
-                    </span>
-                    <span className="text-[10.5px] text-slate-500 font-normal mt-0.5">
-                      {sig.title.split("&")[0]} · {sig.poaStatus}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsSignatoryMenuOpen(false)}
+                />
+                <div className="absolute right-0 top-full mt-1.5 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1 block">
+                    Select Signatory from Vault
+                  </span>
+                  {AVAILABLE_SIGNATORIES.map((sig) => (
+                    <button
+                      key={sig.name}
+                      type="button"
+                      onClick={() => handleSelectSignatory(sig)}
+                      className={`w-full text-left p-2.5 rounded-lg text-xs transition-colors cursor-pointer flex flex-col ${
+                        currentSignatory.signatoryName === sig.name
+                          ? "bg-emerald-50 text-emerald-950 font-bold border border-emerald-200"
+                          : "hover:bg-slate-50 text-slate-700"
+                      }`}
+                    >
+                      <span className="flex items-center justify-between">
+                        <span className="font-bold">{sig.name}</span>
+                        {currentSignatory.signatoryName === sig.name && (
+                          <Check
+                            size={13}
+                            className="text-emerald-700 font-bold"
+                          />
+                        )}
+                      </span>
+                      <span className="text-[10.5px] text-slate-500 font-normal mt-0.5">
+                        {sig.title.split("&")[0]} · {sig.poaStatus}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>
 
         {/* Signatory Profile Overview */}
-        <div className="flex items-center gap-3.5 bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/70">
-          <div className="w-10 h-10 rounded-xl bg-[#173C40] text-white flex items-center justify-center font-extrabold text-sm shrink-0 shadow-2xs">
-            {currentSignatory.signatoryName.charAt(0)}
-          </div>
-
-          <div className="space-y-0.5 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <strong className="text-sm font-bold text-slate-900">
-                {currentSignatory.signatoryName}
-              </strong>
-              <span className="text-[11px] text-slate-500">
-                ({currentSignatory.signatoryTitle.split("&")[0].trim()})
-              </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70 p-4 rounded-xl border border-slate-200/70">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <div className="w-11 h-11 rounded-xl bg-[#173C40] text-white flex items-center justify-center font-extrabold text-base shrink-0 shadow-2xs">
+              {currentSignatory.signatoryName.charAt(0)}
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-slate-500 flex-wrap pt-0.5">
-              <span className="flex items-center gap-1">
-                <Mail size={11} className="text-slate-400" />
-                <span className="text-slate-700 font-medium">
-                  {currentSignatory.signatoryEmail}
+            <div className="space-y-0.5 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <strong className="text-sm font-bold text-slate-900">
+                  {currentSignatory.signatoryName}
+                </strong>
+                <span className="text-[11px] text-slate-500">
+                  ({currentSignatory.signatoryTitle.split("&")[0].trim()})
                 </span>
-              </span>
-              <span className="flex items-center gap-1">
-                <Phone size={11} className="text-slate-400" />
-                <span className="text-slate-700 font-medium">
-                  {currentSignatory.signatoryPhone}
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 2 Simple Status & Action Boxes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-          {/* Box 1: Power of Attorney (PoA) */}
-          <div className="p-3.5 rounded-xl border bg-white flex flex-col justify-between space-y-3 border-slate-200 shadow-2xs">
-            <div>
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-                  <FileText size={12} className="text-indigo-600" /> Power of
-                  Attorney (PoA)
-                </span>
-                <span
-                  className={`text-[10px] font-bold px-2 py-0.2 rounded-md ${
-                    currentSignatory.poaStatus === "Verified"
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                      : "bg-amber-100 text-amber-800 border border-amber-300"
-                  }`}
-                >
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  ✓{" "}
                   {currentSignatory.poaStatus === "Verified"
-                    ? "✓ Verified"
-                    : "⚠️ Pending"}
+                    ? "Verified Signatory"
+                    : currentSignatory.poaStatus}
                 </span>
               </div>
 
-              <strong className="text-xs font-bold text-slate-800 block">
-                Board Resolution &amp; ₹100 Notarized Stamp
-              </strong>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                {currentSignatory.poaStatus === "Verified"
-                  ? "Approved under Board Resolution 2024/BR-09"
-                  : "Upload Board Resolution to authorize this signatory"}
-              </p>
-            </div>
-
-            <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleOpenDscModal("poa")}
-                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-              >
-                <Eye size={12} />
-                <span>View / Upload PoA</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Box 2: Digital Signature Certificate (DSC) */}
-          <div className="p-3.5 rounded-xl border bg-white flex flex-col justify-between space-y-3 border-slate-200 shadow-2xs">
-            <div>
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-                  <KeyRound size={12} className="text-teal-600" /> Digital
-                  Signature (DSC)
+              <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-0.5">
+                <span className="flex items-center gap-1.5">
+                  <Mail size={12} className="text-slate-400" />
+                  <span className="text-slate-700 font-medium">
+                    {currentSignatory.signatoryEmail}
+                  </span>
                 </span>
-                <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.2 rounded-md">
-                  ✓ Class-3 Active
+                <span className="flex items-center gap-1.5">
+                  <Phone size={12} className="text-slate-400" />
+                  <span className="text-slate-700 font-medium">
+                    {currentSignatory.signatoryPhone}
+                  </span>
                 </span>
               </div>
-
-              <strong className="text-xs font-bold text-slate-800 block">
-                USB Hardware Dongle &amp; Certificate
-              </strong>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                e-Mudhra Token · Valid until {currentSignatory.dscExpiry}
-              </p>
-            </div>
-
-            <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleOpenDscModal("dsc")}
-                className="px-3 py-1.5 bg-[#173C40] hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-colors shadow-2xs cursor-pointer flex items-center gap-1"
-              >
-                <KeyRound size={12} />
-                <span>Test / Manage DSC</span>
-              </button>
             </div>
           </div>
         </div>
@@ -866,15 +780,6 @@ export const EligibilityGatesTabV2: React.FC<EligibilityGatesTabV2Props> = ({
           </button>
         )}
       </div>
-
-      {/* 7. DSC & POA MANAGEMENT MODAL */}
-      <DscPoaManagementModal
-        isOpen={isDscPoaModalOpen}
-        onClose={() => setIsDscPoaModalOpen(false)}
-        signatory={currentSignatory}
-        initialTab={modalInitialTab}
-        onUpdateSignatory={handleUpdateSignatory}
-      />
     </div>
   );
 };

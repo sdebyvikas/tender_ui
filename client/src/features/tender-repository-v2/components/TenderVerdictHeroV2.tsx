@@ -24,6 +24,15 @@ export const TenderVerdictHeroV2: React.FC<TenderVerdictHeroV2Props> = ({
   const [showScoreBreakdown, setShowScoreBreakdown] = useState(false);
 
   const isPreEvaluationStep = activeTab === "overview";
+  const isMsmeExempt =
+    tender.emdStatus === "Exempt (MSME)" ||
+    tender.emdComplianceDetails?.activeMode === "MSME_EXEMPTION" ||
+    tender.emdComplianceDetails?.msmeEligible ||
+    Boolean(
+      tender.commercialTerms?.msmePolicy
+        ?.toLowerCase()
+        .includes("emd exempt: yes"),
+    );
 
   return (
     <div className="bg-gradient-to-r from-[#082924] via-[#0C3B34] to-[#134942] text-white p-5 md:p-6 rounded-2xl shadow-lg border border-emerald-500/30 transition-all">
@@ -63,15 +72,27 @@ export const TenderVerdictHeroV2: React.FC<TenderVerdictHeroV2Props> = ({
             {/* Context Notice */}
             {isPreEvaluationStep ? (
               <p className="text-xs text-emerald-100/85 leading-relaxed">
-                Tender Ref: <strong className="text-white">{tender.tenderNumber}</strong> · Extracted{" "}
-                <strong className="text-emerald-300 font-semibold">{tender.requirements?.length || 7} Mandatory Rules</strong> from RFP.{" "}
-                <em>Capability and Fit Score will be evaluated in Step 2 against your Company Vault.</em>
+                Tender Ref:{" "}
+                <strong className="text-white">{tender.tenderNumber}</strong> ·
+                Extracted{" "}
+                <strong className="text-emerald-300 font-semibold">
+                  {tender.requirements?.length || 7} Mandatory Rules
+                </strong>{" "}
+                from RFP.{" "}
+                <em>
+                  Capability and Fit Score will be evaluated in Step 2 against
+                  your Company Vault.
+                </em>
               </p>
             ) : (
               <p className="text-xs text-emerald-100/85 leading-relaxed">
                 Evaluating Bidder:{" "}
-                <strong className="text-white font-semibold">Tech Solutions Pvt Ltd</strong>{" "}
-                against verified <strong>Company Vault</strong>. Turnover, technical manpower, prior experience &amp; statutory compliance evaluated.
+                <strong className="text-white font-semibold">
+                  Tech Solutions Pvt Ltd
+                </strong>{" "}
+                against verified <strong>Company Vault</strong>. Turnover,
+                technical manpower, prior experience &amp; statutory compliance
+                evaluated.
               </p>
             )}
           </div>
@@ -104,9 +125,29 @@ export const TenderVerdictHeroV2: React.FC<TenderVerdictHeroV2Props> = ({
                   <strong className="text-base font-extrabold text-white block">
                     {tender.emdDisplay}
                   </strong>
-                  <small className="text-[9.5px] text-emerald-300 block">
-                    Bid Security
-                  </small>
+                  {isMsmeExempt ? (
+                    <div className="flex items-center justify-center mt-0.5">
+                      <span className="inline-flex items-center gap-1 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-400/20 text-emerald-300 border border-emerald-400/35 shadow-2xs whitespace-nowrap">
+                        <CheckCircle2
+                          size={10}
+                          className="text-emerald-300 shrink-0"
+                        />
+                        <span>MSME Exempt (₹0)</span>
+                      </span>
+                    </div>
+                  ) : tender.emdStatus === "Verified" ? (
+                    <small className="text-[9.5px] text-emerald-300 flex items-center justify-center gap-0.5 mt-0.5 font-medium">
+                      <CheckCircle2 size={10} /> Verified
+                    </small>
+                  ) : tender.emdStatus === "Pending Payment" ? (
+                    <small className="text-[9.5px] text-amber-300 flex items-center justify-center gap-0.5 mt-0.5 font-medium">
+                      <ShieldAlert size={10} /> Pending
+                    </small>
+                  ) : (
+                    <small className="text-[9.5px] text-emerald-300 block">
+                      Bid Security
+                    </small>
+                  )}
                 </div>
 
                 {/* 3. Tender Processing Fee */}
@@ -149,19 +190,27 @@ export const TenderVerdictHeroV2: React.FC<TenderVerdictHeroV2Props> = ({
                       </div>
                       <div className="space-y-1.5 text-[11px]">
                         <div className="flex justify-between">
-                          <span className="text-slate-300">Eligibility Criteria:</span>
+                          <span className="text-slate-300">
+                            Eligibility Criteria:
+                          </span>
                           <strong className="text-white">35 / 40</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-300">Financial Strength:</span>
+                          <span className="text-slate-300">
+                            Financial Strength:
+                          </span>
                           <strong className="text-emerald-400">20 / 20</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-300">Technical Experience:</span>
+                          <span className="text-slate-300">
+                            Technical Experience:
+                          </span>
                           <strong className="text-amber-300">12 / 25</strong>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-300">Vault Documents:</span>
+                          <span className="text-slate-300">
+                            Vault Documents:
+                          </span>
                           <strong className="text-slate-300">10 / 15</strong>
                         </div>
                         <div className="pt-1.5 mt-1.5 border-t border-slate-700 flex justify-between font-bold text-emerald-300">
@@ -194,21 +243,26 @@ export const TenderVerdictHeroV2: React.FC<TenderVerdictHeroV2Props> = ({
                   <strong className="text-base font-extrabold text-white block">
                     {tender.emdDisplay}
                   </strong>
-                  <small className="text-[9.5px] text-emerald-300 flex items-center justify-center gap-0.5">
-                    {tender.emdStatus === "Verified" ? (
-                      <>
-                        <CheckCircle2 size={11} /> Verified
-                      </>
-                    ) : tender.emdStatus === "Exempt (MSME)" ? (
-                      <>
-                        <CheckCircle2 size={11} /> MSME Exempt
-                      </>
-                    ) : (
-                      <>
-                        <ShieldAlert size={11} className="text-amber-300" /> Pending
-                      </>
-                    )}
-                  </small>
+                  {isMsmeExempt ? (
+                    <div className="flex items-center justify-center mt-0.5">
+                      <span className="inline-flex items-center gap-1 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-400/20 text-emerald-300 border border-emerald-400/35 shadow-2xs whitespace-nowrap">
+                        <CheckCircle2
+                          size={10}
+                          className="text-emerald-300 shrink-0"
+                        />
+                        <span>MSME Exempt (₹0)</span>
+                      </span>
+                    </div>
+                  ) : tender.emdStatus === "Verified" ? (
+                    <small className="text-[9.5px] text-emerald-300 flex items-center justify-center gap-0.5 mt-0.5 font-medium">
+                      <CheckCircle2 size={10} /> Verified
+                    </small>
+                  ) : (
+                    <small className="text-[9.5px] text-amber-300 flex items-center justify-center gap-0.5 mt-0.5 font-medium">
+                      <ShieldAlert size={10} className="text-amber-300" />{" "}
+                      Pending
+                    </small>
+                  )}
                 </div>
               </>
             )}
