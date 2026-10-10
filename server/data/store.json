@@ -85,11 +85,874 @@
       }
     ],
     "createdAt": "2026-09-28T05:53:24.183Z",
-    "updatedAt": "2026-10-07T13:10:16.555Z",
+    "updatedAt": "2026-10-10T05:25:48.752Z",
     "__v": 6,
     "authorizedSignatories": []
   },
   "tenders": [
+    {
+      "id": "tender_e1dfe51b-edfb-4b20-b253-de40311956df",
+      "tenderNumber": "IT-17022/20/2026-IT-ITPO",
+      "title": "Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026",
+      "organization": "India Trade Promotion Organisation (ITPO)",
+      "category": "IT Services / Event Management",
+      "portal": "GeM Portal",
+      "estimatedValueINR": null,
+      "estimatedValueDisplay": "-",
+      "emdAmountINR": 100000,
+      "emdDisplay": "₹1,00,000",
+      "tenderFeeINR": 5000,
+      "publishDate": "2026-10-08",
+      "submissionDeadline": "2026-10-14T15:00:00",
+      "preBidMeetingDate": "2026-10-09T15:00:00",
+      "due": "14 Oct 2026, 03:00 pm",
+      "scopeSummary": "Provision of an online registration portal with approval workflow, m-badge generation with unique QR codes, supply, personalisation, lamination of PVC badges through kiosks, and distribution at event venues for ITPO domestic events, including the 45th IITF 2026.",
+      "eligibilityCriteria": {
+        "minAnnualTurnoverINR": 50000000,
+        "minTurnoverDisplay": "INR 5 Crore",
+        "minExperienceYears": 3,
+        "requiredCertifications": [
+          "GST Registration",
+          "EPFO Registration",
+          "ESIC Registration"
+        ],
+        "pastProjectRequirement": "Experience in executing similar works in at least 30 events in the last 5 years"
+      },
+      "disqualificationGates": [
+        {
+          "id": "gate-1",
+          "title": "Blacklisting Status",
+          "category": "Legal Standing",
+          "clauseRef": "Section 3, S.no 3",
+          "mandatoryRequirement": "Bidder must not have been blacklisted/debarred by any Central/State Government, PSU, or Quasi-Government authority.",
+          "evidenceDoc": "Self-declaration of non-blacklist certificate (Annexure-I)",
+          "threatLevel": "CRITICAL"
+        }
+      ],
+      "complianceItems": [
+        {
+          "id": "comp_8fd77dc3",
+          "clauseNo": "1",
+          "requirement": "Registered legal entity with minimum 3 years experience, valid GST, EPFO and ESIC registrations.",
+          "category": "Registration / Incorporation",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical GST, EPFO, ESIC, and Incorporation documents are not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Certificate of Incorporation/Partnership Deed, PAN, GST, EPFO and ESIC registrations"
+        },
+        {
+          "id": "comp_c0ad92b4",
+          "clauseNo": "2",
+          "requirement": "Minimum annual turnover of INR 5 Crore in each of the last three financial years (FY 2023–24, FY 2024–25 and FY 2025–26).",
+          "category": "Average Turnover",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "CA certificate is not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "CA certificate indicating turnover (Annexure-IV)"
+        },
+        {
+          "id": "comp_49e74383",
+          "clauseNo": "4",
+          "requirement": "Functional/operational office in Delhi NCR with necessary manpower and support infrastructure.",
+          "category": "Infrastructure",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Address proof for Delhi-NCR office is not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Relevant document for address verification within Delhi-NCR"
+        },
+        {
+          "id": "comp_da2679ad",
+          "clauseNo": "5",
+          "requirement": "Experience in executing similar works in at least 30 events in the last 5 years.",
+          "category": "Prior Experience",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Work experience documents are not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Copies of work orders/ work award emails/ invoices/ completion certificates etc. (Annexure-II)"
+        }
+      ],
+      "teamStructure": {
+        "totalResources": 0,
+        "deploymentSummary": "Minimum of 2 IT Support Engineers per shift and one Team Leader as the single point of contact for each event.",
+        "teams": [
+          {
+            "teamName": "Kiosk Operations",
+            "resourceCount": 2,
+            "roles": [
+              "Kiosk Operator"
+            ]
+          },
+          {
+            "teamName": "IT Support",
+            "resourceCount": 2,
+            "roles": [
+              "IT Support Engineer"
+            ]
+          },
+          {
+            "teamName": "Management",
+            "resourceCount": 1,
+            "roles": [
+              "Team Leader"
+            ]
+          }
+        ]
+      },
+      "detectedAnnexures": [
+        {
+          "formNumber": "Annexure-I",
+          "title": "Affidavit for Undertaking",
+          "description": "Non-blacklist declaration"
+        },
+        {
+          "formNumber": "Annexure-II",
+          "title": "Experience of executing and successfully completing work",
+          "description": "Work experience details"
+        },
+        {
+          "formNumber": "Annexure-III",
+          "title": "Financial Bid Undertaking",
+          "description": "Financial bid confirmation"
+        },
+        {
+          "formNumber": "Annexure-IV",
+          "title": "Financial Capability Statement",
+          "description": "Turnover details"
+        },
+        {
+          "formNumber": "Annexure-V",
+          "title": "Integrity Pact Undertaking",
+          "description": "Integrity pact"
+        }
+      ],
+      "keyRisks": [
+        {
+          "title": "Penalty for Delays",
+          "description": "2% of work order value per day for delays in portal go-live or setup, capped at 10%.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Data Security",
+          "description": "Misuse or unauthorized sharing of data leads to forfeiture of PBG and termination.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Operational Downtime",
+          "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+          "riskLevel": "Medium"
+        }
+      ],
+      "hasBOQ": false,
+      "boqType": "Milestone / Retainer Based (No Itemized BOQ)",
+      "rawTextSnippet": "\n\n \nRequest for Proposal (RFP) \nfor \nEmpanelment of an Agency for Online Registration, m-Badge Generation, and Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026, \nscheduled to be held at Bharat Mandapam, New Delhi from 13 – 27 November, 2026 \n \nIndia Trade Promotion Organisation (ITPO), \n(A Government of India Enterprise) \nGate No. 9, Bharat Mandapam, New Delhi – 110001 \nNo.:  IT-17022/20/2026-IT-ITPO \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 2 \nDISCLAIMER \n1.  The information contained in this bid document or subsequently provided to bidders, whether verbally or \nin documentary form or otherwise by or on behalf of India Trade Promotion Organisation (ITPO), or by \nany of its employees, is provided to bidders on the terms and conditions set out in this bid document and \nsuch other terms and conditions subject to which such information is provided. \n2.  The bid document is neither an agreement nor an offer by ITPO to prospective bidders or any other person. \nThe  purpose  of this  bid document  is  to provide  interested  parties  with  information  to  assist in the \nformulation of their proposals for selection pursuant to this bid. The assumptions, assessments, statements, \nand information contained in this bid document may not be complete, accurate, adequate, or correct and \neach bidder should conduct its own investigations and analysis and should check the accuracy, adequacy, \ncorrectness, reliability and completeness of the assumptions, assessments and information contained in \nthis Bid document and obtain independent advice from appropriate sources. \n3.  ITPO, or its employees, make no representation or warranty and shall have no liability to any person, \nincluding any bidder, under any law, statute, rules or regulations or tort, principles of restitution or unjust \nenrichment or otherwise for any loss damages, cost or expense which may arise from or be incurred or \nsuffered on account of anything contained in this Bid or otherwise, including the accuracy, adequacy, \ncorrectness, reliability or completeness of the Bid any assessment, assumption or information contained \ntherein or deemed to form part of this Bid document. \n4.  ITPO may in its absolute discretion, but without being under any obligation to do so, update, amend or \nsupplement the information, its assessment or assumptions contained in this bid document. Such changes \nshall be intimated to all the bidders. In case additional period for submission, if required due to such \namendments, is necessitated the same shall be intimated to all the bidders. \n5.  The issue of this bid document does not imply that ITPO is bound to select or to appoint any bidder for \nthe contract and it reserves the right to reject all or any of the bidders without assigning any reasons \nwhatsoever. \n6.  ITPO reserves the right not to proceed with the Bidding Process any time or stage, without notice or \nliability, and to reject any or all Bid(s) without assigning any reasons whatsoever. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 3 \nTABLE OF CONTENTS \nDISCLAIMER .................................................................................................................................................. 2 \nInvitation of e-Bids ........................................................................................................................................... 4 \nNotice Inviting Bids .......................................................................................................................................... 4 \n1. Introduction .................................................................................................................................................. 5 \n2. Objectives ...................................................................................................................................................... 5 \n3. Eligibility Criteria ........................................................................................................................................ 5 \n4. Technical Criteria ......................................................................................................................................... 6 \n5. Scope of Work (SoW) ................................................................................................................................... 7 \n6. Deliverables and Project Timelines ............................................................................................................. 8 \n7. Liquidated Damages and Penalties ............................................................................................................. 8 \n8. Payment Terms ............................................................................................................................................. 9 \n9. Opening and Evaluation of Bids.................................................................................................................. 9 \n10. Instruction to Bidders .............................................................................................................................. 10 \n11. General Terms and Conditions ............................................................................................................... 13 \nAnnexure-I: Affidavit for Undertaking ........................................................................................................ 18 \nAnnexure-II: Experience of executing and successfully completing work ................................................ 19 \nAnnexure–III: Financial Bid Undertaking ................................................................................................... 20 \nAnnexure-IV: Financial Capability Statement ............................................................................................ 21 \nAnnexure–V: Integrity Pact Undertaking .................................................................................................... 22 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 4 \nInvitation of e-Bids \nIndia Trade Promotion Organisation (ITPO) invites electronic bid (e-Bid) proposals from reputed, competent, \nand professional agencies which meet the minimum eligibility criteria and successfully qualify on technical \nevaluation parameters as specified in this RFP document. \n1.  Bidders (authorised signatory) shall submit their proposal or bid online in electronic formats both for \ntechnical and financial proposal. Bidders shall submit, along with their Bids, EMD amount mentioned in \nthe data sheet in the form of Demand Draft or online through NEFT/ RTGS as per bank details indicated \nin the NIB. \n2.  ITPO will not be responsible for delay in online submission due to any reason. For this, bidders are \nrequested to upload the complete bid well in advance so as to avoid 11th hour issues like slow speed, \nchoking of websites due to heavy load or any other unforeseen problems. \n3.  Please note that a pre-bid meeting of the prospective bidders is scheduled as per the details specified in \nthis NIB. The objective of this meeting is to address the queries of the prospective bidders related to the \nProject or RFP document. \n4.  No contractual obligation whatsoever shall arise from the RFP or bidding process unless and until a formal \nagreement is signed and executed between ITPO and the Service Provider. \n \nNotice Inviting Bids \nRFP Reference No.:  IT-17022/20/2026-IT-ITPO  Date: 08/10/2026 \nIndia Trade Promotion Organisation (ITPO), (A Government of India Enterprise) \nOffice Address: ITPO, Gate No. 9, Bharat Mandapam, New Delhi – 110001 (INDIA); Tel: 011-23371620 \nContact Person: Shri Madhur Kumar Shakya, DM (IT); Phone: 9643922174 \nEmail: computerdiv@itpo.gov.in; Website: https://www.itpo.gov.in/ \nEmpanelment  of  an  Agency  for  Online  Registration,  m-Badge  Generation,  and  Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026 \nTender fee Rs. 5000/- plus applicable taxes (non-refundable) \nEarnest Money Deposit (EMD) Rs. 100000/- \nMethod of Evaluation QCBS (70:30) – Technical: Financial \nDate of publishing NIB / e-Bid submission start 08/10/2026 \nPre-bid meeting date, time and venue 09/10/2026 AT 03:00 PM, ITPO Office, Bharat Mandapam \nPre-bid queries submission last date 09/10/2026 AT 03:00 PM \ne-Bid submission end date and time 14/10/2026 AT 03:00 PM \nTechnical e-bid opening date and time 15/10/2026 AT 03:00 PM \nTechnical  presentation  cum  demonstration  / \nFinancial e-bid opening \nTo be communicated to the qualified bidders \nBid validity 90 days from the bid submission end date \nEmpanelment Period 2 (two) years, extendable by 1 (one) + 1 (one) year, at the \nsole discretion of ITPO. Immediate requirement: 45th IITF, \n2026. Work orders shall be issued event-wise. \nPerformance Bank Guarantee (PBG) Refer Section 10.12 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 5 \nConsortium/ Joint Venture (JV) Not allowed \nSimilar Work Similar work shall mean providing online registration with \ne-badge/m-badge    generation,    along    with \nprinting/personalisation  and  distribution  of  badges  for \nexhibitors,  delegates,  staff  or  officials,  for  exhibitions, \ntrade fairs, conferences or events etc \nBank Details \nBeneficiary: India Trade Promotion Organisation (ITPO); \nBank:  CENTRAL  BANK  OF  INDIA,  BHARAT \nMANDAPAM, NEW DELHI-110001;  \nAccount No.: 1167404133 (SAVINGS);  \nIFSC: CBIN0284078 \n1. Introduction \nThe India Trade Promotion Organisation (ITPO) is a premier trade promotion agency under the Government \nof India, organising national and international exhibitions, conferences and trade events at Bharat Mandapam, \nNew Delhi. The immediate requirement for the aforementioned services is for 45th IITF, scheduled from 13th \nto 27th November, 2026. \nThrough this RFP, ITPO intends to empanel an agency for its domestic events to provide an online registration \nportal generating mobile badges (m-badges) with unique QR codes, and to supply, personalise, laminate and \ndistribute badges, for exhibitors, service providers, media, ITPO staff, government representatives and police \npersonnel. Work shall be assigned event-wise through work orders. About 1,00,000 badges are expected for \nthe 45th IITF; this figure is indicative only. \n2. Objectives \n• To provide an online registration portal with approval workflow, issuing m-badges with provided QR \ncodes to the eligible categories. \n• To supply, personalise and laminate badges through kiosks, and distribute them at counters at the event \nvenue. \n• To provide real-time reports to ITPO and hand over all data, which shall remain the property of ITPO. \n3. Eligibility Criteria \nMinimum eligibility criteria to be met by the bidder are as follows: \nS.no. Basis of Evaluation Documents Required \n1   The Bidder should be a registered legal entity with a \nminimum of 3 (three) years’ experience, with valid \nGST, EPFO and ESIC registrations. JV/Consortium is \nnot allowed. \nCopy of Certificate of \nIncorporation/Partnership \nDeed/Registration certificate, PAN, GST, \nEPFO and ESIC registrations, self-\ncertified by Authorized Signatory \n2   The Bidder shall have a minimum annual turnover of \nINR 5 Crore in each of the last three (3) financial \nyears (FY 2023–24, FY 2024–25 and FY 2025–26) \nCA certificate indicating turnover \n(Annexure-IV). \n3   The bidder must not have been blacklisted/debarred \nby any Central Government, State Government, PSU, \nor any Government/Quasi-Government authority as on \nthe date of submission of the bid \nSelf-declaration of non-blacklist certificate \n(Annexure-I). \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 6 \nS.no. Basis of Evaluation Documents Required \n4   The bidder must have a functional/operational office \nin Delhi NCR, with necessary manpower and support \ninfrastructure for execution of the project. \nRelevant document for address verification \nwithin Delhi-NCR \n5   The Bidder should have experience in executing \nsimilar works in at least 30 events in the last 5 years in \nGovernment/private events and exhibitions. \nCopies of work orders/ work award emails/ \ninvoices/  completion  certificates  etc. \ncertifying award of work. (Annexure-II). \nNote: \n1.  Any bid failing to meet the above eligibility criteria or any other conditions specified in the RFP shall \nbe summarily rejected and will not be considered for further evaluation. \n2.  All documents must be scanned and uploaded online. No physical copies are required. The decision \nof ITPO shall be final and binding. \n3.  Where audited accounts for FY 2025–26 are not yet available, FY 2022–23 to 2024–25 shall be \nconsidered, with a CA certificate (with valid UDIN); to that effect. \n4.  Bidders are advised to visit the site before submission of the bid. \n4. Technical Criteria \n# Criteria Maximum \nMarks \nDocuments Required \nA Experience of Works \nA1  Number of similar works completed in last 5 years: \n≥30 & <50 events – 10 marks \n≥50 & <100 events – 15 marks \n≥100 events – 25 marks \n25    Copies of work orders/ work \naward emails/ invoices/ \ncompletion certificates etc. \ncertifying award of work. \n(Annexure-II). \nB Financial Strength \nB1  Average Annual Turnover in last three financial years: \n≥ ₹ 5 Crore & < ₹ 7 Crore– 10 marks \n≥ ₹ 7 Crore & < ₹ 10 Crore – 15 marks \n≥ ₹ 10 Crore– 25 marks \n25    CA certificate indicating \nturnover (Annexure-IV). \nC Project Approach & Presentation \nC1  Understanding of Project & Deployment Plan \n(registration workflow, kiosks and distribution \ncounters)  \nRegistration Portal, Approval Workflow, Data Security \n& Gate-System Integration  \nLive Demonstration (time from scanning the m-badge \nat the kiosk to a personalised and laminated badge) \n50    Technical presentation and \nlive demonstration (during \nevaluation; not part of \ntechnical bid submission). \nTotal 100     \nBidders shall bring their own kiosk/printer/laminator and connectivity for the live demonstration, which shall \nbe made on the portal proposed to be deployed. A bidder failing to present on the scheduled date shall get zero \nmarks under Criteria C. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 7 \n5. Scope of Work (SoW) \nFor each ITPO domestic event for which a work order is issued, the empanelled agency shall provide an online \nregistration portal, generate m-badges, supply, personalise and laminate physical badges through kiosks, and \ndistribute the badges at the event venue, for the following categories: exhibitors, service providers, media, \nITPO staff, government representatives and police personnel, and any other category specified by ITPO. ITPO \nshall provide covered space with furniture, raw power, the QR code specification, lanyards and API of its Gate-\nManagement System (where deployed), and general security.  \n5.1. Registration Portal and m-Badge \n1.  The agency shall provide a mobile-friendly web portal with category-wise registration; login for \nexhibitors and organisations with badge quotas fixed by ITPO; bulk upload of lists by nodal officers \n(staff, government departments, police); OTP verification; upload of photograph and Government \nphoto ID; de-duplication; and an approval workflow for the officers designated by ITPO. The portal \nshall be live within 7 (seven) days of the work order. \n2.  On approval, the portal shall generate an m-badge with a unique QR code provided by ITPO, with \ncategory-wise access validity (zones/halls/days) as decided by ITPO, and deliver it through SMS, e-\nmail and/or WhatsApp. \n3.  The QR code shall be in the format specified by ITPO and, where a Gate-Management System is \ndeployed, the data shall be pushed to it in real time through API. Integration testing shall be completed \nat least 2 (two) days before badge issue begins. \n5.2. Badge Supply, Personalisation, Lamination and Distribution \n1. The agency shall set up and operate kiosks (quantity as specified by ITPO) at the identified locations \nby ITPO, during the badge issue period specified in the work order. \n2. The agency shall supply PVC badges, 8.5 cm × 13 cm, 0.8 mm thick, glossy finish, printed in full \ncolour  on  both  sides  with  the  event  logo  and  a  hologram,  and  personalised  with  the  holder's \nphotograph, name and QR code, as per the design approved by ITPO, in the quantity specified in the \nwork order. \n3. Each kiosk shall have a laptop / desktop, QR code scanner, a badge printer capable of printing on the \nPVC badges specified above and a laminator along with required stationery. On scanning the m-badge, \nthe kiosk shall personalise the badge with the holder’s name, organisation, category, photograph, \naccess zones and QR code, in the layout approved by ITPO, and laminate it, preferably within 60 \n(sixty) seconds. Each kiosk shall be manned by two operators per shift, with at least 10% standby \nequipment  at  the  venue.  Any  additional  operators or  assistants required  for  personalisation  and \ndistribution of badges shall be deployed by the agency, as per ITPO’s assessment, at no extra cost and \nwithin the rate quoted for operation and management of each kiosk. \n4. The agency shall operate a prescribed number of badge distribution counters at the locations identified \nby ITPO, with one staff member per counter per shift. \n5. Badges shall be handed over to the registrant, or to an authorised representative (exhibitor’s nominee \nor nodal officer) against an authorisation letter, after verification of the m-badge and photo ID. Every \nissue shall be recorded in the system, and bulk issues shall be made against signed acknowledgement. \nNo badge shall be issued or reprinted without an approved registration; reprints and replacement of \nlost badges shall be made only with the approval of ITPO’s designated officer and logged in the \nsystem. \n5.3. Manpower \n1.  Besides the kiosk operators and counter staff, the agency shall deploy a minimum of 2 (two) IT Support \nEngineers per shift and one Team Leader as the single point of contact for each event. All personnel \nshall be in uniform with identity cards and police-verified; their list shall be submitted three (3) days \nbefore deployment. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 8 \n2.  The agency shall pay wages not less than the applicable minimum wages and ensure all EPFO/ESIC \nrelated compliances. \n5.4. Reporting, Data Ownership and Handover \n1.  The agency shall provide ITPO a login to a real-time dashboard of registrations, approvals, badges \npersonalised and badges distributed, and submit a daily MIS report by 12:00 hrs on the following day. \n2.  All data collected shall be the sole property of ITPO and shall be used only for this contract, in \ncompliance with the applicable law, including the Digital Personal Data Protection Act, 2023. The \ncomplete data for each event, including photographs and the badge issue register, shall be handed over \nto ITPO within seven (7) days of the conclusion of the event, and thereafter deleted from the agency’s \nsystems, with a certificate of deletion. \n5.5. Exit & Default Conditions \nIf the bidder fails to make the portal live or set up the kiosks and counters within the timelines, maintain the \nservices as per the RFP, or protect the data, ITPO reserves the right to terminate the contract, encash PBG, and \nblacklist the bidder as per RFP conditions. \nNOTE: Quantities shall be specified in each work order, and ITPO does not guarantee any minimum volume \nof work. Vi",
+      "documentMeta": {
+        "fileName": "1791609923770-568161531-RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+        "fileType": ".pdf",
+        "fileSizeBytes": 519357,
+        "pageCount": 23,
+        "isScanned": false,
+        "detectedSections": [
+          "Eligibility Criteria",
+          "Scope of Work",
+          "Terms and Conditions",
+          "Liquidated Damages & Penalties",
+          "Payment Milestones",
+          "EMD & Bid Security",
+          "Submission Guidelines",
+          "Annexures & Undertakings",
+          "Mandatory Declarations"
+        ]
+      },
+      "uploadedFileName": "RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+      "status": "In Analysis",
+      "priority": "Medium",
+      "goNoGoAnalysis": {
+        "source": "AI Generated (Bid Intelligence Engine)",
+        "isCalculatedMetric": true,
+        "disclaimer": "Win Probability and Overall Score are AI-estimated predictive analytics based on qualification matching, not direct statements from the tender document.",
+        "decision": "GO",
+        "winProbability": 72,
+        "overallScore": 76,
+        "financialFitScore": 95,
+        "technicalFitScore": 65,
+        "experienceScore": 65,
+        "riskScore": 20,
+        "recommendationSummary": "Strong GO recommendation. With an overall qualification score of 76% and estimated Win Probability of 72%, the bidder profile satisfies technical, financial, and eligibility thresholds for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "swot": {
+          "strengths": [
+            "Bidder average turnover (₹16.2 Cr) comfortably exceeds RFP threshold of INR 5 Crore.",
+            "Meets the requirement of minimum 3 years of proven industry track record."
+          ],
+          "weaknesses": [
+            "Missing specific required certifications: GST Registration, EPFO Registration, ESIC Registration.",
+            "Relevant past project completion certificates need to be uploaded to Company Vault."
+          ],
+          "opportunities": [
+            "High-value strategic positioning as a core advisory and communication partner for the department.",
+            "Opportunity to establish long-term government stakeholder advisory & media planning footprint."
+          ],
+          "threats": [
+            "Strict deliverable timelines with multi-stakeholder review and milestone acceptance requirements."
+          ]
+        },
+        "keyClauses": [
+          {
+            "title": "Penalty for Delays",
+            "description": "2% of work order value per day for delays in portal go-live or setup, capped at 10%.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Data Security",
+            "description": "Misuse or unauthorized sharing of data leads to forfeiture of PBG and termination.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Operational Downtime",
+            "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+            "riskLevel": "Medium"
+          }
+        ]
+      },
+      "boqItems": [],
+      "proposals": {
+        "executiveSummary": "Vikas Kumar Company is pleased to submit this comprehensive proposal in response to RFP IT-17022/20/2026-IT-ITPO for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "technicalApproach": "Our proposed methodology centers on structured research, strategic advisory, multi-stakeholder communication planning, and measurable impact tracking tailored to India Trade Promotion Organisation (ITPO).",
+        "implementationPlan": "Phase 1: Inception & Stakeholder Mapping (Weeks 1-3)\nPhase 2: Strategy Formulation & Advisory Roadmap (Weeks 4-8)\nPhase 3: Campaign Execution & Media Rollout (Months 3-6)\nPhase 4: Impact Evaluation & Deliverable Review (Ongoing)"
+      },
+      "createdAt": "2026-10-10T05:25:44.992Z",
+      "updatedAt": "2026-10-10T05:25:44.992Z"
+    },
+    {
+      "id": "tender_e12851e9-5b59-4783-af61-2355c55cdb4d",
+      "tenderNumber": "GEM/2026/B/8132982",
+      "title": "Event or Seminar or Workshop or Exhibition or Expo Management Service - National; Trade shows and expos; Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhi..",
+      "organization": "India Trade Promotion Organisation (ITPO)",
+      "category": "Event Management Services",
+      "portal": "GeM",
+      "estimatedValueINR": 5000000,
+      "estimatedValueDisplay": "₹50,00,000",
+      "emdAmountINR": null,
+      "emdDisplay": "",
+      "tenderFeeINR": null,
+      "publishDate": "2026-10-08",
+      "submissionDeadline": "2026-10-14T13:00:00",
+      "preBidMeetingDate": "2026-10-09T15:00:00",
+      "due": "14 Oct 2026, 01:00 pm",
+      "scopeSummary": "Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th IITF.",
+      "eligibilityCriteria": {
+        "minAnnualTurnoverINR": 0,
+        "minTurnoverDisplay": "Not specified",
+        "minExperienceYears": 5,
+        "requiredCertifications": [
+          "Experience Criteria",
+          "Bidder Turnover",
+          "Certificate (Requested in ATC)"
+        ],
+        "pastProjectRequirement": "Three similar completed services costing not less than 40% of estimated cost; or Two similar completed services costing not less than 50% of estimated cost; or One similar completed service costing not less than 80% of estimated cost."
+      },
+      "disqualificationGates": [
+        {
+          "id": "gate-1",
+          "title": "Land Border Restriction",
+          "category": "Legal Standing",
+          "clauseRef": "GeM GTC Clause 26",
+          "mandatoryRequirement": "Bidder from a country sharing a land border with India must be registered with the Competent Authority.",
+          "evidenceDoc": "Registration Certificate with Competent Authority",
+          "threatLevel": "CRITICAL"
+        }
+      ],
+      "complianceItems": [
+        {
+          "id": "comp_bc8dca48",
+          "clauseNo": "Experience Criteria",
+          "requirement": "5 Years of Past Experience required for same/similar service.",
+          "category": "Prior Experience",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical Experience Certificates/Work Orders are not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Copies of relevant contracts / orders"
+        },
+        {
+          "id": "comp_535891c6",
+          "clauseNo": "Bidder Turnover",
+          "requirement": "Bidder Turnover certificate required.",
+          "category": "Financial PQC",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical Audited Balance Sheets/Turnover Certificate is not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Audited Balance Sheets / Turnover Certificate"
+        },
+        {
+          "id": "comp_3d6c5925",
+          "clauseNo": "Statutory Compliance",
+          "requirement": "Compliance with Labour Laws and statutory requirements.",
+          "category": "Statutory Compliance",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical Statutory Compliance documents are not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Self-declaration/Undertaking"
+        }
+      ],
+      "teamStructure": null,
+      "detectedAnnexures": [
+        {
+          "formNumber": "Annexure-ANCE",
+          "title": "and Project / Past Experience etc.",
+          "description": "Mandatory tender submission document / undertaking"
+        },
+        {
+          "formNumber": "Annexure-AS",
+          "title": "a pre-requisite to qualify bidders.",
+          "description": "Mandatory tender submission document / undertaking"
+        }
+      ],
+      "keyRisks": [
+        {
+          "title": "Payment Timeline",
+          "description": "Payments made within 45 days of SDAC and bill submission.",
+          "riskLevel": "Medium"
+        },
+        {
+          "title": "QCBS Selection",
+          "description": "Bid is based on Quality & Cost Based Selection (70:30 weightage).",
+          "riskLevel": "High"
+        }
+      ],
+      "hasBOQ": false,
+      "boqType": "Milestone / Retainer Based (No Itemized BOQ)",
+      "rawTextSnippet": "\n\n\u0001बड\u0001बड  \u0001ववरण\u0001ववरण//Bid  Details\n\u0001बड\u0001बड  बंदबंद  होनेहोने  क\u0010क\u0010  तार\u0013खतार\u0013ख//समयसमय  /Bid End Date/Time14-10-2026 13:00:00\n\u0001बड\u0001बड  खुलनेखुलने  क\u0010क\u0010  तार\u0013खतार\u0013ख//समयसमय  /Bid Opening\nDate/Time\n15-10-2026 13:00:00\n\u0001बड\u0001बड  पेशकशपेशकश  वैधतावैधता ( (बंदबंद  होनेहोने  क\u0010क\u0010  तार\u0013खतार\u0013ख  सेसे))/Bid Offer\nValidity (From End Date)\n90 (Days)\nमं ालयमं ालय//रा!यरा!य  काका  नामनाम/Ministry/State NameMinistry Of Commerce And Industry\n\u0001वभाग\u0001वभाग  काका  नामनाम/Department NameDepartment Of Commerce\nसंगठनसंगठन  काका  नामनाम/Organisation NameIndia Trade Promotion Organisation (itpo)\nकाया%लयकाया%लय  काका  नामनाम/Office NameDelhi\nिशकायतिशकायत  िनवारणिनवारण  केके  संपक%संपक%  \u0001ववरण\u0001ववरण/ Contact details of\nGrievance redressal\nHOD Email id :madhurkumar@itpo.gov.in \nBuyer Email id: satishsharma@itpo.gov.in\nव'तुव'तु  (ेणी(ेणी  /Item Category\nEvent or Seminar or Workshop or Exhibition or Expo\nManagement Service - National; Trade shows and expos;\nEmpanelment of an Agency for Online Registration, m-\nBadge Generation, and Supply, Personalisation, Lamination\nand Distribution of Badges for Exhi..\nअनुबंधअनुबंध  अविधअविध  /Contract Period 2 Year(s)\nउ,ह\u0013ंउ,ह\u0013ं//समानसमान  सेवासेवा  केके  िलएिलए  अपे./तअपे./त  \u0001वगत\u0001वगत  अनुभवअनुभव  केके\nवष%वष%/Years of Past Experience Required for\nsame/similar service\n5 Year (s)\nइसीइसी  तरहतरह  क\u0010क\u0010  सेवाओंसेवाओं  काका  \u0001पछला\u0001पछला  आव5यकआव5यक  अनुभवअनुभव  हैहै/Past\nExperience of Similar Services required\nYes\nवष6वष6 केके अनुभवअनुभव एवंएवं टन%ओवरटन%ओवर सेसे एमएसईएमएसई कोको छ\nू\nटछ\nू\nट :ा;:ा; हैहै /\nMSE Relaxation for Years Of Experience\nand  Turnover\nYes | Complete\n'टाट%अप'टाट%अप केके िलएिलए अनुभवअनुभव केके वष6वष6 औरऔर टन%ओवरटन%ओवर सेसे छ\nू\nटछ\nू\nट :दान:दान\nक\u0010क\u0010 गईगई हैहै /Startup Relaxation for Years of\nExperience and Turnover\nNo\n\u0001व=े ता\u0001व=े ता  सेसे  मांगेमांगे  गएगए  द'तावेज़द'तावेज़/Document required\nfrom seller\nExperience Criteria,Bidder Turnover,Certificate (Requested\nin ATC)\n*In case any bidder is seeking exemption from Experience /\nTurnover Criteria, the supporting documents to prove his\neligibility for exemption must be uploaded for evaluation by\nthe buyer\n \n\u0001बड सं?या/Bid Number\n: \nGEM/2026/B/8132982\n@दनांक /Dated: 08-10-2026\n\u0001बड\u0001बड  द'तावेज़द'तावेज़ / Bid Document\n1 / 7\n\nHयाHया  आपआप  िन\u0001वदाकारIिन\u0001वदाकारI  JाराJारा  अपलोडअपलोड  @कए@कए  गएगए  द'तावेज़Iद'तावेज़I  कोको\nिन\u0001वदािन\u0001वदा  मKमK  भागभाग  लेनेलेने  वालेवाले  सभीसभी  िन\u0001वदाकारIिन\u0001वदाकारI  कोको  @दखाना@दखाना\nचाहतेचाहते  हMहM? ? संदभ%संदभ%  मेनूमेनू  हैहै/Do you want to show\ndocuments uploaded by bidders to all\nbidders participated in bid?\nYes (Documents submitted as part of a clarification or\nrepresentation during the tender/bid process will also be\ndisplayed to other participated bidders after log in)\n\u0001बड\u0001बड  लगानेलगाने  क\u0010क\u0010  समयसमय  सीमासीमा  'वतः'वतः  नह\u0013ंनह\u0013ं  बढ़ानेबढ़ाने  केके  िलएिलए\nआव5यकआव5यक  \u0001बड\u0001बड  क\u0010क\u0010  सं?यासं?या।। / Minimum number of\nbids required to disable automatic bid\nextension\n1\n@दनI@दनI  क\u0010क\u0010  सं?यासं?या, , .जनके.जनके  िलएिलए  \u0001बड\u0001बड  लगानेलगाने  क\u0010क\u0010  समयसमय--सीमासीमा\nबढ़ाईबढ़ाई  जाएगीजाएगी। / । / Number  of  days  for  which  Bid\nwould  be  auto--extended\n3\nऑटोऑटो  एHसटKशनएHसटKशन  अिधकतमअिधकतम  @कतनी@कतनी  बारबार  @कया@कया  जानाजाना  हैहै। /। /\nNumber  of  Auto  Extension  count\n1\n\u0001बड\u0001बड  सेसे  Uरवस%Uरवस%  नीलामीनीलामी  स@=यस@=य  @कया@कया/Bid to RA enabledNo\n=े ता=े ता  केके  िलएिलए  उपलVधउपलVध  आईट\u0013सीआईट\u0013सी/ITC available to\nbuyer\nYes\n\u0001बड\u0001बड  काका  :कार:कार/Type of BidTwo Packet Bid\nतकनीक\u0010तकनीक\u0010  मूWयांकनमूWयांकन  केके  दौरानदौरान  तकनीक\u0010तकनीक\u0010  'पYीकरण'पYीकरण  हेतुहेतु\nअनुमतअनुमत  समयसमय  /Time allowed for Technical\nClarifications during technical evaluation\n2 Days\nअनुमािनतअनुमािनत  िन\u0001वदािन\u0001वदा  मूWयमूWय ( (सभीसभी  करIकरI  स@हतस@हत) ) भारतीयभारतीय  ZपयेZपये  मKमK\n/ Estimated Bid Value in INR (Inclusive of all\ntaxes)\n5000000\nPayment Timelines\nPayments shall be made to the Seller within 45 days of\nissue of service delivery acceptance certificate (SDAC) and\non-line submission of bills (This is in supersession of 10 days\ntime as provided in clause 12 of GeM GTC)\nमूWयांकनमूWयांकन  प[ितप[ित/Evaluation MethodTotal value wise evaluation\nमूWयमूWय  दशा%नेदशा%ने  वालावाला  \u0001व\\ीय\u0001व\\ीय  द'तावेजद'तावेज  ]ेकअप]ेकअप  आव5यकआव5यक  हैहै /\nFinancial Document Indicating Price\nBreakup Required\nYes\n\u0001बड\u0001बड  \u0001ववरण\u0001ववरण//Bid  Details\nईएमड\u0013ईएमड\u0013  \u0001ववरण\u0001ववरण/EMD Detail\nआव5यकता/RequiredNo\nईपीबीजीईपीबीजी  \u0001ववरण\u0001ववरण  /ePBG Detail\nआव5यकता/RequiredNo\n2 / 7\n\nबोली \u0001वभाजन लागू नह\u0013ं @कया गया/Bid splitting not applied.\nएमआईआईएमआईआई  अनुपालनअनुपालन/MII Compliance\nएमआईआई अनुपालन/MII ComplianceYes\n^े_स^े_स  भुगतानभुगतान  संबंधीसंबंधी  \u0001ववरण\u0001ववरण/TReDS Payment Details\nThis Bid provides for Trade Receivables Discounting System (TReDS) as Preferred mode of payment.\nFor MSME sellers, payments may be processed through a TReDS exchange in which the Buyer is\nregistered, subject to applicable policy and regulatory guidelines. Accordingly, sellers intending to\navail payment through TReDS are required to be registered with at least one TReDS exchange in\nwhich the buyer is registered.\n1. If the bidder is a Micro or Small Enterprise as per latest orders issued by Ministry of MSME, the bidder shall be\nrelaxed from the eligibility criteria of \"Experience Criteria\" as defined above subject to meeting of quality and\ntechnical specifications. The bidder seeking Relaxation from Experience Criteria, shall upload the supporting\ndocuments to prove his eligibility for Relaxation.\n2. If the bidder is a Micro or Small Enterprise (MSE) as per latest orders issued by Ministry of MSME, the bidder\nshall be relaxed from the eligibility criteria of \"Bidder Turnover\" as defined above subject to meeting of quality\nand technical specifications. If the bidder itself is MSE OEM of the offered products, it would be relaxed from the\n\"OEM Average Turnover\" criteria also subject to meeting of quality and technical specifications. The bidder\nseeking Relaxation from Turnover, shall upload the supporting documents to prove his eligibility for Relaxation. \n3. Years of Past Experience required: The bidder must have experience for number of years as indicated above in\nbid document (ending month of March prior to the bid opening) of providing similar type of services to any\nCentral / State Govt Organization / PSU. Copies of relevant contracts / orders to be uploaded along with bid in\nsupport of having provided services during each of the Financial year. \n4. Estimated Bid Value indicated above is being declared solely for the purpose of guidance on EMD amount and\nfor determining the Eligibility Criteria related to Turn Over, Past Performance and Project / Past Experience etc.\nThis has no relevance or bearing on the price to be quoted by the bidders and is also not going to have any\nimpact on bid participation. Also this is not going to be used as a criteria in determining reasonableness of\nquoted prices which would be determined by the buyer based on its own assessment of reasonableness and\nbased on competitive prices received in Bid / RA process. \n5. Past Experience of Similar Services: The bidder must have successfully executed/completed similar Services\nover the last three years i.e. the current financial year and the last three financial years(ending month of March\nprior to the bid opening): - \n1. Three similar completed services costing not less than the amount equal to 40% (forty percent) of the\nestimated cost; or \n2. Two similar completed services costing not less than the amount equal to 50% (fifty percent) of the estimated\ncost; or \n3. One similar completed service costing not less than the amount equal to 80% (eighty percent) of the estimated\ncost. \n6. Short Duration Bid has been published by the Buyer with the approval of the Competent authority due to\nEmergency procurement of critical products/services. \nIf the buyer has mentioned MSE purchase preference in ATC then service provider is required to upload\nnecessary documents for MSE purchase preference for verification by the buyer during evaluation.\nएHसेलएHसेल  मKमK  अपलोडअपलोड  @कए@कए  जानेजाने  क\u0010क\u0010  आव5यकताआव5यकता  /Excel Upload Required :\nFinancial BOQ- RFP NO. IT-17022/20/2026-IT-ITPO - 1791441673.xlsx\nअितUर`अितUर`  योaयतायोaयता / /आव5यकआव5यक  डेटाडेटा/Additional Qualification/Data Required\nScope of Work to be uploaded by the Buyer:1791441703.pdf\n3 / 7\n\nThis Bid is based on Quality & Cost Based Selection (QCBS) . The parameter wise qualification\nrequirement is as under:-\nParameter NameMax MarksCutoff Marks\nQualification Methodology\nDocument\nTechnical Evaluation10070View File\nBuyer Defined Total Qualifying Marks for Technical Qualification: 70\nQCBS Weightage(Technical:Financial):70:30\nPresentation Venue:India Trade Promotion Organisation, Bharat Mandapam, New Delhi\nPre Bid Detail(s)\nमूWयमूWय िभ,नतािभ,नता खंडखंड द'तावेज़द'तावेज़/Pre-Bid\nDate and Time\n:ी:ी-\u0001बड\u0001बड 'थान'थान/Pre-Bid Venue\n09-10-2026 15:00:00India Trade Promotion Organisation, Bharat Mandapam, New Delhi\nEvent Or Seminar Or Workshop Or Exhibition Or Expo Management Service - National;\nTrade Shows And Expos; Empanelment Of An Agency For Online Registration, M-\nBadge Generation, And Supply, Personalisation, Lamination And Distribution Of\nBadges For Exhi.. ( 6 )\nतकनीक\u0010तकनीक\u0010  \u0001विश\u0001Yयाँ\u0001विश\u0001Yयाँ  /Technical Specifications\n\u0001ववरण\u0001ववरण/\nSpecification\nमूWयमूWय/ Values\nकोरकोर / Core\nLocation of\nevent\nNational\nStateNA\nDistrictNA\npincodeNA\nNature of eventsTrade shows and expos\nCategory of\nwork required\nEmpanelment of an Agency for Online Registration, m-Badge Generation, and Supply,\nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers,\nMedia and Officials for ITPO Domestic Events, including the 45th IITF\nEstimated\nNumber of\nParticipants for\nthe Event\nabove 300\nEvent premisesBuyer premise\nDuration of\nevent\n14 DAYS\nCoverage of the\nevent\nNot Required\nBoardingNot Required\n4 / 7\n\nInclusion for the\nevent\nNot Required\nSeating\narrangement\nNot Required\nएडऑनएडऑन  /Addon(s)\n\u0001ववरण\u0001ववरण/\nSpecification\nमूWयमूWय/ Values\n=े ता=े ता  JाराJारा  िनधा%Uरतिनधा%Uरत  ,यूनतम,यूनतम  मूWयमूWय/Minimum Floor Price defined by Buyer\n=े ता Jारा िनधा%Uरत ,यूनतम मूWय/Minimum Floor Price\ndefined by Buyer\nNo\nइनपुटइनपुट  करकर  =े @डट=े @डट((आईट\u0013सीआईट\u0013सी))  तथातथा  Uरवस%Uरवस%  :भार:भार ( (आरसीएमआरसीएम))/Input Tax Credit(ITC) and Reverse Charge(RCM) Details\nजीएसट\u0013जीएसट\u0013  परपर  इनपुटइनपुट  करकर  =े @डट=े @डट  /ITC on GSTजीएसट\u0013जीएसट\u0013  उपकरउपकर  करकर  =े @डट=े @डट  /ITC on GST Cess\n100%100%\nअितUर`अितUर`  \u0001विश\u0001Y\u0001विश\u0001Y  द'तावेज़द'तावेज़  /Additional Specification Documents\nपरे\u0001षतीपरे\u0001षती//Uरपो@टdगUरपो@टdग  अिधकार\u0013अिधकार\u0013  /Consignees/Reporting Officer and Quantity\n=.सं.=.सं./S.N\no.\nपरे\u0001षतीपरे\u0001षती//Uरपो@टdगUरपो@टdग\nअिधकार\u0013अिधकार\u0013  /Consignee\nReporting/Officer\nपतापता/Address\nसंसाधनIसंसाधनI क\u0010क\u0010 मा ामा ा\n/ Number of\nevent to be\norganized\nअितUर`अितUर` आव5यकताआव5यकता\n/Additional\nRequirement\n1Abhishek Chauhan\n110001,INDIA TRADE\nPROMOTION ORGANISATION,\nGATE NO.-3, PRAGATI BHAWAN,\nPRAGATI MAIDAN, NEW DELHI -\n110001.\n6N/A\n=े ता=े ता  JाराJारा  जोड़\u0013जोड़\u0013  गईगई  \u0001बड\u0001बड  क\u0010क\u0010  \u0001वशेष\u0001वशेष  शतgशतg/Buyer Added Bid Specific Terms and Conditions\n1. Buyer Added Bid Specific SLA\nFile Attachment Click here to view the file.\nअ'वीकरणअ'वीकरण/Disclaimer\nThe Additional Terms and Conditions (ATC) have been incorporated by the Buyer after approval of their\nCompetent Authority. The Buyer ,is solely responsible for the impact of these clauses on the bidding process, its\noutcome, and consequences thereof including any restriction arising in the bidding process due to these ATCs\n5 / 7\n\nand including the modification of technical specifications and / or terms and conditions governing the bid.All\nrepresentations / grievances pertaining to the ATC clauses shall be raised with the buyer organization directly\nand not with GeM.If any of the clause(s) is/are incorporated by the Buyer regarding the following, the bid &\nresultant contract shall be treated as null & void. Further, GeM reserves the right, at its sole discretion, to cancel\nthe bid forthwith, without issuance of any prior notice or intimation :-\n1. Publishing Custom / BOQ bids for items for which regular GeM categories are available (unless such\nCustom / BOQ item is bunched with the major regular product Category Item).\n2. Mandating procurement of / from specific Brand / Make / Model / Manufacturer / Dealer except in case of\nSingle Bid / Proprietary Article Certificate (PAC) Buying.\n3. Inclusion of disqualification criteria related to suspension of seller / service provider, where such\nsuspension period has already expired.\n4. Mandating submission of documents (other than EMD and signed Integrity Pact - which can be submitted\nwithin 5 days of bid opening) in physical form as a pre-requisite to qualify bidders.\n5. Publishing bids on GeM for procurement of works.\n6. Procurement of Goods by creating a Service bid on GeM & vice-versa.\n7. Seeking sample with bid or approval of samples during bid evaluation process. However, trial / sample, as\nthe case may be, shall be permitted in cases where trial / sample are allowed as per approved and\npublished procurement policy of the Buyers’ controlling Ministry / Department / State / Public Sector\nEnterprises Headquarters. If there is any violation of trial / sample clause with regard to approved policy\nof the Buyers’ Ministry / Department / State / Public Sector Enterprises Headquarters, then this is to be\ndetermined and redressed by the concerned Buyer Organisation only.\n8. Seeking experience from specific organization / department / institute only or from foreign / export\nexperience.\n9. Creating bid for items from incorrect categories.\n10. Reference of conditions published on any external site or reference to external documents/clauses.\n11. Asking for any Tender fee / Bid Participation fee, as the case may be.\n12. Buyer added ATC Clauses which are in contravention of clauses defined in bid detail section, including\nspecifications, EMD Detail, ePBG Detail and MII and MSE Purchase Preference sections of the bid, unless\notherwise allowed by the applicable GeM GTC.\n13. Any ATC clause in contravention with GeM GTC Clause 4 (xiii) (h) will be invalid. In case of multiple L1\nbidders against a service bid, the buyer shall place the Contract by selection of a bidder amongst the L-1\nbidders through a Random Algorithm executed by GeM system.\n14. In a category based bid, adding additional items, through buyer added, additional scope of work/\nadditional terms and conditions/or any other document. If buyer needs more items along with the main\nitem, the same must be added through bunching category based items or by bunching custom catalogues\nor bunching a BoQ with the main category based item, the same must not be done through ATC or Scope\nof Work.\nFurther, if any seller has any objection/grievance against these additional clauses or otherwise on any aspect of\nthis bid, they can raise their representation against the same by using the Representation window provided in\nthe bid details field in Seller dashboard after logging in as a seller. Buyer is duty bound to reply to all such\nrepresentations and would not be allowed to open bids if he fails to reply to such representations.\nAll GeM Sellers/Service Providers shall ensure full compliance with all applicable labour laws,\nincluding the provisions, rules, schemes and guidelines under the four Labour Codes i.e. the Code\non Wages, 2019; the Industrial Relations Code, 2020; the Occupational Safety, Health and Working\nConditions Code, 2020; and the Code on Social Security, 2020 as and when notified and brought into\nforce by the Government of India.\nFor all provisions of the Labour Codes that are pending operationalisation through rules, schemes or\nnotifications, the corresponding provisions of the pre-existing labour enactments (such as The\nMinimum Wages Act, 1948, The Payment of Wages Act, 1936, The Payment of Bonus Act, 1965, The\nEqual Remuneration Act, 1976, The Payment of Gratuity Act, 1972, etc. and relevant State Rules)\nshall continue to remain applicable.\nThe Seller/ Service Providers shall, therefore, be responsible for ensuring compliance under:\nAll notified and enforceable provisions of the new Labour Codes as mentioned hereinabove;\nand\n6 / 7\n\nAll operative provisions of the erstwhile Labour Laws until their complete substitution.\nAll obligations relating to wages, social security, safety, working conditions, industrial relations etc.\nand any other statutory requirements shall be strictly met by the Seller/ Service Provider. Any non-\ncompliance shall constitute a breach of the contract and shall entitle the Buyer to take appropriate\naction in accordance with the contract and applicable law.\nThis Bid is governed by the General Terms and Conditions, conditions stipulated in Bid and Service\nLevel Agreement specific to the Service, as the case may be, as provided in the Marketplace.\nHowever, in case of Service, if any condition specified in General Terms and Conditions is\ncontradicted by the conditions stipulated in Service Level Agreement specific to said Service, then it\nwill over-ride the conditions in the General Terms and Conditions.\nThis Bid is governed by the सामा,य िनयम और शतg/General Terms and Conditions, conditions stipulated in Bid and\nService Level Agreement specific to this Service as provided in the Marketplace. However in case if any condition\nspecified in सामा,य िनयम और शतg/General Terms and Conditions is contradicted by the conditions stipulated in\nService Level Agreement, then it will over ride the conditions in the General Terms and Conditions.\nजेम क\u0010 सामा,य शत6 के खंड 26 के संदभ% मK भारत के साथ भूिम सीमा साझा करने वाले देश के \u0001बडर से खर\u0013द पर :ितबंध के संबंध मK\nभारत के साथ भूिम सीमा साझा करने वाले देश का कोई भी \u0001बडर इस िन\u0001वदा मK \u0001बड देने के िलए तभी पा  होगा जब वह \u0001बड देने वाला\nस/म :ािधकार\u0013 के पास पंजीकृ त हो।\u0001बड मK भाग लेते समय \u0001बडर को इसका अनुपालन करना होगा और कोई भी गलत घोषणा @कए जाने\nव इसका अनुपालन न करने पर अनुबंध को तkकाल समा; करने और कानून के अनुसार आगे क\u0010 कानूनी कार%वाई का आधार होगा।/In  terms\nof GeM GTC clause 26 regarding Restrictions on procurement from a bidder of a country which shares a land border with India, any bidder from a country which shares a\nland border with India will be eligible to bid in this tender only if the bidder is registered with the Competent Authority. While participating in bid, Bidder has to undertake\ncompliance  of  this  and  any  false  declaration  and  non-compliance  of  this  would  be  a  ground  for  immediate  termination  of  the  contract  and  further  legal  action  in\naccordance with the laws.\n---ध,यवादध,यवाद/Thank You---\n7 / 7",
+      "documentMeta": {
+        "fileName": "1791609697371-434376865-GeM-Bidding-10003335.pdf",
+        "fileType": ".pdf",
+        "fileSizeBytes": 105742,
+        "pageCount": 7,
+        "isScanned": false,
+        "detectedSections": [
+          "Eligibility Criteria",
+          "Scope of Work",
+          "Terms and Conditions",
+          "Payment Milestones",
+          "Submission Guidelines"
+        ]
+      },
+      "uploadedFileName": "GeM-Bidding-10003335.pdf",
+      "status": "In Analysis",
+      "priority": "Medium",
+      "goNoGoAnalysis": {
+        "source": "AI Generated (Bid Intelligence Engine)",
+        "isCalculatedMetric": true,
+        "disclaimer": "Win Probability and Overall Score are AI-estimated predictive analytics based on qualification matching, not direct statements from the tender document.",
+        "decision": "GO",
+        "winProbability": 72,
+        "overallScore": 76,
+        "financialFitScore": 95,
+        "technicalFitScore": 65,
+        "experienceScore": 65,
+        "riskScore": 20,
+        "recommendationSummary": "Strong GO recommendation. With an overall qualification score of 76% and estimated Win Probability of 72%, the bidder profile satisfies technical, financial, and eligibility thresholds for \"Event or Seminar or Workshop or Exhibition or Expo Management Service - National; Trade shows and expos; Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhi..\".",
+        "swot": {
+          "strengths": [
+            "Bidder average turnover (₹16.2 Cr) comfortably exceeds RFP threshold of Not specified.",
+            "Meets the requirement of minimum 5 years of proven industry track record."
+          ],
+          "weaknesses": [
+            "Missing specific required certifications: Experience Criteria, Bidder Turnover, Certificate (Requested in ATC).",
+            "Relevant past project completion certificates need to be uploaded to Company Vault."
+          ],
+          "opportunities": [
+            "High-value strategic positioning as a core advisory and communication partner for the department.",
+            "Opportunity to establish long-term government stakeholder advisory & media planning footprint."
+          ],
+          "threats": [
+            "Strict deliverable timelines with multi-stakeholder review and milestone acceptance requirements."
+          ]
+        },
+        "keyClauses": [
+          {
+            "title": "Payment Timeline",
+            "description": "Payments made within 45 days of SDAC and bill submission.",
+            "riskLevel": "Medium"
+          },
+          {
+            "title": "QCBS Selection",
+            "description": "Bid is based on Quality & Cost Based Selection (70:30 weightage).",
+            "riskLevel": "High"
+          }
+        ]
+      },
+      "boqItems": [],
+      "proposals": {
+        "executiveSummary": "Vikas Kumar Company is pleased to submit this comprehensive proposal in response to RFP GEM/2026/B/8132982 for \"Event or Seminar or Workshop or Exhibition or Expo Management Service - National; Trade shows and expos; Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhi..\".",
+        "technicalApproach": "Our proposed methodology centers on structured research, strategic advisory, multi-stakeholder communication planning, and measurable impact tracking tailored to India Trade Promotion Organisation (ITPO).",
+        "implementationPlan": "Phase 1: Inception & Stakeholder Mapping (Weeks 1-3)\nPhase 2: Strategy Formulation & Advisory Roadmap (Weeks 4-8)\nPhase 3: Campaign Execution & Media Rollout (Months 3-6)\nPhase 4: Impact Evaluation & Deliverable Review (Ongoing)"
+      },
+      "createdAt": "2026-10-10T05:22:28.119Z",
+      "updatedAt": "2026-10-10T05:22:28.119Z"
+    },
+    {
+      "id": "tender_dfe53313-9a72-4c46-ab81-86c132906a5a",
+      "tenderNumber": "IT-17022/20/2026-IT-ITPO",
+      "title": "Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026",
+      "organization": "India Trade Promotion Organisation (ITPO)",
+      "category": "IT Services / Event Management",
+      "portal": "GeM Portal",
+      "estimatedValueINR": null,
+      "estimatedValueDisplay": "-",
+      "emdAmountINR": 100000,
+      "emdDisplay": "₹1,00,000",
+      "tenderFeeINR": 5000,
+      "publishDate": "2026-10-08",
+      "submissionDeadline": "2026-10-14T15:00:00",
+      "preBidMeetingDate": "2026-10-09T15:00:00",
+      "due": "14 Oct 2026, 03:00 pm",
+      "scopeSummary": "Provision of an online registration portal with approval workflow, m-badge generation with unique QR codes, supply, personalisation, lamination of PVC badges through kiosks, and distribution at event venues for ITPO domestic events. Includes real-time reporting and data handover.",
+      "eligibilityCriteria": {
+        "minAnnualTurnoverINR": 50000000,
+        "minTurnoverDisplay": "INR 5 Crore",
+        "minExperienceYears": 3,
+        "requiredCertifications": [
+          "GST Registration",
+          "EPFO Registration",
+          "ESIC Registration"
+        ],
+        "pastProjectRequirement": "Experience in executing similar works in at least 30 events in the last 5 years"
+      },
+      "disqualificationGates": [
+        {
+          "id": "gate-1",
+          "title": "Blacklisting Status",
+          "category": "Legal Standing",
+          "clauseRef": "Section 3, S.no 3",
+          "mandatoryRequirement": "Bidder must not have been blacklisted/debarred by any Central/State Government, PSU, or Quasi-Government authority.",
+          "evidenceDoc": "Self-declaration of non-blacklist certificate (Annexure-I)",
+          "threatLevel": "CRITICAL"
+        }
+      ],
+      "complianceItems": [
+        {
+          "id": "comp_f35642f6",
+          "clauseNo": "1",
+          "requirement": "Registered legal entity with minimum 3 years experience, valid GST, EPFO, and ESIC registrations.",
+          "category": "Registration / Incorporation",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical GST, EPFO, ESIC, and Incorporation documents are not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Certificate of Incorporation/Partnership Deed, PAN, GST, EPFO, ESIC registrations."
+        },
+        {
+          "id": "comp_2db6c2bc",
+          "clauseNo": "2",
+          "requirement": "Minimum annual turnover of INR 5 Crore in each of the last three financial years (FY 2023–24, FY 2024–25 and FY 2025–26).",
+          "category": "Average Turnover",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical CA audited turnover certificate is not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "CA certificate indicating turnover (Annexure-IV)."
+        },
+        {
+          "id": "comp_3fed439f",
+          "clauseNo": "4",
+          "requirement": "Functional/operational office in Delhi NCR.",
+          "category": "Statutory Compliance",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical address proof for Delhi-NCR office is not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Relevant document for address verification within Delhi-NCR."
+        },
+        {
+          "id": "comp_06e7c035",
+          "clauseNo": "5",
+          "requirement": "Experience in executing similar works in at least 30 events in the last 5 years.",
+          "category": "Prior Experience",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical work experience documents are not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Copies of work orders/ work award emails/ invoices/ completion certificates etc. (Annexure-II)."
+        }
+      ],
+      "teamStructure": {
+        "totalResources": 0,
+        "deploymentSummary": "Minimum 2 IT Support Engineers per shift and one Team Leader as single point of contact per event. Kiosk manned by 2 operators per shift.",
+        "teams": [
+          {
+            "teamName": "Kiosk Operations",
+            "resourceCount": 2,
+            "roles": [
+              "Kiosk Operator"
+            ]
+          },
+          {
+            "teamName": "IT Support",
+            "resourceCount": 2,
+            "roles": [
+              "IT Support Engineer"
+            ]
+          },
+          {
+            "teamName": "Management",
+            "resourceCount": 1,
+            "roles": [
+              "Team Leader"
+            ]
+          }
+        ]
+      },
+      "detectedAnnexures": [
+        {
+          "formNumber": "Annexure-I",
+          "title": "Affidavit for Undertaking",
+          "description": "Self-declaration of non-blacklist status"
+        },
+        {
+          "formNumber": "Annexure-II",
+          "title": "Experience of executing and successfully completing work",
+          "description": "Format for listing past project experience"
+        },
+        {
+          "formNumber": "Annexure-III",
+          "title": "Financial Bid Undertaking",
+          "description": "Confirmation of financial bid terms"
+        },
+        {
+          "formNumber": "Annexure-IV",
+          "title": "Financial Capability Statement",
+          "description": "CA certified turnover statement"
+        },
+        {
+          "formNumber": "Annexure-V",
+          "title": "Integrity Pact Undertaking",
+          "description": "Commitment to ethical practices"
+        }
+      ],
+      "keyRisks": [
+        {
+          "title": "Penalty for Delay",
+          "description": "2% of work order value per day for delays in portal go-live or setup, capped at 10%.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Data Security",
+          "description": "Misuse or unauthorized sharing of data leads to forfeiture of PBG and termination.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Operational Downtime",
+          "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+          "riskLevel": "Medium"
+        }
+      ],
+      "hasBOQ": false,
+      "boqType": "Milestone / Retainer Based (No Itemized BOQ)",
+      "rawTextSnippet": "\n\n \nRequest for Proposal (RFP) \nfor \nEmpanelment of an Agency for Online Registration, m-Badge Generation, and Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026, \nscheduled to be held at Bharat Mandapam, New Delhi from 13 – 27 November, 2026 \n \nIndia Trade Promotion Organisation (ITPO), \n(A Government of India Enterprise) \nGate No. 9, Bharat Mandapam, New Delhi – 110001 \nNo.:  IT-17022/20/2026-IT-ITPO \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 2 \nDISCLAIMER \n1.  The information contained in this bid document or subsequently provided to bidders, whether verbally or \nin documentary form or otherwise by or on behalf of India Trade Promotion Organisation (ITPO), or by \nany of its employees, is provided to bidders on the terms and conditions set out in this bid document and \nsuch other terms and conditions subject to which such information is provided. \n2.  The bid document is neither an agreement nor an offer by ITPO to prospective bidders or any other person. \nThe  purpose  of this  bid document  is  to provide  interested  parties  with  information  to  assist in the \nformulation of their proposals for selection pursuant to this bid. The assumptions, assessments, statements, \nand information contained in this bid document may not be complete, accurate, adequate, or correct and \neach bidder should conduct its own investigations and analysis and should check the accuracy, adequacy, \ncorrectness, reliability and completeness of the assumptions, assessments and information contained in \nthis Bid document and obtain independent advice from appropriate sources. \n3.  ITPO, or its employees, make no representation or warranty and shall have no liability to any person, \nincluding any bidder, under any law, statute, rules or regulations or tort, principles of restitution or unjust \nenrichment or otherwise for any loss damages, cost or expense which may arise from or be incurred or \nsuffered on account of anything contained in this Bid or otherwise, including the accuracy, adequacy, \ncorrectness, reliability or completeness of the Bid any assessment, assumption or information contained \ntherein or deemed to form part of this Bid document. \n4.  ITPO may in its absolute discretion, but without being under any obligation to do so, update, amend or \nsupplement the information, its assessment or assumptions contained in this bid document. Such changes \nshall be intimated to all the bidders. In case additional period for submission, if required due to such \namendments, is necessitated the same shall be intimated to all the bidders. \n5.  The issue of this bid document does not imply that ITPO is bound to select or to appoint any bidder for \nthe contract and it reserves the right to reject all or any of the bidders without assigning any reasons \nwhatsoever. \n6.  ITPO reserves the right not to proceed with the Bidding Process any time or stage, without notice or \nliability, and to reject any or all Bid(s) without assigning any reasons whatsoever. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 3 \nTABLE OF CONTENTS \nDISCLAIMER .................................................................................................................................................. 2 \nInvitation of e-Bids ........................................................................................................................................... 4 \nNotice Inviting Bids .......................................................................................................................................... 4 \n1. Introduction .................................................................................................................................................. 5 \n2. Objectives ...................................................................................................................................................... 5 \n3. Eligibility Criteria ........................................................................................................................................ 5 \n4. Technical Criteria ......................................................................................................................................... 6 \n5. Scope of Work (SoW) ................................................................................................................................... 7 \n6. Deliverables and Project Timelines ............................................................................................................. 8 \n7. Liquidated Damages and Penalties ............................................................................................................. 8 \n8. Payment Terms ............................................................................................................................................. 9 \n9. Opening and Evaluation of Bids.................................................................................................................. 9 \n10. Instruction to Bidders .............................................................................................................................. 10 \n11. General Terms and Conditions ............................................................................................................... 13 \nAnnexure-I: Affidavit for Undertaking ........................................................................................................ 18 \nAnnexure-II: Experience of executing and successfully completing work ................................................ 19 \nAnnexure–III: Financial Bid Undertaking ................................................................................................... 20 \nAnnexure-IV: Financial Capability Statement ............................................................................................ 21 \nAnnexure–V: Integrity Pact Undertaking .................................................................................................... 22 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 4 \nInvitation of e-Bids \nIndia Trade Promotion Organisation (ITPO) invites electronic bid (e-Bid) proposals from reputed, competent, \nand professional agencies which meet the minimum eligibility criteria and successfully qualify on technical \nevaluation parameters as specified in this RFP document. \n1.  Bidders (authorised signatory) shall submit their proposal or bid online in electronic formats both for \ntechnical and financial proposal. Bidders shall submit, along with their Bids, EMD amount mentioned in \nthe data sheet in the form of Demand Draft or online through NEFT/ RTGS as per bank details indicated \nin the NIB. \n2.  ITPO will not be responsible for delay in online submission due to any reason. For this, bidders are \nrequested to upload the complete bid well in advance so as to avoid 11th hour issues like slow speed, \nchoking of websites due to heavy load or any other unforeseen problems. \n3.  Please note that a pre-bid meeting of the prospective bidders is scheduled as per the details specified in \nthis NIB. The objective of this meeting is to address the queries of the prospective bidders related to the \nProject or RFP document. \n4.  No contractual obligation whatsoever shall arise from the RFP or bidding process unless and until a formal \nagreement is signed and executed between ITPO and the Service Provider. \n \nNotice Inviting Bids \nRFP Reference No.:  IT-17022/20/2026-IT-ITPO  Date: 08/10/2026 \nIndia Trade Promotion Organisation (ITPO), (A Government of India Enterprise) \nOffice Address: ITPO, Gate No. 9, Bharat Mandapam, New Delhi – 110001 (INDIA); Tel: 011-23371620 \nContact Person: Shri Madhur Kumar Shakya, DM (IT); Phone: 9643922174 \nEmail: computerdiv@itpo.gov.in; Website: https://www.itpo.gov.in/ \nEmpanelment  of  an  Agency  for  Online  Registration,  m-Badge  Generation,  and  Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026 \nTender fee Rs. 5000/- plus applicable taxes (non-refundable) \nEarnest Money Deposit (EMD) Rs. 100000/- \nMethod of Evaluation QCBS (70:30) – Technical: Financial \nDate of publishing NIB / e-Bid submission start 08/10/2026 \nPre-bid meeting date, time and venue 09/10/2026 AT 03:00 PM, ITPO Office, Bharat Mandapam \nPre-bid queries submission last date 09/10/2026 AT 03:00 PM \ne-Bid submission end date and time 14/10/2026 AT 03:00 PM \nTechnical e-bid opening date and time 15/10/2026 AT 03:00 PM \nTechnical  presentation  cum  demonstration  / \nFinancial e-bid opening \nTo be communicated to the qualified bidders \nBid validity 90 days from the bid submission end date \nEmpanelment Period 2 (two) years, extendable by 1 (one) + 1 (one) year, at the \nsole discretion of ITPO. Immediate requirement: 45th IITF, \n2026. Work orders shall be issued event-wise. \nPerformance Bank Guarantee (PBG) Refer Section 10.12 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 5 \nConsortium/ Joint Venture (JV) Not allowed \nSimilar Work Similar work shall mean providing online registration with \ne-badge/m-badge    generation,    along    with \nprinting/personalisation  and  distribution  of  badges  for \nexhibitors,  delegates,  staff  or  officials,  for  exhibitions, \ntrade fairs, conferences or events etc \nBank Details \nBeneficiary: India Trade Promotion Organisation (ITPO); \nBank:  CENTRAL  BANK  OF  INDIA,  BHARAT \nMANDAPAM, NEW DELHI-110001;  \nAccount No.: 1167404133 (SAVINGS);  \nIFSC: CBIN0284078 \n1. Introduction \nThe India Trade Promotion Organisation (ITPO) is a premier trade promotion agency under the Government \nof India, organising national and international exhibitions, conferences and trade events at Bharat Mandapam, \nNew Delhi. The immediate requirement for the aforementioned services is for 45th IITF, scheduled from 13th \nto 27th November, 2026. \nThrough this RFP, ITPO intends to empanel an agency for its domestic events to provide an online registration \nportal generating mobile badges (m-badges) with unique QR codes, and to supply, personalise, laminate and \ndistribute badges, for exhibitors, service providers, media, ITPO staff, government representatives and police \npersonnel. Work shall be assigned event-wise through work orders. About 1,00,000 badges are expected for \nthe 45th IITF; this figure is indicative only. \n2. Objectives \n• To provide an online registration portal with approval workflow, issuing m-badges with provided QR \ncodes to the eligible categories. \n• To supply, personalise and laminate badges through kiosks, and distribute them at counters at the event \nvenue. \n• To provide real-time reports to ITPO and hand over all data, which shall remain the property of ITPO. \n3. Eligibility Criteria \nMinimum eligibility criteria to be met by the bidder are as follows: \nS.no. Basis of Evaluation Documents Required \n1   The Bidder should be a registered legal entity with a \nminimum of 3 (three) years’ experience, with valid \nGST, EPFO and ESIC registrations. JV/Consortium is \nnot allowed. \nCopy of Certificate of \nIncorporation/Partnership \nDeed/Registration certificate, PAN, GST, \nEPFO and ESIC registrations, self-\ncertified by Authorized Signatory \n2   The Bidder shall have a minimum annual turnover of \nINR 5 Crore in each of the last three (3) financial \nyears (FY 2023–24, FY 2024–25 and FY 2025–26) \nCA certificate indicating turnover \n(Annexure-IV). \n3   The bidder must not have been blacklisted/debarred \nby any Central Government, State Government, PSU, \nor any Government/Quasi-Government authority as on \nthe date of submission of the bid \nSelf-declaration of non-blacklist certificate \n(Annexure-I). \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 6 \nS.no. Basis of Evaluation Documents Required \n4   The bidder must have a functional/operational office \nin Delhi NCR, with necessary manpower and support \ninfrastructure for execution of the project. \nRelevant document for address verification \nwithin Delhi-NCR \n5   The Bidder should have experience in executing \nsimilar works in at least 30 events in the last 5 years in \nGovernment/private events and exhibitions. \nCopies of work orders/ work award emails/ \ninvoices/  completion  certificates  etc. \ncertifying award of work. (Annexure-II). \nNote: \n1.  Any bid failing to meet the above eligibility criteria or any other conditions specified in the RFP shall \nbe summarily rejected and will not be considered for further evaluation. \n2.  All documents must be scanned and uploaded online. No physical copies are required. The decision \nof ITPO shall be final and binding. \n3.  Where audited accounts for FY 2025–26 are not yet available, FY 2022–23 to 2024–25 shall be \nconsidered, with a CA certificate (with valid UDIN); to that effect. \n4.  Bidders are advised to visit the site before submission of the bid. \n4. Technical Criteria \n# Criteria Maximum \nMarks \nDocuments Required \nA Experience of Works \nA1  Number of similar works completed in last 5 years: \n≥30 & <50 events – 10 marks \n≥50 & <100 events – 15 marks \n≥100 events – 25 marks \n25    Copies of work orders/ work \naward emails/ invoices/ \ncompletion certificates etc. \ncertifying award of work. \n(Annexure-II). \nB Financial Strength \nB1  Average Annual Turnover in last three financial years: \n≥ ₹ 5 Crore & < ₹ 7 Crore– 10 marks \n≥ ₹ 7 Crore & < ₹ 10 Crore – 15 marks \n≥ ₹ 10 Crore– 25 marks \n25    CA certificate indicating \nturnover (Annexure-IV). \nC Project Approach & Presentation \nC1  Understanding of Project & Deployment Plan \n(registration workflow, kiosks and distribution \ncounters)  \nRegistration Portal, Approval Workflow, Data Security \n& Gate-System Integration  \nLive Demonstration (time from scanning the m-badge \nat the kiosk to a personalised and laminated badge) \n50    Technical presentation and \nlive demonstration (during \nevaluation; not part of \ntechnical bid submission). \nTotal 100     \nBidders shall bring their own kiosk/printer/laminator and connectivity for the live demonstration, which shall \nbe made on the portal proposed to be deployed. A bidder failing to present on the scheduled date shall get zero \nmarks under Criteria C. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 7 \n5. Scope of Work (SoW) \nFor each ITPO domestic event for which a work order is issued, the empanelled agency shall provide an online \nregistration portal, generate m-badges, supply, personalise and laminate physical badges through kiosks, and \ndistribute the badges at the event venue, for the following categories: exhibitors, service providers, media, \nITPO staff, government representatives and police personnel, and any other category specified by ITPO. ITPO \nshall provide covered space with furniture, raw power, the QR code specification, lanyards and API of its Gate-\nManagement System (where deployed), and general security.  \n5.1. Registration Portal and m-Badge \n1.  The agency shall provide a mobile-friendly web portal with category-wise registration; login for \nexhibitors and organisations with badge quotas fixed by ITPO; bulk upload of lists by nodal officers \n(staff, government departments, police); OTP verification; upload of photograph and Government \nphoto ID; de-duplication; and an approval workflow for the officers designated by ITPO. The portal \nshall be live within 7 (seven) days of the work order. \n2.  On approval, the portal shall generate an m-badge with a unique QR code provided by ITPO, with \ncategory-wise access validity (zones/halls/days) as decided by ITPO, and deliver it through SMS, e-\nmail and/or WhatsApp. \n3.  The QR code shall be in the format specified by ITPO and, where a Gate-Management System is \ndeployed, the data shall be pushed to it in real time through API. Integration testing shall be completed \nat least 2 (two) days before badge issue begins. \n5.2. Badge Supply, Personalisation, Lamination and Distribution \n1. The agency shall set up and operate kiosks (quantity as specified by ITPO) at the identified locations \nby ITPO, during the badge issue period specified in the work order. \n2. The agency shall supply PVC badges, 8.5 cm × 13 cm, 0.8 mm thick, glossy finish, printed in full \ncolour  on  both  sides  with  the  event  logo  and  a  hologram,  and  personalised  with  the  holder's \nphotograph, name and QR code, as per the design approved by ITPO, in the quantity specified in the \nwork order. \n3. Each kiosk shall have a laptop / desktop, QR code scanner, a badge printer capable of printing on the \nPVC badges specified above and a laminator along with required stationery. On scanning the m-badge, \nthe kiosk shall personalise the badge with the holder’s name, organisation, category, photograph, \naccess zones and QR code, in the layout approved by ITPO, and laminate it, preferably within 60 \n(sixty) seconds. Each kiosk shall be manned by two operators per shift, with at least 10% standby \nequipment  at  the  venue.  Any  additional  operators or  assistants required  for  personalisation  and \ndistribution of badges shall be deployed by the agency, as per ITPO’s assessment, at no extra cost and \nwithin the rate quoted for operation and management of each kiosk. \n4. The agency shall operate a prescribed number of badge distribution counters at the locations identified \nby ITPO, with one staff member per counter per shift. \n5. Badges shall be handed over to the registrant, or to an authorised representative (exhibitor’s nominee \nor nodal officer) against an authorisation letter, after verification of the m-badge and photo ID. Every \nissue shall be recorded in the system, and bulk issues shall be made against signed acknowledgement. \nNo badge shall be issued or reprinted without an approved registration; reprints and replacement of \nlost badges shall be made only with the approval of ITPO’s designated officer and logged in the \nsystem. \n5.3. Manpower \n1.  Besides the kiosk operators and counter staff, the agency shall deploy a minimum of 2 (two) IT Support \nEngineers per shift and one Team Leader as the single point of contact for each event. All personnel \nshall be in uniform with identity cards and police-verified; their list shall be submitted three (3) days \nbefore deployment. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 8 \n2.  The agency shall pay wages not less than the applicable minimum wages and ensure all EPFO/ESIC \nrelated compliances. \n5.4. Reporting, Data Ownership and Handover \n1.  The agency shall provide ITPO a login to a real-time dashboard of registrations, approvals, badges \npersonalised and badges distributed, and submit a daily MIS report by 12:00 hrs on the following day. \n2.  All data collected shall be the sole property of ITPO and shall be used only for this contract, in \ncompliance with the applicable law, including the Digital Personal Data Protection Act, 2023. The \ncomplete data for each event, including photographs and the badge issue register, shall be handed over \nto ITPO within seven (7) days of the conclusion of the event, and thereafter deleted from the agency’s \nsystems, with a certificate of deletion. \n5.5. Exit & Default Conditions \nIf the bidder fails to make the portal live or set up the kiosks and counters within the timelines, maintain the \nservices as per the RFP, or protect the data, ITPO reserves the right to terminate the contract, encash PBG, and \nblacklist the bidder as per RFP conditions. \nNOTE: Quantities shall be specified in each work order, and ITPO does not guarantee any minimum volume \nof work. Vi",
+      "documentMeta": {
+        "fileName": "1791608387474-626769821-RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+        "fileType": ".pdf",
+        "fileSizeBytes": 519357,
+        "pageCount": 23,
+        "isScanned": false,
+        "detectedSections": [
+          "Eligibility Criteria",
+          "Scope of Work",
+          "Terms and Conditions",
+          "Liquidated Damages & Penalties",
+          "Payment Milestones",
+          "EMD & Bid Security",
+          "Submission Guidelines",
+          "Annexures & Undertakings",
+          "Mandatory Declarations"
+        ]
+      },
+      "uploadedFileName": "RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+      "status": "In Analysis",
+      "priority": "Medium",
+      "goNoGoAnalysis": {
+        "source": "AI Generated (Bid Intelligence Engine)",
+        "isCalculatedMetric": true,
+        "disclaimer": "Win Probability and Overall Score are AI-estimated predictive analytics based on qualification matching, not direct statements from the tender document.",
+        "decision": "GO",
+        "winProbability": 72,
+        "overallScore": 76,
+        "financialFitScore": 95,
+        "technicalFitScore": 65,
+        "experienceScore": 65,
+        "riskScore": 20,
+        "recommendationSummary": "Strong GO recommendation. With an overall qualification score of 76% and estimated Win Probability of 72%, the bidder profile satisfies technical, financial, and eligibility thresholds for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "swot": {
+          "strengths": [
+            "Bidder average turnover (₹16.2 Cr) comfortably exceeds RFP threshold of INR 5 Crore.",
+            "Meets the requirement of minimum 3 years of proven industry track record."
+          ],
+          "weaknesses": [
+            "Missing specific required certifications: GST Registration, EPFO Registration, ESIC Registration.",
+            "Relevant past project completion certificates need to be uploaded to Company Vault."
+          ],
+          "opportunities": [
+            "High-value strategic positioning as a core advisory and communication partner for the department.",
+            "Opportunity to establish long-term government stakeholder advisory & media planning footprint."
+          ],
+          "threats": [
+            "Strict deliverable timelines with multi-stakeholder review and milestone acceptance requirements."
+          ]
+        },
+        "keyClauses": [
+          {
+            "title": "Penalty for Delay",
+            "description": "2% of work order value per day for delays in portal go-live or setup, capped at 10%.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Data Security",
+            "description": "Misuse or unauthorized sharing of data leads to forfeiture of PBG and termination.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Operational Downtime",
+            "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+            "riskLevel": "Medium"
+          }
+        ]
+      },
+      "boqItems": [],
+      "proposals": {
+        "executiveSummary": "Vikas Kumar Company is pleased to submit this comprehensive proposal in response to RFP IT-17022/20/2026-IT-ITPO for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "technicalApproach": "Our proposed methodology centers on structured research, strategic advisory, multi-stakeholder communication planning, and measurable impact tracking tailored to India Trade Promotion Organisation (ITPO).",
+        "implementationPlan": "Phase 1: Inception & Stakeholder Mapping (Weeks 1-3)\nPhase 2: Strategy Formulation & Advisory Roadmap (Weeks 4-8)\nPhase 3: Campaign Execution & Media Rollout (Months 3-6)\nPhase 4: Impact Evaluation & Deliverable Review (Ongoing)"
+      },
+      "createdAt": "2026-10-10T05:00:09.192Z",
+      "updatedAt": "2026-10-10T05:00:09.192Z"
+    },
+    {
+      "id": "tender_5a06eaa0-b3cd-4f32-99cd-051455ce5f9f",
+      "tenderNumber": "IT-17022/20/2026-IT-ITPO",
+      "title": "Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026",
+      "organization": "India Trade Promotion Organisation (ITPO)",
+      "category": "IT Services / Event Management",
+      "portal": "GeM Portal",
+      "estimatedValueINR": null,
+      "estimatedValueDisplay": "-",
+      "emdAmountINR": 100000,
+      "emdDisplay": "₹1,00,000",
+      "tenderFeeINR": 5000,
+      "publishDate": "2026-10-08",
+      "submissionDeadline": "2026-10-14T15:00:00",
+      "preBidMeetingDate": "2026-10-09T15:00:00",
+      "due": "14 Oct 2026, 03:00 pm",
+      "scopeSummary": "Provision of an online registration portal with approval workflow, m-badge generation with unique QR codes, supply, personalisation, lamination of PVC badges through kiosks, and distribution at event venues for ITPO domestic events including the 45th IITF 2026.",
+      "eligibilityCriteria": {
+        "minAnnualTurnoverINR": 50000000,
+        "minTurnoverDisplay": "INR 5 Crore",
+        "minExperienceYears": 3,
+        "requiredCertifications": [
+          "GST Registration",
+          "EPFO Registration",
+          "ESIC Registration"
+        ],
+        "pastProjectRequirement": "Experience in executing similar works in at least 30 events in the last 5 years in Government/private events and exhibitions."
+      },
+      "disqualificationGates": [
+        {
+          "id": "gate-1",
+          "title": "Blacklisting Status",
+          "category": "Legal Standing",
+          "clauseRef": "Section 3, S.no 3",
+          "mandatoryRequirement": "Bidder must not have been blacklisted/debarred by any Central Government, State Government, PSU, or any Government/Quasi-Government authority.",
+          "evidenceDoc": "Self-declaration of non-blacklist certificate (Annexure-I)",
+          "threatLevel": "CRITICAL"
+        },
+        {
+          "id": "gate-2",
+          "title": "Turnover Requirement",
+          "category": "Financial PQC",
+          "clauseRef": "Section 3, S.no 2",
+          "mandatoryRequirement": "Minimum annual turnover of INR 5 Crore in each of the last three financial years (FY 2023–24, FY 2024–25 and FY 2025–26).",
+          "evidenceDoc": "CA certificate indicating turnover (Annexure-IV)",
+          "threatLevel": "HIGH"
+        }
+      ],
+      "complianceItems": [
+        {
+          "id": "comp_97655b35",
+          "clauseNo": "1",
+          "requirement": "Registered legal entity with minimum 3 years experience, valid GST, EPFO and ESIC registrations.",
+          "category": "Registration / Incorporation",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical GST, EPFO, ESIC, and Incorporation documents are not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Copy of Certificate of Incorporation/Partnership Deed/Registration certificate, PAN, GST, EPFO and ESIC registrations."
+        },
+        {
+          "id": "comp_be861a76",
+          "clauseNo": "2",
+          "requirement": "Minimum annual turnover of INR 5 Crore in each of the last three financial years.",
+          "category": "Average Turnover",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical CA audited turnover certificate is not uploaded in Company Vault. Upload required in Vault to achieve Pass status.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "CA certificate indicating turnover (Annexure-IV)."
+        },
+        {
+          "id": "comp_d25ee522",
+          "clauseNo": "4",
+          "requirement": "Functional/operational office in Delhi NCR.",
+          "category": "Statutory Compliance",
+          "isMandatory": true,
+          "status": "Pending Verification",
+          "justification": "Physical address proof for Delhi-NCR office is not uploaded in Company Vault.",
+          "deviationRemarks": "None",
+          "evidenceDoc": "Relevant document for address verification within Delhi-NCR."
+        }
+      ],
+      "teamStructure": {
+        "totalResources": 3,
+        "deploymentSummary": "Minimum of 2 IT Support Engineers per shift and one Team Leader as the single point of contact for each event.",
+        "teams": [
+          {
+            "teamName": "Event Operations Team",
+            "resourceCount": 3,
+            "roles": [
+              "IT Support Engineer",
+              "Team Leader"
+            ]
+          }
+        ]
+      },
+      "detectedAnnexures": [
+        {
+          "formNumber": "Annexure-I",
+          "title": "Affidavit for Undertaking",
+          "description": "Self-declaration of non-blacklist status."
+        },
+        {
+          "formNumber": "Annexure-II",
+          "title": "Experience of executing and successfully completing work",
+          "description": "Details of past similar work experience."
+        },
+        {
+          "formNumber": "Annexure-III",
+          "title": "Financial Bid Undertaking",
+          "description": "Undertaking for financial bid submission."
+        },
+        {
+          "formNumber": "Annexure-IV",
+          "title": "Financial Capability Statement",
+          "description": "CA certified turnover statement."
+        },
+        {
+          "formNumber": "Annexure-V",
+          "title": "Integrity Pact Undertaking",
+          "description": "Signed integrity pact."
+        }
+      ],
+      "keyRisks": [
+        {
+          "title": "Penalty for Non-performance",
+          "description": "2% of work order value per day for delay in portal go-live, subject to 10% cap.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Data Security",
+          "description": "Misuse or unauthorised sharing of data leads to forfeiture of PBG and termination.",
+          "riskLevel": "High"
+        },
+        {
+          "title": "Operational Downtime",
+          "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+          "riskLevel": "Medium"
+        }
+      ],
+      "hasBOQ": false,
+      "boqType": "Milestone / Retainer Based (No Itemized BOQ)",
+      "rawTextSnippet": "\n\n \nRequest for Proposal (RFP) \nfor \nEmpanelment of an Agency for Online Registration, m-Badge Generation, and Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026, \nscheduled to be held at Bharat Mandapam, New Delhi from 13 – 27 November, 2026 \n \nIndia Trade Promotion Organisation (ITPO), \n(A Government of India Enterprise) \nGate No. 9, Bharat Mandapam, New Delhi – 110001 \nNo.:  IT-17022/20/2026-IT-ITPO \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 2 \nDISCLAIMER \n1.  The information contained in this bid document or subsequently provided to bidders, whether verbally or \nin documentary form or otherwise by or on behalf of India Trade Promotion Organisation (ITPO), or by \nany of its employees, is provided to bidders on the terms and conditions set out in this bid document and \nsuch other terms and conditions subject to which such information is provided. \n2.  The bid document is neither an agreement nor an offer by ITPO to prospective bidders or any other person. \nThe  purpose  of this  bid document  is  to provide  interested  parties  with  information  to  assist in the \nformulation of their proposals for selection pursuant to this bid. The assumptions, assessments, statements, \nand information contained in this bid document may not be complete, accurate, adequate, or correct and \neach bidder should conduct its own investigations and analysis and should check the accuracy, adequacy, \ncorrectness, reliability and completeness of the assumptions, assessments and information contained in \nthis Bid document and obtain independent advice from appropriate sources. \n3.  ITPO, or its employees, make no representation or warranty and shall have no liability to any person, \nincluding any bidder, under any law, statute, rules or regulations or tort, principles of restitution or unjust \nenrichment or otherwise for any loss damages, cost or expense which may arise from or be incurred or \nsuffered on account of anything contained in this Bid or otherwise, including the accuracy, adequacy, \ncorrectness, reliability or completeness of the Bid any assessment, assumption or information contained \ntherein or deemed to form part of this Bid document. \n4.  ITPO may in its absolute discretion, but without being under any obligation to do so, update, amend or \nsupplement the information, its assessment or assumptions contained in this bid document. Such changes \nshall be intimated to all the bidders. In case additional period for submission, if required due to such \namendments, is necessitated the same shall be intimated to all the bidders. \n5.  The issue of this bid document does not imply that ITPO is bound to select or to appoint any bidder for \nthe contract and it reserves the right to reject all or any of the bidders without assigning any reasons \nwhatsoever. \n6.  ITPO reserves the right not to proceed with the Bidding Process any time or stage, without notice or \nliability, and to reject any or all Bid(s) without assigning any reasons whatsoever. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 3 \nTABLE OF CONTENTS \nDISCLAIMER .................................................................................................................................................. 2 \nInvitation of e-Bids ........................................................................................................................................... 4 \nNotice Inviting Bids .......................................................................................................................................... 4 \n1. Introduction .................................................................................................................................................. 5 \n2. Objectives ...................................................................................................................................................... 5 \n3. Eligibility Criteria ........................................................................................................................................ 5 \n4. Technical Criteria ......................................................................................................................................... 6 \n5. Scope of Work (SoW) ................................................................................................................................... 7 \n6. Deliverables and Project Timelines ............................................................................................................. 8 \n7. Liquidated Damages and Penalties ............................................................................................................. 8 \n8. Payment Terms ............................................................................................................................................. 9 \n9. Opening and Evaluation of Bids.................................................................................................................. 9 \n10. Instruction to Bidders .............................................................................................................................. 10 \n11. General Terms and Conditions ............................................................................................................... 13 \nAnnexure-I: Affidavit for Undertaking ........................................................................................................ 18 \nAnnexure-II: Experience of executing and successfully completing work ................................................ 19 \nAnnexure–III: Financial Bid Undertaking ................................................................................................... 20 \nAnnexure-IV: Financial Capability Statement ............................................................................................ 21 \nAnnexure–V: Integrity Pact Undertaking .................................................................................................... 22 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 4 \nInvitation of e-Bids \nIndia Trade Promotion Organisation (ITPO) invites electronic bid (e-Bid) proposals from reputed, competent, \nand professional agencies which meet the minimum eligibility criteria and successfully qualify on technical \nevaluation parameters as specified in this RFP document. \n1.  Bidders (authorised signatory) shall submit their proposal or bid online in electronic formats both for \ntechnical and financial proposal. Bidders shall submit, along with their Bids, EMD amount mentioned in \nthe data sheet in the form of Demand Draft or online through NEFT/ RTGS as per bank details indicated \nin the NIB. \n2.  ITPO will not be responsible for delay in online submission due to any reason. For this, bidders are \nrequested to upload the complete bid well in advance so as to avoid 11th hour issues like slow speed, \nchoking of websites due to heavy load or any other unforeseen problems. \n3.  Please note that a pre-bid meeting of the prospective bidders is scheduled as per the details specified in \nthis NIB. The objective of this meeting is to address the queries of the prospective bidders related to the \nProject or RFP document. \n4.  No contractual obligation whatsoever shall arise from the RFP or bidding process unless and until a formal \nagreement is signed and executed between ITPO and the Service Provider. \n \nNotice Inviting Bids \nRFP Reference No.:  IT-17022/20/2026-IT-ITPO  Date: 08/10/2026 \nIndia Trade Promotion Organisation (ITPO), (A Government of India Enterprise) \nOffice Address: ITPO, Gate No. 9, Bharat Mandapam, New Delhi – 110001 (INDIA); Tel: 011-23371620 \nContact Person: Shri Madhur Kumar Shakya, DM (IT); Phone: 9643922174 \nEmail: computerdiv@itpo.gov.in; Website: https://www.itpo.gov.in/ \nEmpanelment  of  an  Agency  for  Online  Registration,  m-Badge  Generation,  and  Supply, \nPersonalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and \nOfficials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026 \nTender fee Rs. 5000/- plus applicable taxes (non-refundable) \nEarnest Money Deposit (EMD) Rs. 100000/- \nMethod of Evaluation QCBS (70:30) – Technical: Financial \nDate of publishing NIB / e-Bid submission start 08/10/2026 \nPre-bid meeting date, time and venue 09/10/2026 AT 03:00 PM, ITPO Office, Bharat Mandapam \nPre-bid queries submission last date 09/10/2026 AT 03:00 PM \ne-Bid submission end date and time 14/10/2026 AT 03:00 PM \nTechnical e-bid opening date and time 15/10/2026 AT 03:00 PM \nTechnical  presentation  cum  demonstration  / \nFinancial e-bid opening \nTo be communicated to the qualified bidders \nBid validity 90 days from the bid submission end date \nEmpanelment Period 2 (two) years, extendable by 1 (one) + 1 (one) year, at the \nsole discretion of ITPO. Immediate requirement: 45th IITF, \n2026. Work orders shall be issued event-wise. \nPerformance Bank Guarantee (PBG) Refer Section 10.12 \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 5 \nConsortium/ Joint Venture (JV) Not allowed \nSimilar Work Similar work shall mean providing online registration with \ne-badge/m-badge    generation,    along    with \nprinting/personalisation  and  distribution  of  badges  for \nexhibitors,  delegates,  staff  or  officials,  for  exhibitions, \ntrade fairs, conferences or events etc \nBank Details \nBeneficiary: India Trade Promotion Organisation (ITPO); \nBank:  CENTRAL  BANK  OF  INDIA,  BHARAT \nMANDAPAM, NEW DELHI-110001;  \nAccount No.: 1167404133 (SAVINGS);  \nIFSC: CBIN0284078 \n1. Introduction \nThe India Trade Promotion Organisation (ITPO) is a premier trade promotion agency under the Government \nof India, organising national and international exhibitions, conferences and trade events at Bharat Mandapam, \nNew Delhi. The immediate requirement for the aforementioned services is for 45th IITF, scheduled from 13th \nto 27th November, 2026. \nThrough this RFP, ITPO intends to empanel an agency for its domestic events to provide an online registration \nportal generating mobile badges (m-badges) with unique QR codes, and to supply, personalise, laminate and \ndistribute badges, for exhibitors, service providers, media, ITPO staff, government representatives and police \npersonnel. Work shall be assigned event-wise through work orders. About 1,00,000 badges are expected for \nthe 45th IITF; this figure is indicative only. \n2. Objectives \n• To provide an online registration portal with approval workflow, issuing m-badges with provided QR \ncodes to the eligible categories. \n• To supply, personalise and laminate badges through kiosks, and distribute them at counters at the event \nvenue. \n• To provide real-time reports to ITPO and hand over all data, which shall remain the property of ITPO. \n3. Eligibility Criteria \nMinimum eligibility criteria to be met by the bidder are as follows: \nS.no. Basis of Evaluation Documents Required \n1   The Bidder should be a registered legal entity with a \nminimum of 3 (three) years’ experience, with valid \nGST, EPFO and ESIC registrations. JV/Consortium is \nnot allowed. \nCopy of Certificate of \nIncorporation/Partnership \nDeed/Registration certificate, PAN, GST, \nEPFO and ESIC registrations, self-\ncertified by Authorized Signatory \n2   The Bidder shall have a minimum annual turnover of \nINR 5 Crore in each of the last three (3) financial \nyears (FY 2023–24, FY 2024–25 and FY 2025–26) \nCA certificate indicating turnover \n(Annexure-IV). \n3   The bidder must not have been blacklisted/debarred \nby any Central Government, State Government, PSU, \nor any Government/Quasi-Government authority as on \nthe date of submission of the bid \nSelf-declaration of non-blacklist certificate \n(Annexure-I). \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 6 \nS.no. Basis of Evaluation Documents Required \n4   The bidder must have a functional/operational office \nin Delhi NCR, with necessary manpower and support \ninfrastructure for execution of the project. \nRelevant document for address verification \nwithin Delhi-NCR \n5   The Bidder should have experience in executing \nsimilar works in at least 30 events in the last 5 years in \nGovernment/private events and exhibitions. \nCopies of work orders/ work award emails/ \ninvoices/  completion  certificates  etc. \ncertifying award of work. (Annexure-II). \nNote: \n1.  Any bid failing to meet the above eligibility criteria or any other conditions specified in the RFP shall \nbe summarily rejected and will not be considered for further evaluation. \n2.  All documents must be scanned and uploaded online. No physical copies are required. The decision \nof ITPO shall be final and binding. \n3.  Where audited accounts for FY 2025–26 are not yet available, FY 2022–23 to 2024–25 shall be \nconsidered, with a CA certificate (with valid UDIN); to that effect. \n4.  Bidders are advised to visit the site before submission of the bid. \n4. Technical Criteria \n# Criteria Maximum \nMarks \nDocuments Required \nA Experience of Works \nA1  Number of similar works completed in last 5 years: \n≥30 & <50 events – 10 marks \n≥50 & <100 events – 15 marks \n≥100 events – 25 marks \n25    Copies of work orders/ work \naward emails/ invoices/ \ncompletion certificates etc. \ncertifying award of work. \n(Annexure-II). \nB Financial Strength \nB1  Average Annual Turnover in last three financial years: \n≥ ₹ 5 Crore & < ₹ 7 Crore– 10 marks \n≥ ₹ 7 Crore & < ₹ 10 Crore – 15 marks \n≥ ₹ 10 Crore– 25 marks \n25    CA certificate indicating \nturnover (Annexure-IV). \nC Project Approach & Presentation \nC1  Understanding of Project & Deployment Plan \n(registration workflow, kiosks and distribution \ncounters)  \nRegistration Portal, Approval Workflow, Data Security \n& Gate-System Integration  \nLive Demonstration (time from scanning the m-badge \nat the kiosk to a personalised and laminated badge) \n50    Technical presentation and \nlive demonstration (during \nevaluation; not part of \ntechnical bid submission). \nTotal 100     \nBidders shall bring their own kiosk/printer/laminator and connectivity for the live demonstration, which shall \nbe made on the portal proposed to be deployed. A bidder failing to present on the scheduled date shall get zero \nmarks under Criteria C. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 7 \n5. Scope of Work (SoW) \nFor each ITPO domestic event for which a work order is issued, the empanelled agency shall provide an online \nregistration portal, generate m-badges, supply, personalise and laminate physical badges through kiosks, and \ndistribute the badges at the event venue, for the following categories: exhibitors, service providers, media, \nITPO staff, government representatives and police personnel, and any other category specified by ITPO. ITPO \nshall provide covered space with furniture, raw power, the QR code specification, lanyards and API of its Gate-\nManagement System (where deployed), and general security.  \n5.1. Registration Portal and m-Badge \n1.  The agency shall provide a mobile-friendly web portal with category-wise registration; login for \nexhibitors and organisations with badge quotas fixed by ITPO; bulk upload of lists by nodal officers \n(staff, government departments, police); OTP verification; upload of photograph and Government \nphoto ID; de-duplication; and an approval workflow for the officers designated by ITPO. The portal \nshall be live within 7 (seven) days of the work order. \n2.  On approval, the portal shall generate an m-badge with a unique QR code provided by ITPO, with \ncategory-wise access validity (zones/halls/days) as decided by ITPO, and deliver it through SMS, e-\nmail and/or WhatsApp. \n3.  The QR code shall be in the format specified by ITPO and, where a Gate-Management System is \ndeployed, the data shall be pushed to it in real time through API. Integration testing shall be completed \nat least 2 (two) days before badge issue begins. \n5.2. Badge Supply, Personalisation, Lamination and Distribution \n1. The agency shall set up and operate kiosks (quantity as specified by ITPO) at the identified locations \nby ITPO, during the badge issue period specified in the work order. \n2. The agency shall supply PVC badges, 8.5 cm × 13 cm, 0.8 mm thick, glossy finish, printed in full \ncolour  on  both  sides  with  the  event  logo  and  a  hologram,  and  personalised  with  the  holder's \nphotograph, name and QR code, as per the design approved by ITPO, in the quantity specified in the \nwork order. \n3. Each kiosk shall have a laptop / desktop, QR code scanner, a badge printer capable of printing on the \nPVC badges specified above and a laminator along with required stationery. On scanning the m-badge, \nthe kiosk shall personalise the badge with the holder’s name, organisation, category, photograph, \naccess zones and QR code, in the layout approved by ITPO, and laminate it, preferably within 60 \n(sixty) seconds. Each kiosk shall be manned by two operators per shift, with at least 10% standby \nequipment  at  the  venue.  Any  additional  operators or  assistants required  for  personalisation  and \ndistribution of badges shall be deployed by the agency, as per ITPO’s assessment, at no extra cost and \nwithin the rate quoted for operation and management of each kiosk. \n4. The agency shall operate a prescribed number of badge distribution counters at the locations identified \nby ITPO, with one staff member per counter per shift. \n5. Badges shall be handed over to the registrant, or to an authorised representative (exhibitor’s nominee \nor nodal officer) against an authorisation letter, after verification of the m-badge and photo ID. Every \nissue shall be recorded in the system, and bulk issues shall be made against signed acknowledgement. \nNo badge shall be issued or reprinted without an approved registration; reprints and replacement of \nlost badges shall be made only with the approval of ITPO’s designated officer and logged in the \nsystem. \n5.3. Manpower \n1.  Besides the kiosk operators and counter staff, the agency shall deploy a minimum of 2 (two) IT Support \nEngineers per shift and one Team Leader as the single point of contact for each event. All personnel \nshall be in uniform with identity cards and police-verified; their list shall be submitted three (3) days \nbefore deployment. \n\nRFP – Empanelment for Badge Registration, Personalisation and Distribution, ITPO Events 8 \n2.  The agency shall pay wages not less than the applicable minimum wages and ensure all EPFO/ESIC \nrelated compliances. \n5.4. Reporting, Data Ownership and Handover \n1.  The agency shall provide ITPO a login to a real-time dashboard of registrations, approvals, badges \npersonalised and badges distributed, and submit a daily MIS report by 12:00 hrs on the following day. \n2.  All data collected shall be the sole property of ITPO and shall be used only for this contract, in \ncompliance with the applicable law, including the Digital Personal Data Protection Act, 2023. The \ncomplete data for each event, including photographs and the badge issue register, shall be handed over \nto ITPO within seven (7) days of the conclusion of the event, and thereafter deleted from the agency’s \nsystems, with a certificate of deletion. \n5.5. Exit & Default Conditions \nIf the bidder fails to make the portal live or set up the kiosks and counters within the timelines, maintain the \nservices as per the RFP, or protect the data, ITPO reserves the right to terminate the contract, encash PBG, and \nblacklist the bidder as per RFP conditions. \nNOTE: Quantities shall be specified in each work order, and ITPO does not guarantee any minimum volume \nof work. Vi",
+      "documentMeta": {
+        "fileName": "1791532101265-365491110-RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+        "fileType": ".pdf",
+        "fileSizeBytes": 519357,
+        "pageCount": 23,
+        "isScanned": false,
+        "detectedSections": [
+          "Eligibility Criteria",
+          "Scope of Work",
+          "Terms and Conditions",
+          "Liquidated Damages & Penalties",
+          "Payment Milestones",
+          "EMD & Bid Security",
+          "Submission Guidelines",
+          "Annexures & Undertakings",
+          "Mandatory Declarations"
+        ]
+      },
+      "uploadedFileName": "RFP_BVRC_012e8315-8ee9-4273-8f191791442001870_satishsharma@itpo.gov.in.pdf",
+      "status": "In Analysis",
+      "priority": "Medium",
+      "goNoGoAnalysis": {
+        "source": "AI Generated (Bid Intelligence Engine)",
+        "isCalculatedMetric": true,
+        "disclaimer": "Win Probability and Overall Score are AI-estimated predictive analytics based on qualification matching, not direct statements from the tender document.",
+        "decision": "GO",
+        "winProbability": 72,
+        "overallScore": 76,
+        "financialFitScore": 95,
+        "technicalFitScore": 65,
+        "experienceScore": 65,
+        "riskScore": 20,
+        "recommendationSummary": "Strong GO recommendation. With an overall qualification score of 76% and estimated Win Probability of 72%, the bidder profile satisfies technical, financial, and eligibility thresholds for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "swot": {
+          "strengths": [
+            "Bidder average turnover (₹16.2 Cr) comfortably exceeds RFP threshold of INR 5 Crore.",
+            "Meets the requirement of minimum 3 years of proven industry track record."
+          ],
+          "weaknesses": [
+            "Missing specific required certifications: GST Registration, EPFO Registration, ESIC Registration.",
+            "Relevant past project completion certificates need to be uploaded to Company Vault."
+          ],
+          "opportunities": [
+            "High-value strategic positioning as a core advisory and communication partner for the department.",
+            "Opportunity to establish long-term government stakeholder advisory & media planning footprint."
+          ],
+          "threats": [
+            "Strict deliverable timelines with multi-stakeholder review and milestone acceptance requirements."
+          ]
+        },
+        "keyClauses": [
+          {
+            "title": "Penalty for Non-performance",
+            "description": "2% of work order value per day for delay in portal go-live, subject to 10% cap.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Data Security",
+            "description": "Misuse or unauthorised sharing of data leads to forfeiture of PBG and termination.",
+            "riskLevel": "High"
+          },
+          {
+            "title": "Operational Downtime",
+            "description": "Rs. 10,000 per incident for portal downtime exceeding 15 minutes.",
+            "riskLevel": "Medium"
+          }
+        ]
+      },
+      "boqItems": [],
+      "proposals": {
+        "executiveSummary": "Vikas Kumar Company is pleased to submit this comprehensive proposal in response to RFP IT-17022/20/2026-IT-ITPO for \"Empanelment of an Agency for Online Registration, m-Badge Generation, and Supply, Personalisation, Lamination and Distribution of Badges for Exhibitors, Service Providers, Media and Officials for ITPO Domestic Events, including the 45th India International Trade Fair (IITF), 2026\".",
+        "technicalApproach": "Our proposed methodology centers on structured research, strategic advisory, multi-stakeholder communication planning, and measurable impact tracking tailored to India Trade Promotion Organisation (ITPO).",
+        "implementationPlan": "Phase 1: Inception & Stakeholder Mapping (Weeks 1-3)\nPhase 2: Strategy Formulation & Advisory Roadmap (Weeks 4-8)\nPhase 3: Campaign Execution & Media Rollout (Months 3-6)\nPhase 4: Impact Evaluation & Deliverable Review (Ongoing)"
+      },
+      "createdAt": "2026-10-09T07:48:30.270Z",
+      "updatedAt": "2026-10-09T07:48:30.270Z"
+    },
     {
       "id": "tender_bacd9473-08df-41f5-9432-ad97ec8d8bfc",
       "tenderNumber": "SAJHA/69",
